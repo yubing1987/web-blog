@@ -3,6 +3,10 @@ package com.ybjx.blog.entity;
 import java.util.Date;
 import javax.persistence.*;
 
+/**
+ * 文章数据库结构
+ * Created by YuBing on 2018/11/19.
+ */
 @Table(name = "article")
 public class ArticleDO {
     /**
@@ -42,6 +46,12 @@ public class ArticleDO {
      * 文章状态
      */
     private String status;
+
+    /**
+     * 是否被删除
+     */
+    @Column(name = "is_deleted")
+    private Boolean isDeleted;
 
     /**
      * 获取主键
@@ -167,5 +177,37 @@ public class ArticleDO {
      */
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    /**
+     * 获取是否被删除
+     *
+     * @return is_deleted - 是否被删除
+     */
+    public Boolean getIsDeleted() {
+        return isDeleted;
+    }
+
+    /**
+     * 设置是否被删除
+     *
+     * @param isDeleted 是否被删除
+     */
+    public void setIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
+    @Override
+    public String toString() {
+        return "ArticleDO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", picture='" + picture + '\'' +
+                ", description='" + description + '\'' +
+                ", createDate=" + createDate +
+                ", modifyDate=" + modifyDate +
+                ", status='" + status + '\'' +
+                ", isDeleted=" + isDeleted +
+                '}';
     }
 }

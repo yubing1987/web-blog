@@ -3,6 +3,10 @@ package com.ybjx.blog.entity;
 import java.util.Date;
 import javax.persistence.*;
 
+/**
+ * 文章标签数据库表结构
+ * Created by YuBing on 2018/11/19.
+ */
 @Table(name = "article_tag")
 public class ArticleTagDO {
     /**
@@ -33,6 +37,12 @@ public class ArticleTagDO {
      * 文章标签
      */
     private String tag;
+
+    /**
+     * 是否被删除
+     */
+    @Column(name = "is_deleted")
+    private Boolean isDeleted;
 
     /**
      * 获取主键
@@ -122,5 +132,35 @@ public class ArticleTagDO {
      */
     public void setTag(String tag) {
         this.tag = tag;
+    }
+
+    /**
+     * 获取是否被删除
+     *
+     * @return is_deleted - 是否被删除
+     */
+    public Boolean getIsDeleted() {
+        return isDeleted;
+    }
+
+    /**
+     * 设置是否被删除
+     *
+     * @param isDeleted 是否被删除
+     */
+    public void setIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
+    @Override
+    public String toString() {
+        return "ArticleTagDO{" +
+                "id=" + id +
+                ", createDate=" + createDate +
+                ", modifyDate=" + modifyDate +
+                ", articleId=" + articleId +
+                ", tag='" + tag + '\'' +
+                ", isDeleted=" + isDeleted +
+                '}';
     }
 }

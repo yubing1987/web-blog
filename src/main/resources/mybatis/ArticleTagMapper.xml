@@ -10,5 +10,6 @@
     <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
     <result column="article_id" jdbcType="INTEGER" property="articleId" />
     <result column="tag" jdbcType="VARCHAR" property="tag" />
+    <result column="is_deleted" jdbcType="BIT" property="isDeleted" />
   </resultMap>
 </mapper>
