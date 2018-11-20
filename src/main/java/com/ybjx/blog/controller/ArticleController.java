@@ -17,7 +17,7 @@ public class ArticleController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    public PageResult<ArticleDTO> getArticlePage(){
+    public PageResult<ArticleDTO> getArticlePage() {
         return null;
     }
 }

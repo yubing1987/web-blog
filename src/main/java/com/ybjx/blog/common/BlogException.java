@@ -14,7 +14,7 @@ public class BlogException extends RuntimeException {
      * 指定错误编码
      * @param errorCode 错误编码
      */
-    public BlogException(ErrorCode errorCode){
+    public BlogException(ErrorCode errorCode) {
         super(errorCode.getMsg());
         this.code = errorCode.getCode();
     }
@@ -24,7 +24,7 @@ public class BlogException extends RuntimeException {
      * @param errorCode 错误编码
      * @param msg 错误信息
      */
-    public BlogException(ErrorCode errorCode, String msg){
+    public BlogException(ErrorCode errorCode, String msg) {
         super(msg);
         this.code = errorCode.getCode();
     }
@@ -34,7 +34,7 @@ public class BlogException extends RuntimeException {
      * @param errorCode 错误编码
      * @param e 父异常
      */
-    public BlogException(ErrorCode errorCode, Exception e){
+    public BlogException(ErrorCode errorCode, Exception e) {
         super(errorCode.getMsg(), e);
         this.code = errorCode.getCode();
     }
@@ -45,7 +45,7 @@ public class BlogException extends RuntimeException {
      * @param msg 错误信息
      * @param e 父异常
      */
-    public BlogException(ErrorCode errorCode, String msg, Exception e){
+    public BlogException(ErrorCode errorCode, String msg, Exception e) {
         super(msg, e);
         this.code = errorCode.getCode();
     }

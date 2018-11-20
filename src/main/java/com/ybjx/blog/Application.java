@@ -20,7 +20,7 @@ public class Application {
      * spring boot 入口函数
      * @param args 命令行参数
      */
-    public static void main(String [] args){
+    public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
 }

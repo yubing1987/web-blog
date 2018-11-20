@@ -45,7 +45,7 @@ public class ArticleService {
         articleDO.setName(articleDTO.getName());
         articleDO.setIsDeleted(false);
         articleDO = articleMapper.selectOne(articleDO);
-        if(articleDO != null){
+        if (articleDO != null) {
             throw new BlogException(ErrorCode.OBJECT_EXIST, "文章名称已经被使用过了");
         }
     }

@@ -2,6 +2,7 @@ package com.ybjx.blog.common.result;
 
 /**
  * 对象形式的返回结果
+ * @param <T> 返回值对象
  * Created by YuBing on 2018/11/19.
  */
 public class ObjectResult<T> extends BaseResult<T> {
@@ -9,7 +10,7 @@ public class ObjectResult<T> extends BaseResult<T> {
     /**
      * 没有参数的构造函数
      */
-    public ObjectResult(){
+    public ObjectResult() {
         super(null);
     }
 

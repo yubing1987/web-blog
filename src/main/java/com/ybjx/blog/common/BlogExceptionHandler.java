@@ -19,16 +19,15 @@ public class BlogExceptionHandler {
      */
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
-    public ObjectResult<Object> defaultErrorHandler(Exception e){
+    public ObjectResult<Object> defaultErrorHandler(Exception e) {
         ObjectResult<Object> result = new ObjectResult<>();
         result.setSuccess(false);
-        if(e instanceof BlogException){
+        if (e instanceof BlogException) {
             // 应用已知的异常信息
-            BlogException be = (BlogException)e;
+            BlogException be = (BlogException) e;
             result.setCode(be.getCode());
             result.setMessage(be.getMessage());
-        }
-        else{
+        } else {
             // 未知的异常信息
             result.setCode(ErrorCode.SYSTEM_ERROR.getCode());
             result.setMessage(ErrorCode.SYSTEM_ERROR.getMsg());

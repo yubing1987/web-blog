@@ -17,5 +17,5 @@ public @interface ParameterCheck {
      * 参数校验分类group
      * @return group列表
      */
-    Class [] value();
+    Class[] value();
 }

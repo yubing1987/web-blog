@@ -2,6 +2,7 @@ package com.ybjx.blog.common.result;
 
 /**
  * 基础的返回结果
+ * @param <T> 返回值对象
  * Created by YuBing on 2018/11/19.
  */
 public abstract class BaseResult<T> {
@@ -25,7 +26,7 @@ public abstract class BaseResult<T> {
      */
     private T content;
 
-    public BaseResult(T content){
+    public BaseResult(T content) {
         this.content = content;
         this.code = "200";
         this.success = true;

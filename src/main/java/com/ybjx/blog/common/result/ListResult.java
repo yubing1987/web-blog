@@ -4,6 +4,7 @@ import java.util.List;
 
 /**
  * 列表形式的返回值
+ * @param <T> 返回值对象
  * Created by YuBing on 2018/11/19.
  */
 public class ListResult<T> extends BaseResult<List<T>> {
@@ -11,7 +12,7 @@ public class ListResult<T> extends BaseResult<List<T>> {
     /**
      * 无参构造函数
      */
-    public ListResult(){
+    public ListResult() {
         super(null);
     }
 

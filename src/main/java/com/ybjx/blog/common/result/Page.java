@@ -2,6 +2,7 @@ package com.ybjx.blog.common.result;
 
 /**
  * 分页返回值的分页内容
+ * @param <T> 返回值对象
  * Created by YuBing on 2018/11/19.
  */
 public class Page<T> {

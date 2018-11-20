@@ -39,17 +39,17 @@ public class ParameterCheckAop {
      */
     @Around("@annotation(pc)")
     public Object check(ProceedingJoinPoint joinPoint, ParameterCheck pc) throws Throwable {
-        Object [] args = joinPoint.getArgs();
+        Object[] args = joinPoint.getArgs();
 
-        if(args != null && args.length > 0){
-            for(Object obj: args){
+        if (args != null && args.length > 0) {
+            for (Object obj: args) {
                 // 校验参数
                 Set<ConstraintViolation<Object>> set = validator.validate(obj, pc.value());
                 // 判断校验结果
-                if(set != null && set.size() > 0){
+                if (set != null && set.size() > 0) {
                     // 拼接参数校验错误信息
                     StringJoiner joiner = new StringJoiner(", ");
-                    for(ConstraintViolation constraintViolation: set){
+                    for (ConstraintViolation constraintViolation: set) {
                         joiner.add(constraintViolation.getMessage());
                     }
                     // 抛出错误信息

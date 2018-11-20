@@ -3,6 +3,7 @@ package com.ybjx.blog.common.result;
 
 /**
  * 分页结果
+ * @param <T> 返回值对象
  * Created by YuBing on 2018/11/19.
  */
 public class PageResult<T> extends BaseResult<Page<T>> {
@@ -10,7 +11,7 @@ public class PageResult<T> extends BaseResult<Page<T>> {
     /**
      * 无参构造函数
      */
-    public PageResult(){
+    public PageResult() {
         super(null);
     }
 
