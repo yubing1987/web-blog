@@ -6,7 +6,8 @@ package com.ybjx.blog.common;
  */
 public enum ErrorCode {
     SYSTEM_ERROR("10000", "系统错误"),
-    OBJECT_EXIST("10001", "数据已经存在")
+    OBJECT_EXIST("10001", "数据已经存在"),
+    PARAMETER_ERROR("10002", "参数错误")
     ;
 
     ErrorCode(String code, String msg){
