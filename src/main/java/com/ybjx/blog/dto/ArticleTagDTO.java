@@ -1,5 +1,11 @@
 package com.ybjx.blog.dto;
 
+import com.ybjx.blog.checker.group.CreateCheck;
+import com.ybjx.blog.checker.group.RemoveCheck;
+import com.ybjx.blog.checker.group.UpdateCheck;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -10,6 +16,7 @@ public class ArticleTagDTO {
     /**
      * 主键
      */
+    @NotNull(message = "文章标签ID不能为空", groups = {RemoveCheck.class})
     private Integer id;
 
     /**
@@ -25,11 +32,13 @@ public class ArticleTagDTO {
     /**
      * 文章ID
      */
+    @NotNull(message = "文章ID不能为空", groups = {CreateCheck.class})
     private Integer articleId;
 
     /**
      * 文章标签
      */
+    @NotEmpty(message = "文章标签不能为空", groups = {CreateCheck.class})
     private String tag;
 
     /**
