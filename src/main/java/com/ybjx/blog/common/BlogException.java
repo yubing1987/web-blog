@@ -49,4 +49,8 @@ public class BlogException extends RuntimeException {
         super(msg, e);
         this.code = errorCode.getCode();
     }
+
+    public String getCode() {
+        return code;
+    }
 }
