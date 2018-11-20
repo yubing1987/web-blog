@@ -1,5 +1,6 @@
 package com.ybjx.blog.service;
 
+import com.ybjx.blog.config.ArticleConfig;
 import com.ybjx.blog.dao.ArticleMapper;
 import com.ybjx.blog.dto.ArticleDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +19,18 @@ public class ArticleService {
     private final ArticleMapper articleMapper;
 
     /**
+     * 文章相关的配置
+     */
+    private final ArticleConfig articleConfig;
+
+    /**
      * 构造函数
      * @param articleMapper 注入文章数据库操作
      */
     @Autowired
-    public ArticleService(ArticleMapper articleMapper) {
+    public ArticleService(ArticleMapper articleMapper, ArticleConfig articleConfig) {
         this.articleMapper = articleMapper;
+        this.articleConfig = articleConfig;
     }
 
     /**

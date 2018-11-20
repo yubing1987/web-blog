@@ -1,0 +1,4 @@
+blog:
+  article:
+    file-base-path: G:\blog
+    save-at-local: true

@@ -21,7 +21,7 @@ public class SwaggerConfig {
      * @return swagger 配置bean
      */
     @Bean
-    public Docket docket(){
+    public Docket docket() {
         return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).select()
                 .apis(RequestHandlerSelectors.basePackage("com.ybjx.blog.controller"))
                 .paths(PathSelectors.any()).build();
@@ -32,7 +32,7 @@ public class SwaggerConfig {
      * 获取API相关的一些信息
      * @return API信息
      */
-    private ApiInfo apiInfo(){
+    private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 //页面标题
                 .title("Web Blog的API接口")
