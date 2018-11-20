@@ -4,7 +4,7 @@ package com.ybjx.blog.common;
  * 应用自定义异常信息
  * create by YuBing at 2018/11/20
  */
-public class BlogException extends Exception {
+public class BlogException extends RuntimeException {
     /**
      * 错误编码
      */

@@ -1,8 +1,11 @@
 package com.ybjx.blog.service;
 
+import com.ybjx.blog.common.BlogException;
+import com.ybjx.blog.common.ErrorCode;
 import com.ybjx.blog.config.ArticleConfig;
 import com.ybjx.blog.dao.ArticleMapper;
 import com.ybjx.blog.dto.ArticleDTO;
+import com.ybjx.blog.entity.ArticleDO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,6 +41,12 @@ public class ArticleService {
      * @param articleDTO 文章数据
      */
     public void addArticle(ArticleDTO articleDTO) {
-
+        ArticleDO articleDO = new ArticleDO();
+        articleDO.setName(articleDTO.getName());
+        articleDO.setIsDeleted(false);
+        articleDO = articleMapper.selectOne(articleDO);
+        if(articleDO != null){
+            throw new BlogException(ErrorCode.OBJECT_EXIST, "文章名称已经被使用过了");
+        }
     }
 }
