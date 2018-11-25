@@ -44,12 +44,10 @@ public class LocalFileStore implements IFileStore {
         if(!dir.exists() || !dir.isDirectory()){
             throw new BlogException(ErrorCode.SYSTEM_ERROR, "文章内容保存出错");
         }
-        try {
-            FileOutputStream outputStream = new FileOutputStream(articleConfig.getFileBasePath() + '/' + articleUuid + ".md");
+        try (FileOutputStream outputStream = new FileOutputStream(articleConfig.getFileBasePath() + '/' + articleUuid + ".md")) {
             outputStream.write(content.getBytes("UTF-8"));
             cache.put(articleUuid, content);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new BlogException(ErrorCode.SYSTEM_ERROR, "文章内容保存出错", e);
         }
     }
@@ -65,8 +63,7 @@ public class LocalFileStore implements IFileStore {
         if(content != null){
             return content;
         }
-        try {
-            FileReader fileReader = new FileReader(articleConfig.getFileBasePath() + "/" + articleUuid + ".md");
+        try (FileReader fileReader = new FileReader(articleConfig.getFileBasePath() + "/" + articleUuid + ".md")) {
 
             char[] buffer = new char[1024];
             StringBuilder builder = new StringBuilder();
@@ -79,8 +76,7 @@ public class LocalFileStore implements IFileStore {
             }
             cache.put(articleUuid, builder.toString());
             return builder.toString();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new BlogException(ErrorCode.SYSTEM_ERROR, "读取文章内容出错", e);
         }
     }

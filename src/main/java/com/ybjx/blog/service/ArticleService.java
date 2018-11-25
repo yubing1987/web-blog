@@ -72,4 +72,41 @@ public class ArticleService {
             throw new BlogException(ErrorCode.DATABASE_INSERT, "保存文章出厂");
         }
     }
+
+    /**
+     * 通过文章的UUID获取文章内容
+     * @param uuid 文章UUID
+     * @return 文章内容
+     */
+    private ArticleDO getArticleByUuid(String uuid){
+        ArticleDO articleDO = new ArticleDO();
+        articleDO.setUuid(uuid);
+        articleDO.setIsDeleted(false);
+        articleDO = articleMapper.selectOne(articleDO);
+        return articleDO;
+    }
+
+    public void editArticle(ArticleDTO articleDTO){
+        ArticleDO articleDO = articleMapper.selectByPrimaryKey(articleDTO.getId());
+        if(articleDO == null || articleDO.getIsDeleted()){
+            throw new BlogException(ErrorCode.OBJECT_NOT_FOUND, "文章没有找到");
+        }
+
+    }
+
+    /**
+     * 获取带文章内容的文章信息
+     * @param uuid 文章UUID
+     * @return 文章内容
+     */
+    public ArticleDTO getArticleDto(String uuid){
+        ArticleDO articleDO = getArticleByUuid(uuid);
+        if(articleDO == null){
+            return null;
+        }
+        ArticleDTO articleDTO = new ArticleDTO();
+        BeanUtils.copyProperties(articleDO, articleDTO);
+        articleDTO.setContent(fileStore.read(articleDO.getUuid()));
+        return articleDTO;
+    }
 }
