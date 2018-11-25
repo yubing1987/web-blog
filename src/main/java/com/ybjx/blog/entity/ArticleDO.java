@@ -2,9 +2,8 @@ package com.ybjx.blog.entity;
 
 import java.util.Date;
 import javax.persistence.*;
-
 /**
- * 文章数据库结构
+ * 文章数据库表结构
  * Created by YuBing on 2018/11/19.
  */
 @Table(name = "article")
@@ -52,6 +51,11 @@ public class ArticleDO {
      */
     @Column(name = "is_deleted")
     private Boolean isDeleted;
+
+    /**
+     * 文章的唯一标识符
+     */
+    private String uuid;
 
     /**
      * 获取主键
@@ -197,6 +201,24 @@ public class ArticleDO {
         this.isDeleted = isDeleted;
     }
 
+    /**
+     * 获取文章的唯一标识符
+     *
+     * @return uuid - 文章的唯一标识符
+     */
+    public String getUuid() {
+        return uuid;
+    }
+
+    /**
+     * 设置文章的唯一标识符
+     *
+     * @param uuid 文章的唯一标识符
+     */
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
+
     @Override
     public String toString() {
         return "ArticleDO{" +
@@ -208,6 +230,7 @@ public class ArticleDO {
                 ", modifyDate=" + modifyDate +
                 ", status='" + status + '\'' +
                 ", isDeleted=" + isDeleted +
+                ", uuid='" + uuid + '\'' +
                 '}';
     }
 }

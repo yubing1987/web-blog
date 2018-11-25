@@ -13,5 +13,6 @@
     <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
     <result column="status" jdbcType="VARCHAR" property="status" />
     <result column="is_deleted" jdbcType="BIT" property="isDeleted" />
+    <result column="uuid" jdbcType="VARCHAR" property="uuid" />
   </resultMap>
 </mapper>
