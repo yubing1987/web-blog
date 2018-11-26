@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>${article.name}</title>
     <script src="/jquery-3.3.1.min.js"></script>
+    <link type="text/css" rel="stylesheet" href="/main.css"/>
 </head>
 <body>
 <div>
@@ -13,6 +14,17 @@
 </div>
 <script src="/marked.min.js"></script>
 <script>
+    $(document).ready(function(){
+        $.ajax({
+            url:"/article/content/${article.uuid}",
+            success: function (result) {
+                if(result.success){
+                    document.getElementById('content').innerHTML =
+                            marked(result.content.content);
+                }
+            }
+        });
+    });
 </script>
 </body>
 </html>

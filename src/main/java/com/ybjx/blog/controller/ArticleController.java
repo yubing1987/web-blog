@@ -32,6 +32,7 @@ public class ArticleController {
     }
 
     @RequestMapping(value = "/content/{uuid}", method = RequestMethod.GET)
+    @ResponseBody
     public ObjectResult<ArticleDTO> getArticle(@PathVariable("uuid") String uuid){
         ArticleDTO articleDTO = articleService.getArticleDto(uuid);
 
