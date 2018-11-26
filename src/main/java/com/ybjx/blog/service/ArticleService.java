@@ -78,7 +78,7 @@ public class ArticleService {
      * @param uuid 文章UUID
      * @return 文章内容
      */
-    private ArticleDO getArticleByUuid(String uuid){
+    public ArticleDO getArticleByUuid(String uuid){
         ArticleDO articleDO = new ArticleDO();
         articleDO.setUuid(uuid);
         articleDO.setIsDeleted(false);

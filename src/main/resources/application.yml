@@ -1,2 +1,4 @@
-server:
-  port: 80
+blog:
+  article:
+    file-base-path: /root/article
+    save-at-local: true

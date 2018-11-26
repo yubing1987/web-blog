@@ -1,14 +1,13 @@
 package com.ybjx.blog.controller;
 
+import com.ybjx.blog.common.BlogException;
+import com.ybjx.blog.common.ErrorCode;
 import com.ybjx.blog.common.result.ObjectResult;
 import com.ybjx.blog.common.result.PageResult;
 import com.ybjx.blog.dto.ArticleDTO;
 import com.ybjx.blog.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 文章相关的接口
@@ -27,8 +26,19 @@ public class ArticleController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
-    public ObjectResult<Boolean> getArticlePage(ArticleDTO article) {
+    public ObjectResult<Boolean> addArticle(ArticleDTO article) {
         articleService.addArticle(article);
         return new ObjectResult<>(true);
+    }
+
+    @RequestMapping(value = "/content/{uuid}", method = RequestMethod.GET)
+    public ObjectResult<ArticleDTO> getArticle(@PathVariable("uuid") String uuid){
+        ArticleDTO articleDTO = articleService.getArticleDto(uuid);
+
+        if(articleDTO == null){
+            throw new BlogException(ErrorCode.OBJECT_NOT_FOUND, "文章没有找到");
+        }
+
+        return new ObjectResult<>(articleDTO);
     }
 }

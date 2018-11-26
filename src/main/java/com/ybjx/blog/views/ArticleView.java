@@ -31,14 +31,7 @@ public class ArticleView {
      */
     @RequestMapping(value = "/article/{uuid}", method = RequestMethod.GET)
     public String article(Model model, @PathVariable("uuid") String uuid){
-        ArticleDTO articleDTO = articleService.getArticleDto(uuid);
-        if(articleDTO != null){
-            String content = articleDTO.getContent().replaceAll("\r", "");
-            content = content.replaceAll("\\n", "\\\\n");
-            articleDTO.setContent(content);
-        }
-        model.addAttribute("article", articleDTO);
-
+        model.addAttribute("article", articleService.getArticleByUuid(uuid));
         return "article";
     }
 }
