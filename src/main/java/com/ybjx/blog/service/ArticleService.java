@@ -69,7 +69,7 @@ public class ArticleService {
             articleMapper.insert(articleDO);
         }
         catch (Exception e){
-            throw new BlogException(ErrorCode.DATABASE_INSERT, "保存文章出厂");
+            throw new BlogException(ErrorCode.DATABASE_INSERT, "保存文章出错", e);
         }
     }
 

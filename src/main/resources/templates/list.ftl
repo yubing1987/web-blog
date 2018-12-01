@@ -7,5 +7,9 @@
     <link type="text/css" rel="stylesheet" href="/main.css"/>
 </head>
 <body>
-
+    <div class="list-view">
+    <#list article_list as article>
+        <div class="article-item"><a href="/article/${article.uuid}">${article.name}</a></div>
+    </#list>
+    </div>
 </body>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ybjx.blog.dao.RelateArticleMapper">
+  <resultMap id="BaseResultMap" type="com.ybjx.blog.entity.RelateArticleDO">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="article_uuid" jdbcType="VARCHAR" property="articleUuid" />
+    <result column="relate_article_uuid" jdbcType="VARCHAR" property="relateArticleUuid" />
+    <result column="order" jdbcType="INTEGER" property="order" />
+    <result column="is_deleted" jdbcType="TINYINT" property="isDeleted" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+  </resultMap>
+
+  <resultMap id="ArticleResultMap" type="com.ybjx.blog.entity.ArticleDO">
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="picture" jdbcType="VARCHAR" property="picture" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="is_deleted" jdbcType="BIT" property="isDeleted" />
+    <result column="uuid" jdbcType="VARCHAR" property="uuid" />
+  </resultMap>
+
+  <select id="getRelateArticleList" resultMap="ArticleResultMap">
+    select a.* from relate_article r left join article a on r.relate_article_uuid = a.uuid
+    where r.article_uuid = #{uuid} and r.is_deleted = 0 and r.is_deleted = 0
+  </select>
+</mapper>

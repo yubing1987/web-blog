@@ -25,3 +25,18 @@ pre{
     border-radius: 4px;
     overflow: auto;
 }
+
+.list-view{
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.article-item{
+    border-bottom: solid 1px #ccc;
+    padding: 10px;
+}
+.article-item>a{
+    text-decoration: none;
+    color: #000;
+}
