@@ -1,7 +1,5 @@
 package com.ybjx.blog.controller;
 
-import com.ybjx.blog.checker.ParameterCheck;
-import com.ybjx.blog.checker.group.CreateCheck;
 import com.ybjx.blog.common.BlogException;
 import com.ybjx.blog.common.ErrorCode;
 import com.ybjx.blog.common.result.PojoResult;
@@ -37,7 +35,7 @@ public class ArticleController {
      */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
-    public PojoResult<Boolean> addArticle(ArticleDTO article) {
+    public PojoResult<Boolean> addArticle(@RequestBody ArticleDTO article) {
         articleService.addArticle(article);
         return new PojoResult<>(true);
     }
@@ -47,16 +45,42 @@ public class ArticleController {
      * @param id 文章ID
      * @return 文章信息
      */
-    @RequestMapping(value = "/content/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public PojoResult<ArticleDTO> getArticle(@PathVariable("id") Integer id){
+    public PojoResult<ArticleDTO> getArticle(@PathVariable("id") Integer id) {
         ArticleDO articleDO = articleService.getArticleById(id);
 
-        if(articleDO == null){
+        if (articleDO == null) {
             throw new BlogException(ErrorCode.OBJECT_NOT_FOUND, "文章没有找到");
         }
         ArticleDTO articleDTO = new ArticleDTO();
         BeanUtils.copyProperties(articleDO, articleDTO);
         return new PojoResult<>(articleDTO);
+    }
+
+    /**
+     * 修改文章发布状态
+     * @param id 文章ID
+     * @param published 文章发布状态，true--已发布，false--未发布
+     * @return 是否修改成功
+     */
+    @RequestMapping(value = "/{id}/published/{published}", method = RequestMethod.POST)
+    @ResponseBody
+    public PojoResult<Boolean> articlePublished(@PathVariable("id") Integer id,
+                                                @PathVariable("published") Boolean published) {
+        articleService.articlePublished(id, published);
+        return new PojoResult<>(true);
+    }
+
+    /**
+     * 删除文章
+     * @param id 文章ID
+     * @return 是否删除成功
+     */
+    @RequestMapping(value = "/{id}/deleted", method = RequestMethod.POST)
+    @ResponseBody
+    public PojoResult<Boolean> deleteArticle(@PathVariable("id") Integer id) {
+        articleService.deleteArticle(id);
+        return new PojoResult<>(true);
     }
 }

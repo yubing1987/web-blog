@@ -64,8 +64,7 @@ public class ArticleService {
         // 保存文章记录
         try {
             articleMapper.insert(articleDO);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new BlogException(ErrorCode.DATABASE_INSERT, "保存文章出错", e);
         }
     }
@@ -75,7 +74,7 @@ public class ArticleService {
      * @param id 文章ID
      * @return 文章信息
      */
-    public ArticleDO getArticleById(Integer id){
+    public ArticleDO getArticleById(Integer id) {
         ArticleDO articleDO = new ArticleDO();
         articleDO.setId(id);
         articleDO.setIsDeleted(false);
@@ -89,9 +88,9 @@ public class ArticleService {
      */
     @Transactional(rollbackFor = Exception.class)
     @ParameterCheck(UpdateCheck.class)
-    public void editArticle(ArticleDTO articleDTO){
+    public void editArticle(ArticleDTO articleDTO) {
         ArticleDO articleDO = articleMapper.selectByPrimaryKey(articleDTO.getId());
-        if(articleDO == null || articleDO.getIsDeleted()){
+        if (articleDO == null || articleDO.getIsDeleted()) {
             throw new BlogException(ErrorCode.OBJECT_NOT_FOUND, "文章没有找到");
         }
         articleDO.setTitle(articleDTO.getTitle());
@@ -99,10 +98,9 @@ public class ArticleService {
         articleDO.setContent(articleDTO.getContent());
         articleDO.setAbstractContent(articleDTO.getAbstractContent());
         articleDO.setModifyDate(new Date());
-        try{
+        try {
             articleMapper.updateByPrimaryKeySelective(articleDO);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new BlogException(ErrorCode.OBJECT_UPDATE_ERROR, e);
         }
     }
@@ -112,25 +110,23 @@ public class ArticleService {
      * @param articleId 文章ID
      */
     @Transactional(rollbackFor = Exception.class)
-    public void articlePublished(int articleId, boolean published){
+    public void articlePublished(int articleId, boolean published) {
         ArticleDO articleDO = articleMapper.selectByPrimaryKey(articleId);
-        if(articleDO == null || articleDO.getIsDeleted()){
+        if (articleDO == null || articleDO.getIsDeleted()) {
             throw new BlogException(ErrorCode.OBJECT_NOT_FOUND, "文章没有找到");
         }
-        if(articleDO.getPublished() == published){
-            if(articleDO.getPublished()) {
+        if (articleDO.getPublished() == published) {
+            if (articleDO.getPublished()) {
                 throw new BlogException(ErrorCode.OBJECT_STATUS_ERROR, "文章已经发表过了");
-            }
-            else{
+            } else {
                 throw new BlogException(ErrorCode.OBJECT_STATUS_ERROR, "文章还没有发表");
             }
         }
         articleDO.setModifyDate(new Date());
         articleDO.setPublished(published);
-        try{
+        try {
             articleMapper.updateByPrimaryKeySelective(articleDO);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new BlogException(ErrorCode.OBJECT_UPDATE_ERROR, e);
         }
     }
@@ -140,20 +136,19 @@ public class ArticleService {
      * @param articleId 文章ID
      */
     @Transactional(rollbackFor = Exception.class)
-    public void deleteArticle(int articleId){
+    public void deleteArticle(int articleId) {
         ArticleDO articleDO = articleMapper.selectByPrimaryKey(articleId);
-        if(articleDO == null || articleDO.getIsDeleted()){
+        if (articleDO == null || articleDO.getIsDeleted()) {
             throw new BlogException(ErrorCode.OBJECT_NOT_FOUND, "文章没有找到");
         }
-        if(articleDO.getPublished()){
+        if (articleDO.getPublished()) {
             throw new BlogException(ErrorCode.OBJECT_STATUS_ERROR, "文章已经发表过了");
         }
         articleDO.setModifyDate(new Date());
         articleDO.setIsDeleted(true);
-        try{
+        try {
             articleMapper.updateByPrimaryKeySelective(articleDO);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             throw new BlogException(ErrorCode.OBJECT_UPDATE_ERROR, e);
         }
     }

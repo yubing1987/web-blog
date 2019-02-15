@@ -36,7 +36,7 @@ public class PageInfo<T> implements Serializable {
 
     public void setItems(List<T> items) {
         this.items.clear();
-        if(items != null){
+        if (items != null) {
             this.items.addAll(items);
         }
     }

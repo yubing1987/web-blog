@@ -6,7 +6,7 @@ package com.ybjx.blog.common.result;
  * @param <T> 返回值对象
  * Created by YuBing on 2018/11/19.
  */
-public class PageResult<T> extends BaseResult{
+public class PageResult<T> extends BaseResult {
 
     private PageInfo<T> content;
 

@@ -25,8 +25,8 @@ public class ListResult<T> extends BaseResult {
      * 提供内容的构造函数
      * @param content 返回值内容
      */
-    public ListResult(List<T> content){
-        if(content != null){
+    public ListResult(List<T> content) {
+        if (content != null) {
             this.content.addAll(content);
         }
     }
@@ -37,7 +37,7 @@ public class ListResult<T> extends BaseResult {
 
     public void setContent(List<T> content) {
         this.content.clear();
-        if(content != null) {
+        if (content != null) {
             this.content.addAll(content);
         }
     }
