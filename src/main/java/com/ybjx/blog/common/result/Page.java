@@ -9,7 +9,7 @@ import java.util.List;
  * @param <T> 返回值对象
  * Created by YuBing on 2018/11/19.
  */
-public class PageInfo<T> implements Serializable {
+public class Page<T> implements Serializable {
     /**
      * 内容
      */
@@ -23,7 +23,7 @@ public class PageInfo<T> implements Serializable {
     /**
      * 总数
      */
-    private int total;
+    private long total;
 
     /**
      * 每一页大小
@@ -49,11 +49,11 @@ public class PageInfo<T> implements Serializable {
         this.current = current;
     }
 
-    public int getTotal() {
+    public long getTotal() {
         return total;
     }
 
-    public void setTotal(int total) {
+    public void setTotal(long total) {
         this.total = total;
     }
 
@@ -67,7 +67,7 @@ public class PageInfo<T> implements Serializable {
 
     @Override
     public String toString() {
-        return "PageInfo{" +
+        return "Page{" +
                 "items=" + items +
                 ", current=" + current +
                 ", total=" + total +

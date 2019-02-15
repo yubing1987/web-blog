@@ -1,10 +1,14 @@
 package com.ybjx.blog.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.ybjx.blog.checker.ParameterCheck;
 import com.ybjx.blog.checker.group.CreateCheck;
 import com.ybjx.blog.checker.group.UpdateCheck;
 import com.ybjx.blog.common.BlogException;
 import com.ybjx.blog.common.ErrorCode;
+import com.ybjx.blog.common.result.Page;
+import com.ybjx.blog.common.result.PageResult;
 import com.ybjx.blog.dao.ArticleMapper;
 import com.ybjx.blog.dto.ArticleDTO;
 import com.ybjx.blog.entity.ArticleDO;
@@ -13,7 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 文章服务
@@ -151,5 +157,35 @@ public class ArticleService {
         } catch (Exception e) {
             throw new BlogException(ErrorCode.OBJECT_UPDATE_ERROR, e);
         }
+    }
+
+    /**
+     * 查询文章列表
+     * @param page 页码
+     * @param size 每一页大小
+     * @param key 搜索关键字
+     * @return 查找的结果
+     */
+    public PageResult<ArticleDTO> queryArticle(int page, int size, String key){
+        PageHelper.startPage(page, size, "modify_date desc");
+        List<ArticleDO> list = articleMapper.queryArticle(key);
+        PageInfo<ArticleDO> pageInfo = new PageInfo<>(list);
+        List<ArticleDTO> items = new ArrayList<>();
+        // 拷贝数据
+        for(ArticleDO article: list){
+            ArticleDTO articleDTO = new ArticleDTO();
+            BeanUtils.copyProperties(article, articleDTO);
+            items.add(articleDTO);
+        }
+
+        // 构造返回值
+        PageResult<ArticleDTO> result = new PageResult<>();
+        Page<ArticleDTO> p = new Page<>();
+        result.setContent(p);
+        p.setItems(items);
+        p.setCurrent(page);
+        p.setLimit(size);
+        p.setTotal(pageInfo.getTotal());
+        return result;
     }
 }

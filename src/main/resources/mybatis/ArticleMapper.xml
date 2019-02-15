@@ -16,4 +16,11 @@
     <result column="view_count" jdbcType="INTEGER" property="viewCount" />
     <result column="content" jdbcType="LONGVARCHAR" property="content" />
   </resultMap>
+
+  <select id="queryArticle" resultMap="BaseResultMap">
+    select * from article
+    <if test="key != null and key != ''">
+      where title like concat('%', key, '%')
+    </if>
+  </select>
 </mapper>

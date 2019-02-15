@@ -8,7 +8,7 @@ package com.ybjx.blog.common.result;
  */
 public class PageResult<T> extends BaseResult {
 
-    private PageInfo<T> content;
+    private Page<T> content;
 
     /**
      * 无参构造函数
@@ -21,15 +21,15 @@ public class PageResult<T> extends BaseResult {
      * 提供分页内容的构造函数
      * @param content 分页内容
      */
-    public PageResult(PageInfo<T> content) {
+    public PageResult(Page<T> content) {
         this.content = content;
     }
 
-    public PageInfo<T> getContent() {
+    public Page<T> getContent() {
         return content;
     }
 
-    public void setContent(PageInfo<T> content) {
+    public void setContent(Page<T> content) {
         this.content = content;
     }
 

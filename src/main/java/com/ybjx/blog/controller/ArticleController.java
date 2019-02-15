@@ -1,10 +1,15 @@
 package com.ybjx.blog.controller;
 
+import com.ybjx.blog.checker.ParameterCheck;
+import com.ybjx.blog.checker.group.PagingCheck;
+import com.ybjx.blog.checker.group.QueryCheck;
 import com.ybjx.blog.common.BlogException;
 import com.ybjx.blog.common.ErrorCode;
+import com.ybjx.blog.common.result.PageResult;
 import com.ybjx.blog.common.result.PojoResult;
 import com.ybjx.blog.dto.ArticleDTO;
 import com.ybjx.blog.entity.ArticleDO;
+import com.ybjx.blog.query.ArticleQuery;
 import com.ybjx.blog.service.ArticleService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,5 +87,17 @@ public class ArticleController {
     public PojoResult<Boolean> deleteArticle(@PathVariable("id") Integer id) {
         articleService.deleteArticle(id);
         return new PojoResult<>(true);
+    }
+
+    /**
+     * 查询文章列表
+     * @param query 查询条件
+     * @return 查询到的文章列表
+     */
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @ResponseBody
+    @ParameterCheck({QueryCheck.class, PagingCheck.class})
+    public PageResult<ArticleDTO> queryArticle(@RequestBody ArticleQuery query){
+        return articleService.queryArticle(query.getPage(), query.getSize(), query.getKey());
     }
 }
