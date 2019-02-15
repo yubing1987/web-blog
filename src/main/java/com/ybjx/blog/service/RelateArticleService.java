@@ -1,8 +1,6 @@
 package com.ybjx.blog.service;
 
 import com.ybjx.blog.dao.RelateArticleMapper;
-import com.ybjx.blog.entity.ArticleDO;
-import com.ybjx.blog.entity.RelateArticleDO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

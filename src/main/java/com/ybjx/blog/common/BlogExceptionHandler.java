@@ -1,6 +1,6 @@
 package com.ybjx.blog.common;
 
-import com.ybjx.blog.common.result.ObjectResult;
+import com.ybjx.blog.common.result.PojoResult;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -19,8 +19,8 @@ public class BlogExceptionHandler {
      */
     @ExceptionHandler(value = Exception.class)
     @ResponseBody
-    public ObjectResult<Object> defaultErrorHandler(Exception e) {
-        ObjectResult<Object> result = new ObjectResult<>();
+    public PojoResult<Boolean> defaultErrorHandler(Exception e) {
+        PojoResult<Boolean> result = new PojoResult<>();
         result.setSuccess(false);
         if (e instanceof BlogException) {
             // 应用已知的异常信息

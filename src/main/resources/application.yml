@@ -1,9 +1,2 @@
-
-
-blog:
-  article:
-    file-base-path: /root/article
-    save-at-local: true
-
 mybatis:
   mapper-locations: classpath:/mybatis/**/*.xml

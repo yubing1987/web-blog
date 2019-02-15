@@ -1,7 +1,6 @@
 package com.ybjx.blog.dto;
 
 import com.ybjx.blog.checker.group.CreateCheck;
-import com.ybjx.blog.checker.group.RemoveCheck;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -15,7 +14,6 @@ public class ArticleTagDTO {
     /**
      * 主键
      */
-    @NotNull(message = "文章标签ID不能为空", groups = {RemoveCheck.class})
     private Integer id;
 
     /**

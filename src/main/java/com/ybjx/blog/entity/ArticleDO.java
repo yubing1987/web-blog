@@ -2,8 +2,9 @@ package com.ybjx.blog.entity;
 
 import java.util.Date;
 import javax.persistence.*;
+
 /**
- * 文章数据库表结构
+ * 文章信息
  * Created by YuBing on 2018/11/19.
  */
 @Table(name = "article")
@@ -11,13 +12,14 @@ public class ArticleDO {
     /**
      * 主键
      */
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     /**
      * 文章名称
      */
-    private String name;
+    private String title;
 
     /**
      * 文章图片
@@ -25,9 +27,10 @@ public class ArticleDO {
     private String picture;
 
     /**
-     * 文章描述
+     * 文章摘要
      */
-    private String description;
+    @Column(name = "abstract_content")
+    private String abstractContent;
 
     /**
      * 创建时间
@@ -44,7 +47,7 @@ public class ArticleDO {
     /**
      * 文章状态
      */
-    private String status;
+    private Boolean published;
 
     /**
      * 是否被删除
@@ -53,9 +56,15 @@ public class ArticleDO {
     private Boolean isDeleted;
 
     /**
-     * 文章的唯一标识符
+     * 阅读数量
      */
-    private String uuid;
+    @Column(name = "view_count")
+    private Integer viewCount;
+
+    /**
+     * 文章内容
+     */
+    private String content;
 
     /**
      * 获取主键
@@ -78,19 +87,19 @@ public class ArticleDO {
     /**
      * 获取文章名称
      *
-     * @return name - 文章名称
+     * @return title - 文章名称
      */
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
     /**
      * 设置文章名称
      *
-     * @param name 文章名称
+     * @param title 文章名称
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     /**
@@ -112,21 +121,21 @@ public class ArticleDO {
     }
 
     /**
-     * 获取文章描述
+     * 获取文章摘要
      *
-     * @return description - 文章描述
+     * @return abstract_content - 文章摘要
      */
-    public String getDescription() {
-        return description;
+    public String getAbstractContent() {
+        return abstractContent;
     }
 
     /**
-     * 设置文章描述
+     * 设置文章摘要
      *
-     * @param description 文章描述
+     * @param abstractContent 文章摘要
      */
-    public void setDescription(String description) {
-        this.description = description;
+    public void setAbstractContent(String abstractContent) {
+        this.abstractContent = abstractContent;
     }
 
     /**
@@ -168,19 +177,19 @@ public class ArticleDO {
     /**
      * 获取文章状态
      *
-     * @return status - 文章状态
+     * @return published - 文章状态
      */
-    public String getStatus() {
-        return status;
+    public Boolean getPublished() {
+        return published;
     }
 
     /**
      * 设置文章状态
      *
-     * @param status 文章状态
+     * @param published 文章状态
      */
-    public void setStatus(String status) {
-        this.status = status;
+    public void setPublished(Boolean published) {
+        this.published = published;
     }
 
     /**
@@ -202,35 +211,54 @@ public class ArticleDO {
     }
 
     /**
-     * 获取文章的唯一标识符
+     * 获取阅读数量
      *
-     * @return uuid - 文章的唯一标识符
+     * @return view_count - 阅读数量
      */
-    public String getUuid() {
-        return uuid;
+    public Integer getViewCount() {
+        return viewCount;
     }
 
     /**
-     * 设置文章的唯一标识符
+     * 设置阅读数量
      *
-     * @param uuid 文章的唯一标识符
+     * @param viewCount 阅读数量
      */
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public void setViewCount(Integer viewCount) {
+        this.viewCount = viewCount;
+    }
+
+    /**
+     * 获取文章内容
+     *
+     * @return content - 文章内容
+     */
+    public String getContent() {
+        return content;
+    }
+
+    /**
+     * 设置文章内容
+     *
+     * @param content 文章内容
+     */
+    public void setContent(String content) {
+        this.content = content;
     }
 
     @Override
     public String toString() {
         return "ArticleDO{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", title='" + title + '\'' +
                 ", picture='" + picture + '\'' +
-                ", description='" + description + '\'' +
+                ", abstractContent='" + abstractContent + '\'' +
                 ", createDate=" + createDate +
                 ", modifyDate=" + modifyDate +
-                ", status='" + status + '\'' +
+                ", published=" + published +
                 ", isDeleted=" + isDeleted +
-                ", uuid='" + uuid + '\'' +
+                ", viewCount=" + viewCount +
+                ", content='" + content + '\'' +
                 '}';
     }
 }

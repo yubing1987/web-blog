@@ -1,7 +1,6 @@
 package com.ybjx.blog.dto;
 
 import com.ybjx.blog.checker.group.CreateCheck;
-import com.ybjx.blog.checker.group.RemoveCheck;
 import com.ybjx.blog.checker.group.UpdateCheck;
 
 import javax.validation.constraints.NotEmpty;
@@ -13,29 +12,30 @@ import java.util.Date;
  * Created by YuBing on 2018/11/19.
  */
 public class ArticleDTO {
+
     /**
      * 主键
      */
-    @NotNull(message = "文章ID不能为空", groups = {RemoveCheck.class, UpdateCheck.class})
+    @NotNull(message = "文章ID不能为空", groups = {UpdateCheck.class})
     private Integer id;
 
     /**
      * 文章名称
      */
-    @NotEmpty(message = "文章名称不能为空", groups = {CreateCheck.class})
-    private String name;
+    @NotEmpty(message = "文章名称不能为空", groups = {CreateCheck.class, UpdateCheck.class})
+    private String title;
 
     /**
      * 文章图片
      */
-    @NotEmpty(message = "文章图片不能为空", groups = {CreateCheck.class})
+    @NotEmpty(message = "文章图片不能为空", groups = {CreateCheck.class, UpdateCheck.class})
     private String picture;
 
     /**
-     * 文章描述
+     * 文章摘要
      */
-    @NotEmpty(message = "文章描述不能为空", groups = {CreateCheck.class})
-    private String description;
+    @NotEmpty(message = "文章摘要不能为空", groups = {CreateCheck.class, UpdateCheck.class})
+    private String abstractContent;
 
     /**
      * 创建时间
@@ -50,12 +50,22 @@ public class ArticleDTO {
     /**
      * 文章状态
      */
-    private String status;
+    private Boolean published;
+
+    /**
+     * 是否被删除
+     */
+    private Boolean isDeleted;
+
+    /**
+     * 阅读数量
+     */
+    private Integer viewCount;
 
     /**
      * 文章内容
      */
-    @NotNull(message = "文章内容不能为空", groups = {CreateCheck.class})
+    @NotNull(message = "文章内容不能为空", groups = {CreateCheck.class, UpdateCheck.class})
     private String content;
 
     /**
@@ -79,19 +89,19 @@ public class ArticleDTO {
     /**
      * 获取文章名称
      *
-     * @return name - 文章名称
+     * @return title - 文章名称
      */
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
     /**
      * 设置文章名称
      *
-     * @param name 文章名称
+     * @param title 文章名称
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     /**
@@ -113,21 +123,21 @@ public class ArticleDTO {
     }
 
     /**
-     * 获取文章描述
+     * 获取文章摘要
      *
-     * @return description - 文章描述
+     * @return abstract_content - 文章摘要
      */
-    public String getDescription() {
-        return description;
+    public String getAbstractContent() {
+        return abstractContent;
     }
 
     /**
-     * 设置文章描述
+     * 设置文章摘要
      *
-     * @param description 文章描述
+     * @param abstractContent 文章摘要
      */
-    public void setDescription(String description) {
-        this.description = description;
+    public void setAbstractContent(String abstractContent) {
+        this.abstractContent = abstractContent;
     }
 
     /**
@@ -169,19 +179,55 @@ public class ArticleDTO {
     /**
      * 获取文章状态
      *
-     * @return status - 文章状态
+     * @return published - 文章状态
      */
-    public String getStatus() {
-        return status;
+    public Boolean getPublished() {
+        return published;
     }
 
     /**
      * 设置文章状态
      *
-     * @param status 文章状态
+     * @param published 文章状态
      */
-    public void setStatus(String status) {
-        this.status = status;
+    public void setPublished(Boolean published) {
+        this.published = published;
+    }
+
+    /**
+     * 获取是否被删除
+     *
+     * @return is_deleted - 是否被删除
+     */
+    public Boolean getIsDeleted() {
+        return isDeleted;
+    }
+
+    /**
+     * 设置是否被删除
+     *
+     * @param isDeleted 是否被删除
+     */
+    public void setIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
+    /**
+     * 获取阅读数量
+     *
+     * @return view_count - 阅读数量
+     */
+    public Integer getViewCount() {
+        return viewCount;
+    }
+
+    /**
+     * 设置阅读数量
+     *
+     * @param viewCount 阅读数量
+     */
+    public void setViewCount(Integer viewCount) {
+        this.viewCount = viewCount;
     }
 
     /**
@@ -206,12 +252,15 @@ public class ArticleDTO {
     public String toString() {
         return "ArticleDO{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", title='" + title + '\'' +
                 ", picture='" + picture + '\'' +
-                ", description='" + description + '\'' +
+                ", abstractContent='" + abstractContent + '\'' +
                 ", createDate=" + createDate +
                 ", modifyDate=" + modifyDate +
-                ", status='" + status + '\'' +
+                ", published=" + published +
+                ", isDeleted=" + isDeleted +
+                ", viewCount=" + viewCount +
+                ", content='" + content + '\'' +
                 '}';
     }
 }

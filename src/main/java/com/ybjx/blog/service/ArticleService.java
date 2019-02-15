@@ -1,18 +1,19 @@
 package com.ybjx.blog.service;
 
+import com.ybjx.blog.checker.ParameterCheck;
+import com.ybjx.blog.checker.group.CreateCheck;
+import com.ybjx.blog.checker.group.UpdateCheck;
 import com.ybjx.blog.common.BlogException;
 import com.ybjx.blog.common.ErrorCode;
-import com.ybjx.blog.config.ArticleConfig;
 import com.ybjx.blog.dao.ArticleMapper;
 import com.ybjx.blog.dto.ArticleDTO;
 import com.ybjx.blog.entity.ArticleDO;
-import com.ybjx.blog.store.IFileStore;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
-import java.util.UUID;
 
 /**
  * 文章服务
@@ -27,27 +28,23 @@ public class ArticleService {
     private final ArticleMapper articleMapper;
 
     /**
-     * 文章内容存储服务
-     */
-    private final IFileStore fileStore;
-
-    /**
      * 构造函数
      * @param articleMapper 注入文章数据库操作
      */
     @Autowired
-    public ArticleService(ArticleMapper articleMapper, IFileStore fileStore) {
+    public ArticleService(ArticleMapper articleMapper) {
         this.articleMapper = articleMapper;
-        this.fileStore = fileStore;
     }
 
     /**
      * 添加文章
      * @param articleDTO 文章数据
      */
+    @Transactional(rollbackFor = Exception.class)
+    @ParameterCheck(CreateCheck.class)
     public void addArticle(ArticleDTO articleDTO) {
         ArticleDO articleDO = new ArticleDO();
-        articleDO.setName(articleDTO.getName());
+        articleDO.setTitle(articleDTO.getTitle());
         articleDO.setIsDeleted(false);
         articleDO = articleMapper.selectOne(articleDO);
         if (articleDO != null) {
@@ -55,15 +52,15 @@ public class ArticleService {
         }
 
         articleDO = new ArticleDO();
+        // 拷贝属性
         BeanUtils.copyProperties(articleDTO, articleDO);
-
+        // 把剩余的属性设置为默认值
         articleDO.setIsDeleted(false);
         articleDO.setCreateDate(new Date());
         articleDO.setModifyDate(new Date());
-        articleDO.setStatus("new");
-        articleDO.setUuid(UUID.randomUUID().toString());
-        // 保存文章内容
-        fileStore.save(articleDO.getUuid(), articleDTO.getContent());
+        articleDO.setViewCount(0);
+        articleDO.setId(null);
+        articleDO.setPublished(false);
         // 保存文章记录
         try {
             articleMapper.insert(articleDO);
@@ -74,39 +71,90 @@ public class ArticleService {
     }
 
     /**
-     * 通过文章的UUID获取文章内容
-     * @param uuid 文章UUID
-     * @return 文章内容
+     * 通过文章ID查询文章信息
+     * @param id 文章ID
+     * @return 文章信息
      */
-    public ArticleDO getArticleByUuid(String uuid){
+    public ArticleDO getArticleById(Integer id){
         ArticleDO articleDO = new ArticleDO();
-        articleDO.setUuid(uuid);
+        articleDO.setId(id);
         articleDO.setIsDeleted(false);
         articleDO = articleMapper.selectOne(articleDO);
         return articleDO;
     }
 
+    /**
+     * 更新文章基本信息
+     * @param articleDTO 文章信息
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @ParameterCheck(UpdateCheck.class)
     public void editArticle(ArticleDTO articleDTO){
         ArticleDO articleDO = articleMapper.selectByPrimaryKey(articleDTO.getId());
         if(articleDO == null || articleDO.getIsDeleted()){
             throw new BlogException(ErrorCode.OBJECT_NOT_FOUND, "文章没有找到");
         }
-
+        articleDO.setTitle(articleDTO.getTitle());
+        articleDO.setPicture(articleDTO.getPicture());
+        articleDO.setContent(articleDTO.getContent());
+        articleDO.setAbstractContent(articleDTO.getAbstractContent());
+        articleDO.setModifyDate(new Date());
+        try{
+            articleMapper.updateByPrimaryKeySelective(articleDO);
+        }
+        catch (Exception e){
+            throw new BlogException(ErrorCode.OBJECT_UPDATE_ERROR, e);
+        }
     }
 
     /**
-     * 获取带文章内容的文章信息
-     * @param uuid 文章UUID
-     * @return 文章内容
+     * 发表文章
+     * @param articleId 文章ID
      */
-    public ArticleDTO getArticleDto(String uuid){
-        ArticleDO articleDO = getArticleByUuid(uuid);
-        if(articleDO == null){
-            return null;
+    @Transactional(rollbackFor = Exception.class)
+    public void articlePublished(int articleId, boolean published){
+        ArticleDO articleDO = articleMapper.selectByPrimaryKey(articleId);
+        if(articleDO == null || articleDO.getIsDeleted()){
+            throw new BlogException(ErrorCode.OBJECT_NOT_FOUND, "文章没有找到");
         }
-        ArticleDTO articleDTO = new ArticleDTO();
-        BeanUtils.copyProperties(articleDO, articleDTO);
-        articleDTO.setContent(fileStore.read(articleDO.getUuid()));
-        return articleDTO;
+        if(articleDO.getPublished() == published){
+            if(articleDO.getPublished()) {
+                throw new BlogException(ErrorCode.OBJECT_STATUS_ERROR, "文章已经发表过了");
+            }
+            else{
+                throw new BlogException(ErrorCode.OBJECT_STATUS_ERROR, "文章还没有发表");
+            }
+        }
+        articleDO.setModifyDate(new Date());
+        articleDO.setPublished(published);
+        try{
+            articleMapper.updateByPrimaryKeySelective(articleDO);
+        }
+        catch (Exception e){
+            throw new BlogException(ErrorCode.OBJECT_UPDATE_ERROR, e);
+        }
+    }
+
+    /**
+     * 删除文章
+     * @param articleId 文章ID
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteArticle(int articleId){
+        ArticleDO articleDO = articleMapper.selectByPrimaryKey(articleId);
+        if(articleDO == null || articleDO.getIsDeleted()){
+            throw new BlogException(ErrorCode.OBJECT_NOT_FOUND, "文章没有找到");
+        }
+        if(articleDO.getPublished()){
+            throw new BlogException(ErrorCode.OBJECT_STATUS_ERROR, "文章已经发表过了");
+        }
+        articleDO.setModifyDate(new Date());
+        articleDO.setIsDeleted(true);
+        try{
+            articleMapper.updateByPrimaryKeySelective(articleDO);
+        }
+        catch (Exception e){
+            throw new BlogException(ErrorCode.OBJECT_UPDATE_ERROR, e);
+        }
     }
 }

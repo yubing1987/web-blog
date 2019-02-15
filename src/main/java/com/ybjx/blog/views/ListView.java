@@ -1,7 +1,5 @@
 package com.ybjx.blog.views;
 
-import com.ybjx.blog.entity.ArticleDO;
-import com.ybjx.blog.entity.RelateArticleDO;
 import com.ybjx.blog.service.RelateArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
