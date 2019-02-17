@@ -26,7 +26,10 @@ class ArticleEditor  extends Component{
                             uid: '-1',
                             name: '标题图片',
                             status: 'done',
-                            url: "/api/image/" + data.picture
+                            url: "/api/image/" + data.picture,
+                            response: {
+                                content: data.picture
+                            }
                         });
                     }
                     this.setState({article: data, fileList : pic});
@@ -61,11 +64,106 @@ class ArticleEditor  extends Component{
         });
     };
 
+    saveArticle = () => {
+        if(!this.state.change){
+            message.error("没有任何修改，无需保存");
+            return;
+        }
+        if(this.state.article.title.length === 0){
+            message.error("文章标题不能为空!");
+            return;
+        }
+        if(this.state.article.content.length === 0){
+            message.error("文章内容不能为空!");
+            return;
+        }
+        if(this.state.article.abstractContent.length === 0){
+            message.error("文章内容不能为空!");
+            return;
+        }
+        if(this.state.fileList.length !== 1){
+            message.error("必须要要有一张封面图片!");
+            return;
+        }
+        let article = this.state.article;
+        article.picture = this.state.fileList[0].response.content;
+        if(article.id) {
+            ArticleApi.articleEdited(article)
+                .then(() => {
+                    message.success("文章保存成功");
+                    this.setState({change: false});
+                });
+        }
+        else{
+            ArticleApi.addArticle(article)
+                .then((data) => {
+                    message.success("文章保存成功");
+                    article.id = data.id;
+                    window.location.hash = this.props.location.pathname+"?id=" + article.id;
+                    this.setState({article: article, change: false});
+                });
+        }
+    };
+
+    articlePublish = () => {
+        if(this.state.article.draft || this.state.change) {
+            if (this.state.article.title.length === 0) {
+                message.error("文章标题不能为空!");
+                return;
+            }
+            if (this.state.article.content.length === 0) {
+                message.error("文章内容不能为空!");
+                return;
+            }
+            if (this.state.article.abstractContent.length === 0) {
+                message.error("文章内容不能为空!");
+                return;
+            }
+            if (this.state.fileList.length !== 1) {
+                message.error("必须要要有一张封面图片!");
+                return;
+            }
+            let article = this.state.article;
+            article.picture = this.state.fileList[0].response.content;
+            article.drag = true;
+            if (article.id) {
+                ArticleApi.articleEdited(article)
+                    .then(() => {
+                        this.setState({article: article, change: false});
+                        this.publish();
+                    });
+            }
+            else {
+                ArticleApi.addArticle(article)
+                    .then((data) => {
+                        article.id = data.id;
+                        window.location.hash = this.props.location.pathname + "?id=" + article.id;
+                        this.setState({article: article, change: false});
+                        this.publish();
+                    });
+            }
+        }
+        else{
+            if(!this.state.change){
+                message.error("没有任何修改，无需发布");
+                return;
+            }
+            this.publish();
+        }
+    };
+
+    publish(){
+        ArticleApi.articlePublished(this.state.article)
+            .then(() => {
+                message.success("文章发布成功");
+            });
+    }
+
     handleChange = ({ fileList }) => {
         if(fileList.length > 1){
             return;
         }
-        this.setState({ fileList });
+        this.setState({fileList:fileList, change: true});
     };
 
     beforeUpload = (file) => {
@@ -85,6 +183,23 @@ class ArticleEditor  extends Component{
         }
     };
 
+    titleChange = (e) => {
+        let article = this.state.article;
+        article.title = e.target.value;
+        this.setState({article: article, change: true});
+    };
+    contentChange = (e) => {
+        let article = this.state.article;
+        article.content = e.target.value;
+        this.setState({article: article, change: true});
+    };
+
+    abstractChange = (e) => {
+        let article = this.state.article;
+        article.abstractContent = e.target.value;
+        this.setState({article: article, change: true});
+    };
+
     render(){
         if(this.state.hasError){
             return <Alert message="该文章不存在或者已经被删除了！" type="error" />
@@ -102,19 +217,20 @@ class ArticleEditor  extends Component{
                     <span >标题：</span>
                 </div>
                 <div className = {"view-item"}>
-                    <Input placeholder="请输入标题" value={this.state.article.title} />
+                    <Input onChange={this.titleChange}
+                           placeholder="请输入标题" value={this.state.article.title} />
                 </div>
                 <div className = {"view-item"}>
                     <span>正文：</span>
                 </div>
                 <div className = {"view-item"}>
-                    <TextArea rows={20}  autosize={false} value={this.state.article.content}/>
+                    <TextArea onChange={this.contentChange} rows={20}  autosize={false} value={this.state.article.content}/>
                 </div>
                 <div className = {"view-item"}>
                     <span>摘要：</span>
                 </div>
                 <div className = {"view-item"}>
-                    <TextArea rows={4}  autosize={false} value={this.state.article.abstractContent}/>
+                    <TextArea onChange={this.abstractChange} rows={4}  autosize={false} value={this.state.article.abstractContent}/>
                 </div>
                 <div className = {"view-item"}>
                     <span>封面图片：</span>
@@ -136,8 +252,8 @@ class ArticleEditor  extends Component{
                     </Modal>
                 </div>
                 <div className = {"view-item"} style={{"textAlign":"center"}}>
-                    <Button type={"primary"} style={{"marginRight": "20px"}}>保存</Button>
-                    <Button>发布</Button>
+                    <Button onClick={this.saveArticle} type={"primary"} style={{"marginRight": "20px"}} >保存</Button>
+                    <Button onClick={this.articlePublish}>发布</Button>
                 </div>
             </div>
         }

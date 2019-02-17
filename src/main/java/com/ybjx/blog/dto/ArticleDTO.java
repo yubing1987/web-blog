@@ -65,8 +65,13 @@ public class ArticleDTO {
     /**
      * 文章内容
      */
-    @NotNull(message = "文章内容不能为空", groups = {CreateCheck.class, UpdateCheck.class})
+    @NotEmpty(message = "文章内容不能为空", groups = {CreateCheck.class, UpdateCheck.class})
     private String content;
+
+    /**
+     * 是不是草稿
+     */
+    private Boolean draft;
 
     /**
      * 获取主键
@@ -248,9 +253,25 @@ public class ArticleDTO {
         this.content = content;
     }
 
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        isDeleted = deleted;
+    }
+
+    public Boolean getDraft() {
+        return draft;
+    }
+
+    public void setDraft(Boolean draft) {
+        this.draft = draft;
+    }
+
     @Override
     public String toString() {
-        return "ArticleDO{" +
+        return "ArticleDTO{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", picture='" + picture + '\'' +
@@ -261,6 +282,7 @@ public class ArticleDTO {
                 ", isDeleted=" + isDeleted +
                 ", viewCount=" + viewCount +
                 ", content='" + content + '\'' +
+                ", draft=" + draft +
                 '}';
     }
 }

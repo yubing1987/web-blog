@@ -9,6 +9,7 @@ import com.ybjx.blog.common.result.PageResult;
 import com.ybjx.blog.common.result.PojoResult;
 import com.ybjx.blog.dto.ArticleDTO;
 import com.ybjx.blog.entity.ArticleDO;
+import com.ybjx.blog.entity.ArticleDraftDO;
 import com.ybjx.blog.query.ArticleQuery;
 import com.ybjx.blog.service.ArticleService;
 import org.springframework.beans.BeanUtils;
@@ -40,9 +41,11 @@ public class ArticleController {
      */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
-    public PojoResult<Boolean> addArticle(ArticleDTO article) {
-        articleService.addArticle(article);
-        return new PojoResult<>(true);
+    public PojoResult<ArticleDTO> addArticle(@RequestBody ArticleDTO article) {
+        ArticleDO articleDO = articleService.addArticle(article);
+        ArticleDTO articleDTO = new ArticleDTO();
+        BeanUtils.copyProperties(articleDO, articleDTO);
+        return new PojoResult<>(articleDTO);
     }
 
     /**
@@ -64,6 +67,35 @@ public class ArticleController {
     }
 
     /**
+     * 通过文章ID获取文章草稿信息
+     * @param id 文章ID
+     * @return 文章信息
+     */
+    @RequestMapping(value = "/draft/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public PojoResult<ArticleDTO> getArticleDraft(@PathVariable("id") Integer id) {
+        ArticleDraftDO draftDO = articleService.getArticleDraft(id);
+        ArticleDO articleDO = articleService.getArticleById(id);
+        if(articleDO == null){
+            throw new BlogException(ErrorCode.OBJECT_NOT_FOUND, "文章没有找到");
+        }
+
+        if (draftDO != null) {
+            articleDO.setTitle(draftDO.getTitle());
+            articleDO.setContent(draftDO.getContent());
+            articleDO.setAbstractContent(draftDO.getAbstractContent());
+            articleDO.setPicture(draftDO.getPicture());
+        }
+
+        ArticleDTO articleDTO = new ArticleDTO();
+        BeanUtils.copyProperties(articleDO, articleDTO);
+        if(draftDO != null){
+            articleDTO.setDraft(true);
+        }
+        return new PojoResult<>(articleDTO);
+    }
+
+    /**
      * 修改文章发布状态
      * @param id 文章ID
      * @param published 文章发布状态，true--已发布，false--未发布
@@ -74,6 +106,18 @@ public class ArticleController {
     public PojoResult<Boolean> articlePublished(@PathVariable("id") Integer id,
                                                 @PathVariable("published") Boolean published) {
         articleService.articlePublished(id, published);
+        return new PojoResult<>(true);
+    }
+
+    /**
+     * 修改文章信息
+     * @param articleDTO 文章信息
+     * @return 是否修改成功
+     */
+    @RequestMapping(value = "/edited", method = RequestMethod.POST)
+    @ResponseBody
+    public PojoResult<Boolean> articleEdited(@RequestBody ArticleDTO articleDTO) {
+        articleService.editArticle(articleDTO);
         return new PojoResult<>(true);
     }
 

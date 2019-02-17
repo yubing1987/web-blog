@@ -9,9 +9,11 @@ import com.ybjx.blog.common.BlogException;
 import com.ybjx.blog.common.ErrorCode;
 import com.ybjx.blog.common.result.Page;
 import com.ybjx.blog.common.result.PageResult;
+import com.ybjx.blog.dao.ArticleDraftMapper;
 import com.ybjx.blog.dao.ArticleMapper;
 import com.ybjx.blog.dto.ArticleDTO;
 import com.ybjx.blog.entity.ArticleDO;
+import com.ybjx.blog.entity.ArticleDraftDO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,13 +35,17 @@ public class ArticleService {
      */
     private final ArticleMapper articleMapper;
 
+    private final ArticleDraftMapper articleDraftMapper;
+
     /**
      * 构造函数
      * @param articleMapper 注入文章数据库操作
      */
     @Autowired
-    public ArticleService(ArticleMapper articleMapper) {
+    public ArticleService(ArticleMapper articleMapper,
+                          ArticleDraftMapper articleDraftMapper) {
         this.articleMapper = articleMapper;
+        this.articleDraftMapper = articleDraftMapper;
     }
 
     /**
@@ -48,7 +54,7 @@ public class ArticleService {
      */
     @Transactional(rollbackFor = Exception.class)
     @ParameterCheck(CreateCheck.class)
-    public void addArticle(ArticleDTO articleDTO) {
+    public ArticleDO addArticle(ArticleDTO articleDTO) {
         ArticleDO articleDO = new ArticleDO();
         articleDO.setTitle(articleDTO.getTitle());
         articleDO.setIsDeleted(false);
@@ -70,6 +76,7 @@ public class ArticleService {
         // 保存文章记录
         try {
             articleMapper.insert(articleDO);
+            return articleDO;
         } catch (Exception e) {
             throw new BlogException(ErrorCode.DATABASE_INSERT, "保存文章出错", e);
         }
@@ -89,6 +96,18 @@ public class ArticleService {
     }
 
     /**
+     * 通过文章ID查找草稿信息
+     * @param id 文章ID
+     * @return 草稿信息
+     */
+    public ArticleDraftDO getArticleDraft(Integer id){
+        ArticleDraftDO articleDraftDO = new ArticleDraftDO();
+        articleDraftDO.setIsDeleted(false);
+        articleDraftDO.setArticleId(id);
+        return articleDraftMapper.selectOne(articleDraftDO);
+    }
+
+    /**
      * 更新文章基本信息
      * @param articleDTO 文章信息
      */
@@ -99,13 +118,40 @@ public class ArticleService {
         if (articleDO == null || articleDO.getIsDeleted()) {
             throw new BlogException(ErrorCode.OBJECT_NOT_FOUND, "文章没有找到");
         }
-        articleDO.setTitle(articleDTO.getTitle());
-        articleDO.setPicture(articleDTO.getPicture());
-        articleDO.setContent(articleDTO.getContent());
-        articleDO.setAbstractContent(articleDTO.getAbstractContent());
-        articleDO.setModifyDate(new Date());
         try {
-            articleMapper.updateByPrimaryKeySelective(articleDO);
+            if(!articleDO.getPublished()) {
+                // 如果文章还没有发表，就直接更新文章
+                articleDO.setTitle(articleDTO.getTitle());
+                articleDO.setPicture(articleDTO.getPicture());
+                articleDO.setContent(articleDTO.getContent());
+                articleDO.setAbstractContent(articleDTO.getAbstractContent());
+                articleDO.setModifyDate(new Date());
+                articleMapper.updateByPrimaryKeySelective(articleDO);
+            }
+            else{
+                // 如果文章已经发表过了，就存放到草稿里去
+                ArticleDraftDO draftDO = getArticleDraft(articleDTO.getId());
+                if(draftDO == null){
+                    // 还没有这篇文章的草稿，就新建一个草稿
+                    draftDO = new ArticleDraftDO();
+                    BeanUtils.copyProperties(articleDTO, draftDO);
+                    draftDO.setArticleId(articleDTO.getId());
+                    draftDO.setCreateDate(new Date());
+                    draftDO.setModifyDate(new Date());
+                    draftDO.setId(null);
+                    draftDO.setArticleId(articleDTO.getId());
+                    articleDraftMapper.insert(draftDO);
+                }
+                else{
+                    // 已经存在草稿了，就更新草稿信息
+                    draftDO.setTitle(articleDTO.getTitle());
+                    draftDO.setAbstractContent(articleDTO.getAbstractContent());
+                    draftDO.setContent(articleDTO.getContent());
+                    draftDO.setPicture(articleDTO.getPicture());
+                    draftDO.setModifyDate(new Date());
+                    articleDraftMapper.updateByPrimaryKey(draftDO);
+                }
+            }
         } catch (Exception e) {
             throw new BlogException(ErrorCode.OBJECT_UPDATE_ERROR, e);
         }
@@ -121,16 +167,22 @@ public class ArticleService {
         if (articleDO == null || articleDO.getIsDeleted()) {
             throw new BlogException(ErrorCode.OBJECT_NOT_FOUND, "文章没有找到");
         }
-        if (articleDO.getPublished() == published) {
-            if (articleDO.getPublished()) {
-                throw new BlogException(ErrorCode.OBJECT_STATUS_ERROR, "文章已经发表过了");
-            } else {
-                throw new BlogException(ErrorCode.OBJECT_STATUS_ERROR, "文章还没有发表");
-            }
-        }
         articleDO.setModifyDate(new Date());
         articleDO.setPublished(published);
         try {
+            ArticleDraftDO draftDO = getArticleDraft(articleDO.getId());
+            if(draftDO != null){
+                // 如果存在草稿信息，就把草稿同步到正文
+                articleDO.setTitle(draftDO.getTitle());
+                articleDO.setContent(draftDO.getContent());
+                articleDO.setAbstractContent(draftDO.getAbstractContent());
+                articleDO.setPicture(draftDO.getPicture());
+
+                // 删除草稿
+                draftDO.setIsDeleted(true);
+                draftDO.setModifyDate(new Date());
+                articleDraftMapper.updateByPrimaryKey(draftDO);
+            }
             articleMapper.updateByPrimaryKeySelective(articleDO);
         } catch (Exception e) {
             throw new BlogException(ErrorCode.OBJECT_UPDATE_ERROR, e);
@@ -150,10 +202,16 @@ public class ArticleService {
         if (articleDO.getPublished()) {
             throw new BlogException(ErrorCode.OBJECT_STATUS_ERROR, "文章已经发表过了");
         }
-        articleDO.setModifyDate(new Date());
-        articleDO.setIsDeleted(true);
         try {
+            // 删除正文
+            articleDO.setModifyDate(new Date());
+            articleDO.setIsDeleted(true);
             articleMapper.updateByPrimaryKeySelective(articleDO);
+            // 删除草稿
+            ArticleDraftDO draftDO = new ArticleDraftDO();
+            draftDO.setArticleId(articleDO.getId());
+            draftDO.setIsDeleted(true);
+            articleDraftMapper.updateByPrimaryKeySelective(draftDO);
         } catch (Exception e) {
             throw new BlogException(ErrorCode.OBJECT_UPDATE_ERROR, e);
         }

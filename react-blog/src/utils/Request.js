@@ -39,7 +39,7 @@ class Request {
         });
     }
 
-    post(param, url){
+    post(url, param){
         renderLoading();
         return new Promise((resolve, reject) => {
             Superagent['post'](url)
