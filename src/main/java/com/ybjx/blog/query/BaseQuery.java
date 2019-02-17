@@ -13,7 +13,7 @@ public class BaseQuery implements Serializable {
     /**
      * 页码
      */
-    @Range(min = 0, message = "页码不能小于0", groups = {PagingCheck.class})
+    @Range(min = 1, message = "页码不能小于0", groups = {PagingCheck.class})
     private int page;
 
     /**

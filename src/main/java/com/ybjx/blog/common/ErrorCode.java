@@ -12,7 +12,8 @@ public enum ErrorCode {
     DATABASE_INSERT("10003", "数据库插入错误"),
     OBJECT_NOT_FOUND("10004", "数据没有找到"),
     OBJECT_UPDATE_ERROR("10005", "数据更新出错"),
-    OBJECT_STATUS_ERROR("10006", "状态错误");
+    OBJECT_STATUS_ERROR("10006", "状态错误"),
+    FILE_SAVE_ERROR("10007", "文件保存出错");
 
     ErrorCode(String code, String msg) {
         this.code = code;

@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
  * 文章相关的接口
  * Created by YuBing on 2018/11/19.
  */
-@RequestMapping("/article/")
+@RequestMapping("/api/article/")
 @RestController
 public class ArticleController {
 
@@ -40,7 +40,7 @@ public class ArticleController {
      */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
-    public PojoResult<Boolean> addArticle(@RequestBody ArticleDTO article) {
+    public PojoResult<Boolean> addArticle(ArticleDTO article) {
         articleService.addArticle(article);
         return new PojoResult<>(true);
     }
@@ -97,7 +97,7 @@ public class ArticleController {
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     @ParameterCheck({QueryCheck.class, PagingCheck.class})
-    public PageResult<ArticleDTO> queryArticle(@RequestBody ArticleQuery query){
+    public PageResult<ArticleDTO> queryArticle(ArticleQuery query){
         return articleService.queryArticle(query.getPage(), query.getSize(), query.getKey());
     }
 }

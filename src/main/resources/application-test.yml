@@ -1,0 +1,7 @@
+logging:
+  level:
+    com.ybjx.blog.dao: debug
+
+blog:
+  file:
+    location: g:/blog/file

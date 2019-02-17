@@ -174,6 +174,7 @@ public class ArticleService {
         // 拷贝数据
         for(ArticleDO article: list){
             ArticleDTO articleDTO = new ArticleDTO();
+            article.setContent(null);
             BeanUtils.copyProperties(article, articleDTO);
             items.add(articleDTO);
         }

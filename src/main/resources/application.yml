@@ -1,2 +1,6 @@
 mybatis:
   mapper-locations: classpath:/mybatis/**/*.xml
+
+blog:
+  file:
+    location: /root/file/

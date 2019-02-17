@@ -1,7 +1,9 @@
 package com.ybjx.blog;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.web.servlet.MultipartAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import tk.mybatis.spring.annotation.MapperScan;
@@ -10,7 +12,7 @@ import tk.mybatis.spring.annotation.MapperScan;
  * spring boot程序启动类
  * Created by YuBing on 2018/11/19.
  */
-@SpringBootApplication
+@SpringBootApplication(exclude = {MultipartAutoConfiguration.class})
 @MapperScan("com.ybjx.blog.dao")
 @EnableSwagger2
 @EnableConfigurationProperties
