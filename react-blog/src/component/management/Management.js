@@ -45,7 +45,6 @@ class Management extends Component {
                         >
                             <Menu.Item key="/management/list"><NavLink to={"/management/list"}><Icon type="appstore" />文章列表</NavLink></Menu.Item>
                             <Menu.Item key="/management/edit"><NavLink to={"/management/edit"}><Icon type="edit" />写文章</NavLink></Menu.Item>
-                            <Menu.Item key="5"><Icon type="file-text" />草稿箱</Menu.Item>
                         </SubMenu>
                         <SubMenu
                             key="sub2"

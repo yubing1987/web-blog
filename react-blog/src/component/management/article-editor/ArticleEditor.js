@@ -208,7 +208,7 @@ class ArticleEditor  extends Component{
             const uploadButton = (
                 <div>
                     <Icon type="plus" />
-                    <div className="ant-upload-text">Upload</div>
+                    <div className="ant-upload-text">图片上传</div>
                 </div>
             );
             const { previewVisible, previewImage, fileList } = this.state;
