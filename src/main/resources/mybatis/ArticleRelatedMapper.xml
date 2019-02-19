@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ybjx.blog.dao.ArticleRelatedMapper">
+  <resultMap id="BaseResultMap" type="com.ybjx.blog.entity.ArticleRelatedDO">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="article_id" jdbcType="INTEGER" property="articleId" />
+    <result column="other_article_id" jdbcType="INTEGER" property="otherArticleId" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
+    <result column="is_deleted" jdbcType="BIT" property="isDeleted" />
+    <result column="order_value" jdbcType="INTEGER" property="orderValue" />
+  </resultMap>
+  
+  <select id="getRelatedArticle" resultMap="BaseResultMap">
+    select * from article_related
+    where article_id = #{articleId} or other_article_id = #{articleId} order by order_value desc
+  </select>
+</mapper>

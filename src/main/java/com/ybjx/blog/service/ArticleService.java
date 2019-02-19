@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -100,7 +101,7 @@ public class ArticleService {
      * @param id 文章ID
      * @return 草稿信息
      */
-    public ArticleDraftDO getArticleDraft(Integer id){
+    public ArticleDraftDO getArticleDraft(Integer id) {
         ArticleDraftDO articleDraftDO = new ArticleDraftDO();
         articleDraftDO.setIsDeleted(false);
         articleDraftDO.setArticleId(id);
@@ -119,7 +120,7 @@ public class ArticleService {
             throw new BlogException(ErrorCode.OBJECT_NOT_FOUND, "文章没有找到");
         }
         try {
-            if(!articleDO.getPublished()) {
+            if (!articleDO.getPublished()) {
                 // 如果文章还没有发表，就直接更新文章
                 articleDO.setTitle(articleDTO.getTitle());
                 articleDO.setPicture(articleDTO.getPicture());
@@ -127,11 +128,10 @@ public class ArticleService {
                 articleDO.setAbstractContent(articleDTO.getAbstractContent());
                 articleDO.setModifyDate(new Date());
                 articleMapper.updateByPrimaryKeySelective(articleDO);
-            }
-            else{
+            } else {
                 // 如果文章已经发表过了，就存放到草稿里去
                 ArticleDraftDO draftDO = getArticleDraft(articleDTO.getId());
-                if(draftDO == null){
+                if (draftDO == null) {
                     // 还没有这篇文章的草稿，就新建一个草稿
                     draftDO = new ArticleDraftDO();
                     BeanUtils.copyProperties(articleDTO, draftDO);
@@ -141,8 +141,7 @@ public class ArticleService {
                     draftDO.setId(null);
                     draftDO.setArticleId(articleDTO.getId());
                     articleDraftMapper.insert(draftDO);
-                }
-                else{
+                } else {
                     // 已经存在草稿了，就更新草稿信息
                     draftDO.setTitle(articleDTO.getTitle());
                     draftDO.setAbstractContent(articleDTO.getAbstractContent());
@@ -171,7 +170,7 @@ public class ArticleService {
         articleDO.setPublished(published);
         try {
             ArticleDraftDO draftDO = getArticleDraft(articleDO.getId());
-            if(draftDO != null){
+            if (draftDO != null) {
                 // 如果存在草稿信息，就把草稿同步到正文
                 articleDO.setTitle(draftDO.getTitle());
                 articleDO.setContent(draftDO.getContent());
@@ -224,13 +223,13 @@ public class ArticleService {
      * @param key 搜索关键字
      * @return 查找的结果
      */
-    public PageResult<ArticleDTO> queryArticle(int page, int size, String key){
+    public PageResult<ArticleDTO> queryArticle(int page, int size, String key) {
         PageHelper.startPage(page, size, "modify_date desc");
         List<ArticleDO> list = articleMapper.queryArticle(key);
         PageInfo<ArticleDO> pageInfo = new PageInfo<>(list);
         List<ArticleDTO> items = new ArrayList<>();
         // 拷贝数据
-        for(ArticleDO article: list){
+        for (ArticleDO article: list) {
             ArticleDTO articleDTO = new ArticleDTO();
             article.setContent(null);
             BeanUtils.copyProperties(article, articleDTO);
@@ -246,5 +245,24 @@ public class ArticleService {
         p.setLimit(size);
         p.setTotal(pageInfo.getTotal());
         return result;
+    }
+
+    /**
+     * 通过文章ID列表查询文章信息
+     * @param ids ID列表
+     * @return 文章信息
+     */
+    public List<ArticleDTO> queryArticle(Collection<Integer> ids) {
+        List<ArticleDO> list = articleMapper.queryArticleByIds(ids);
+        List<ArticleDTO> items = new ArrayList<>();
+        // 拷贝数据
+        for (ArticleDO article: list) {
+            ArticleDTO articleDTO = new ArticleDTO();
+            items.add(articleDTO);
+            article.setContent(null);
+            BeanUtils.copyProperties(article, articleDTO);
+        }
+
+        return items;
     }
 }

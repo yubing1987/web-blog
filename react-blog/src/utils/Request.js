@@ -1,7 +1,7 @@
-import React  from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom';
 import Superagent from 'superagent';
-import { message } from 'antd';
+import {message} from 'antd';
 
 import Loading from '../component/loading/Loading'
 

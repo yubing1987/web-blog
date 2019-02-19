@@ -1,8 +1,5 @@
 package com.ybjx.blog.service;
 
-import com.google.common.io.ByteStreams;
-import com.google.common.io.CharStreams;
-import com.google.common.io.Files;
 import com.ybjx.blog.config.FileConfig;
 import org.springframework.stereotype.Service;
 
@@ -23,15 +20,15 @@ public class FileService {
      * 构造方法
      * @param fileConfig 注入的文件配置
      */
-    public FileService(FileConfig fileConfig){
+    public FileService(FileConfig fileConfig) {
         this.fileConfig = fileConfig;
     }
 
-    public boolean saveFile(String type, String uuid, InputStream content){
+    public boolean saveFile(String type, String uuid, InputStream content) {
         String path = fileConfig.getLocation() + "/" + type;
         File f = new File(path);
-        if(!f.exists()){
-            if(!f.mkdirs()){
+        if (!f.exists()) {
+            if (!f.mkdirs()) {
                 return false;
             }
         }
@@ -39,13 +36,13 @@ public class FileService {
         try {
             f = new File(path);
             if (!f.exists()) {
-                if(!f.createNewFile()){
+                if (!f.createNewFile()) {
                     return false;
                 }
             }
             FileOutputStream outputStream = new FileOutputStream(path);
-            byte [] buf = new byte[1024];
-            while(true) {
+            byte[] buf = new byte[1024];
+            while (true) {
                 int r = content.read(buf);
                 if (r == -1) {
                     break;
@@ -54,22 +51,21 @@ public class FileService {
             }
             outputStream.close();
             return true;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
 
-    public boolean readFile(String type, String uuid, OutputStream outputStream){
+    public boolean readFile(String type, String uuid, OutputStream outputStream) {
         String path = fileConfig.getLocation() + "/" + type + "/" + uuid;
         File f = new File(path);
-        if(!f.exists()){
+        if (!f.exists()) {
             return false;
         }
-        try{
+        try {
             FileInputStream inputStream = new FileInputStream(path);
-            byte [] buf = new byte[1024];
-            while(true) {
+            byte[] buf = new byte[1024];
+            while (true) {
                 int r = inputStream.read(buf);
                 if (r == -1) {
                     break;
@@ -78,8 +74,7 @@ public class FileService {
             }
             inputStream.close();
             return true;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return false;
         }
     }

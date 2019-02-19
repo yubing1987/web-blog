@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 /**
+ * 文件配置
  * create by YuBing at 2019/2/17
  */
 @Configuration
@@ -18,7 +19,7 @@ public class FileConfig {
     private String location;
 
     @Bean(name = "multipartResolver")
-    public MultipartResolver multipartResolver(){
+    public MultipartResolver multipartResolver() {
         CommonsMultipartResolver resolver = new CommonsMultipartResolver();
         resolver.setDefaultEncoding("UTF-8");
         resolver.setResolveLazily(true);

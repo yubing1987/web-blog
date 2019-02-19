@@ -1,4 +1,5 @@
 import Request from "../utils/Request"
+
 let request = new Request();
 class ArticleApi{
     static queryArticleList(page, size, key){

@@ -76,7 +76,7 @@ public class ArticleController {
     public PojoResult<ArticleDTO> getArticleDraft(@PathVariable("id") Integer id) {
         ArticleDraftDO draftDO = articleService.getArticleDraft(id);
         ArticleDO articleDO = articleService.getArticleById(id);
-        if(articleDO == null){
+        if (articleDO == null) {
             throw new BlogException(ErrorCode.OBJECT_NOT_FOUND, "文章没有找到");
         }
 
@@ -89,7 +89,7 @@ public class ArticleController {
 
         ArticleDTO articleDTO = new ArticleDTO();
         BeanUtils.copyProperties(articleDO, articleDTO);
-        if(draftDO != null){
+        if (draftDO != null) {
             articleDTO.setDraft(true);
         }
         return new PojoResult<>(articleDTO);
@@ -141,7 +141,7 @@ public class ArticleController {
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     @ParameterCheck({QueryCheck.class, PagingCheck.class})
-    public PageResult<ArticleDTO> queryArticle(ArticleQuery query){
+    public PageResult<ArticleDTO> queryArticle(ArticleQuery query) {
         return articleService.queryArticle(query.getPage(), query.getSize(), query.getKey());
     }
 }

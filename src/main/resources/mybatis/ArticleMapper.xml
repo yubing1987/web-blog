@@ -20,7 +20,15 @@
   <select id="queryArticle" resultMap="BaseResultMap">
     select * from article
     <if test="key != null and key != ''">
-      where title like concat('%', key, '%')
+      where title like concat('%', #{key}, '%')
     </if>
+  </select>
+
+  <select id="queryArticleByIds" resultMap="BaseResultMap">
+    select * from article
+    where id in
+    <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+      #{id}
+    </foreach>
   </select>
 </mapper>

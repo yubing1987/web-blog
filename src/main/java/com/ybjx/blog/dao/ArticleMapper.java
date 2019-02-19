@@ -4,6 +4,7 @@ import com.ybjx.blog.entity.ArticleDO;
 import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -12,5 +13,17 @@ import java.util.List;
  */
 public interface ArticleMapper extends Mapper<ArticleDO> {
 
+    /**
+     * 查找文章列表
+     * @param key 搜索关键字
+     * @return 查找到的文章列表
+     */
     List<ArticleDO> queryArticle(@Param("key") String key);
+
+    /**
+     * 通过文章ID数组查询文章列表
+     * @param ids 文章ID 数组
+     * @return 文章列表
+     */
+    List<ArticleDO> queryArticleByIds(@Param("ids") Collection<Integer> ids);
 }

@@ -7,7 +7,7 @@ import Home from "./component/home/Home";
 
 
 import * as serviceWorker from './serviceWorker';
-import { HashRouter, Route, Switch } from 'react-router-dom'
+import {HashRouter, Route, Switch} from 'react-router-dom'
 
 const SliderComponent = () => (
     <Switch>

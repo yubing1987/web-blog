@@ -22,7 +22,7 @@ public class FileController {
 
     private FileService fileService;
 
-    public FileController(FileService fileService){
+    public FileController(FileService fileService) {
         this.fileService = fileService;
     }
 
@@ -30,14 +30,13 @@ public class FileController {
     public PojoResult<String> uploadPicture(
             @RequestParam("picture") MultipartFile file,
             @RequestParam(value = "fileId", required = false) String fileId) throws IOException {
-        if(StringUtils.isEmpty(fileId)){
+        if (StringUtils.isEmpty(fileId)) {
             fileId = UUID.randomUUID().toString();
             fileId = fileId.replaceAll("-", "");
         }
-        if(fileService.saveFile("image", fileId, file.getInputStream())){
+        if (fileService.saveFile("image", fileId, file.getInputStream())) {
             return new PojoResult<>(fileId);
-        }
-        else{
+        } else {
             throw new BlogException(ErrorCode.FILE_SAVE_ERROR);
         }
     }
