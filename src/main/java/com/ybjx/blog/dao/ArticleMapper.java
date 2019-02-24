@@ -26,4 +26,13 @@ public interface ArticleMapper extends Mapper<ArticleDO> {
      * @return 文章列表
      */
     List<ArticleDO> queryArticleByIds(@Param("ids") Collection<Integer> ids);
+
+    /**
+     * 查找不在这个id列表里的文章信息
+     * @param ids id列表
+     * @param key 查询关键字
+     * @return 文章列表
+     */
+    List<ArticleDO> queryArticleNotInIds(@Param("ids") Collection<Integer> ids,
+                                         @Param("key") String key);
 }

@@ -51,6 +51,7 @@ public class ArticleRelatedService {
 
         relateDO.setCreateDate(new Date());
         relateDO.setModifyDate(new Date());
+        relateDO.setOrderValue(0);
         try {
             relateMapper.insert(relateDO);
         } catch (Exception e) {
@@ -75,7 +76,7 @@ public class ArticleRelatedService {
             if (relateDO == null) {
                 throw new BlogException(ErrorCode.OBJECT_NOT_FOUND, "关联文章没有找到");
             }
-            relateDO.setIsDeleted(false);
+            relateDO.setIsDeleted(true);
             relateDO.setModifyDate(new Date());
             relateMapper.updateByPrimaryKey(relateDO);
         } catch (Exception e) {
@@ -90,7 +91,7 @@ public class ArticleRelatedService {
      * @param articleId 文章ID
      * @return 文章关联文章信息
      */
-    public List<ArticleDTO> getReleatedArticle(int articleId) {
+    public List<ArticleDTO> getRelatedArticle(Integer articleId) {
         List<ArticleRelatedDO> list = relateMapper.getRelatedArticle(articleId);
         if (list == null || list.size() == 0) {
             return new ArrayList<>();
@@ -124,5 +125,22 @@ public class ArticleRelatedService {
             }
         }
         return result;
+    }
+
+    /**
+     * 查询未关联的文章列表
+     * @param articleId 文章ID
+     * @param key 检索关键字
+     * @return 文章列表
+     */
+    public List<ArticleDTO> getUnrelatedArticle(Integer articleId, String key){
+        List<ArticleRelatedDO> list = relateMapper.getRelatedArticle(articleId);
+        HashSet<Integer> set = new HashSet<>();
+        for (ArticleRelatedDO relatedDO: list) {
+            set.add(relatedDO.getArticleId());
+            set.add(relatedDO.getOtherArticleId());
+        }
+        set.add(articleId);
+        return articleService.queryArticleNotIn(set, key);
     }
 }

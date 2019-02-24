@@ -3,6 +3,7 @@ package com.ybjx.blog.controller;
 import com.ybjx.blog.common.result.ListResult;
 import com.ybjx.blog.common.result.PojoResult;
 import com.ybjx.blog.dto.ArticleDTO;
+import com.ybjx.blog.query.RelatedArticleQuery;
 import com.ybjx.blog.service.ArticleRelatedService;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +30,7 @@ public class ArticleRelatedController {
      * @param id2 文章ID2
      * @return 是否操作成功
      */
-    @RequestMapping(value = "/create/${id1}/${id2}", method = RequestMethod.POST)
+    @RequestMapping(value = "/create/{id1}/{id2}", method = RequestMethod.POST)
     @ResponseBody
     public PojoResult<Boolean> createRelation(@PathVariable("id1") Integer id1,
                                              @PathVariable("id2") Integer id2) {
@@ -43,7 +44,7 @@ public class ArticleRelatedController {
      * @param id2 文章ID2
      * @return 是否操作成功
      */
-    @RequestMapping(value = "/deleted/${id1}/${id2}", method = RequestMethod.POST)
+    @RequestMapping(value = "/deleted/{id1}/{id2}", method = RequestMethod.POST)
     @ResponseBody
     public PojoResult<Boolean> deletedRelation(@PathVariable("id1") Integer id1,
                                              @PathVariable("id2") Integer id2) {
@@ -56,10 +57,18 @@ public class ArticleRelatedController {
      * @param id 文章ID
      * @return 文章列表
      */
-    @RequestMapping(value = "/${id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
     public ListResult<ArticleDTO> getRelatedArticle(@PathVariable("id") Integer id) {
-        List<ArticleDTO> list = relatedService.getReleatedArticle(id);
+        List<ArticleDTO> list = relatedService.getRelatedArticle(id);
+        return new ListResult<>(list);
+    }
+
+    @RequestMapping(value = "/unrelated/{id}")
+    @ResponseBody
+    public ListResult<ArticleDTO> getUnRelatedArticle(@PathVariable("id") Integer id,
+                                                      RelatedArticleQuery query){
+        List<ArticleDTO> list = relatedService.getUnrelatedArticle(id, query.getKey());
         return new ListResult<>(list);
     }
 }

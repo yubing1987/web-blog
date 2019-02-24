@@ -16,6 +16,6 @@
   
   <select id="getRelatedArticle" resultMap="BaseResultMap">
     select * from article_related
-    where article_id = #{articleId} or other_article_id = #{articleId} order by order_value desc
+    where is_deleted = false and article_id = #{articleId} or other_article_id = #{articleId} order by order_value desc
   </select>
 </mapper>

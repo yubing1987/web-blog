@@ -26,9 +26,26 @@
 
   <select id="queryArticleByIds" resultMap="BaseResultMap">
     select * from article
-    where id in
-    <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
-      #{id}
-    </foreach>
+    where is_deleted = false and published = true
+    <if test="ids.size() > 0">
+      and id in
+      <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+        #{id}
+      </foreach>
+    </if>
+  </select>
+
+  <select id="queryArticleNotInIds" resultMap="BaseResultMap">
+    select * from article
+    where is_deleted = false and published = true
+    <if test="ids.size() > 0">
+      and id not in
+      <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+        #{id}
+      </foreach>
+    </if>
+    <if test="key != null and key != ''">
+      and title like concat('%', #{key}, '%')
+    </if>
   </select>
 </mapper>

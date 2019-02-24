@@ -245,7 +245,7 @@ class ArticleEditor  extends Component{
                         listType = {"picture-card"}
                         beforeUpload={this.beforeUpload}
                     >
-                        {uploadButton}
+                        {fileList.length === 0 ?uploadButton:null}
                     </Upload>
                     <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
                         <img alt="example" style={{ width: '100%' }} src={previewImage} />

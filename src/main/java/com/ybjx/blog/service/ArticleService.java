@@ -254,6 +254,26 @@ public class ArticleService {
      */
     public List<ArticleDTO> queryArticle(Collection<Integer> ids) {
         List<ArticleDO> list = articleMapper.queryArticleByIds(ids);
+        return copyArticle(list);
+    }
+
+    /**
+     * 查询不在ID列表里的文章信息
+     * @param ids id列表
+     * @param key 检索关键字
+     * @return 文章列表
+     */
+    public List<ArticleDTO> queryArticleNotIn(Collection<Integer> ids, String key){
+        List<ArticleDO> list = articleMapper.queryArticleNotInIds(ids, key);
+        return copyArticle(list);
+    }
+
+    /**
+     * 拷贝数据
+     * @param list do数据
+     * @return 拷贝后的dto数据
+     */
+    private List<ArticleDTO> copyArticle(List<ArticleDO> list){
         List<ArticleDTO> items = new ArrayList<>();
         // 拷贝数据
         for (ArticleDO article: list) {
