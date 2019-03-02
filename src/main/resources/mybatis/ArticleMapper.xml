@@ -19,8 +19,12 @@
 
   <select id="queryArticle" resultMap="BaseResultMap">
     select * from article
+    where is_deleted = false
+    <if test="onlyPublish == true">
+      and published = true
+    </if>
     <if test="key != null and key != ''">
-      where title like concat('%', #{key}, '%')
+      and title like concat('%', #{key}, '%')
     </if>
   </select>
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom'
 import debounce from 'lodash/debounce';
 import "./ArticleItem.css";
-import {Modal, Button, Spin,Empty,Select,message,List} from "antd";
+import {Modal, Button, Spin,Select,message,List} from "antd";
 import ArticleApi from "../../../../server/ArticleApi"
 
 const Option = Select.Option;

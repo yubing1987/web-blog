@@ -4,6 +4,8 @@ import './index.css';
 import Management from "./component/management/Management";
 
 import Home from "./component/home/Home";
+import Articles from "./component/mobile/articles/Articles";
+import Article from "./component/mobile/article/Article";
 
 
 import * as serviceWorker from './serviceWorker';
@@ -12,7 +14,11 @@ import {HashRouter, Route, Switch} from 'react-router-dom'
 const SliderComponent = () => (
     <Switch>
         <Route exact path='/' component={Home} />
-        <Route path="/management" component={Management}/>
+        <Route exact path='/mobile/' component={Articles} />
+        <Route exact path='/mobile/list/' component={Articles} />
+        <Route exact path='/mobile/list/:id' component={Articles} />
+        <Route exact path='/mobile/article/:id' component={Article} />
+        <Route path="/management/" component={Management}/>
     </Switch>
 )
 

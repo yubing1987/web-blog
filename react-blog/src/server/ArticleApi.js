@@ -6,6 +6,10 @@ class ArticleApi{
         return request.get("/api/article/list",{page: page, size: size, key: key});
     }
 
+    static queryPublishedArticleList(page, size, key){
+        return request.get("/api/article/list/published",{page: page, size: size, key: key});
+    }
+
     static getArticleById(id){
         return request.get("/api/article/draft/" + id);
     }

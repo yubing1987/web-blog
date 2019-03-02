@@ -142,6 +142,18 @@ public class ArticleController {
     @ResponseBody
     @ParameterCheck({QueryCheck.class, PagingCheck.class})
     public PageResult<ArticleDTO> queryArticle(ArticleQuery query) {
-        return articleService.queryArticle(query.getPage(), query.getSize(), query.getKey());
+        return articleService.queryArticle(query.getPage(), query.getSize(), query.getKey(), false);
+    }
+
+    /**
+     * 查询已经发布的文章
+     * @param query 查询条件
+     * @return 文章列表
+     */
+    @RequestMapping(value = "/list/published", method = RequestMethod.GET)
+    @ResponseBody
+    @ParameterCheck({QueryCheck.class, PagingCheck.class})
+    public PageResult<ArticleDTO> queryPublishArticle(ArticleQuery query){
+        return articleService.queryArticle(query.getPage(), query.getSize(), query.getKey(), true);
     }
 }

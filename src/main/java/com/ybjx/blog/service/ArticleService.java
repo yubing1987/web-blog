@@ -223,9 +223,9 @@ public class ArticleService {
      * @param key 搜索关键字
      * @return 查找的结果
      */
-    public PageResult<ArticleDTO> queryArticle(int page, int size, String key) {
+    public PageResult<ArticleDTO> queryArticle(int page, int size, String key, Boolean onlyPublish) {
         PageHelper.startPage(page, size, "modify_date desc");
-        List<ArticleDO> list = articleMapper.queryArticle(key);
+        List<ArticleDO> list = articleMapper.queryArticle(key, onlyPublish);
         PageInfo<ArticleDO> pageInfo = new PageInfo<>(list);
         List<ArticleDTO> items = new ArrayList<>();
         // 拷贝数据
