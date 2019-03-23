@@ -198,9 +198,6 @@ public class ArticleService {
         if (articleDO == null || articleDO.getIsDeleted()) {
             throw new BlogException(ErrorCode.OBJECT_NOT_FOUND, "文章没有找到");
         }
-        if (articleDO.getPublished()) {
-            throw new BlogException(ErrorCode.OBJECT_STATUS_ERROR, "文章已经发表过了");
-        }
         try {
             // 删除正文
             articleDO.setModifyDate(new Date());

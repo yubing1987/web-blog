@@ -27,7 +27,7 @@ class ArticleList extends Component{
         }
         else{
             let list = this.state.articles.items.map((item) => {
-                return <ArticleItem key={item.id} article={item}/>;
+                return <ArticleItem key={item.id} article={item} onDeleted={() => {this.loadArticleList(1)}}/>;
             });
             return <div>{list}<Pagination style={{"marginTop":"15px"}} pageSize={10} onChange={(p)=>{this.loadArticleList(p, "")}} defaultCurrent={1} total={this.state.articles.total}/></div>
         }

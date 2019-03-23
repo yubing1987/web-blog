@@ -14,6 +14,10 @@ class ArticleApi{
         return request.get("/api/article/draft/" + id);
     }
 
+    static deleteArticle(id){
+        return request.post("/api/article/" + id +"/deleted");
+    }
+
     static articleEdited(article){
         return request.post("/api/article/edited", article);
     }

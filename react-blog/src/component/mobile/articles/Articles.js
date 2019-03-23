@@ -9,26 +9,31 @@ class Articles extends Component{
     constructor(props){
         super(props);
         this.state = {
-            articles: {}
-        }
+            articles: []
+        };
+        document.title = "文章列表";
         this.loadArticle(1);
     }
 
     loadArticle(page){
         if(this.props.match.params.id){
+            ArticleApi.getRelatedArticle(this.props.match.params.id)
+                .then((data) => {
+                    this.setState({articles: data});
+                });
         }
         else{
             ArticleApi.queryPublishedArticleList(page, 10, "")
                 .then((data) => {
-                    this.setState({articles: data});
+                    this.setState({articles: data.items});
                 })
         }
     }
 
     render(){
         let articleList = null;
-        if(this.state.articles.items){
-            articleList = this.state.articles.items.map((item) => {
+        if(this.state.articles){
+            articleList = this.state.articles.map((item) => {
                 return <ArticleItem key = {item.id} article={item}/>
             });
         }

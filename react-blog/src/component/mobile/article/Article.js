@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import ArticleApi from "../../../server/ArticleApi";
 import {
-    Alert, Button
+    Alert, Icon
 } from 'antd';
 import { Redirect} from 'react-router-dom'
 
 import "./Article.css"
-
-const ReactMarkdown = require('react-markdown')
+import Markdown from "../../markdown/Markdown"
 
 class Article extends Component{
     constructor(props){
@@ -15,8 +14,10 @@ class Article extends Component{
         this.state = {
             error: !this.props.match.params.id,
             goHome: false,
-            loaded: false
+            loaded: false,
+            showFollow: false
         };
+        document.title = "Java技术分享";
         if(!this.state.error){
             this.loadArticle();
         }
@@ -25,9 +26,11 @@ class Article extends Component{
     loadArticle(){
         ArticleApi.getArticleById(this.props.match.params.id)
             .then((article) => {
+                document.title = article.title;
                 this.setState({article: article, loaded: true});
             })
             .catch((c) => {
+                document.title = "错误";
                 this.setState({error: true});
             });
     }
@@ -43,9 +46,6 @@ class Article extends Component{
                         type="error"
                         showIcon
                     />
-                    <div style={{"textAlign": "center", "marginTop":"20px"}}>
-                        <Button type="primary" onClick={() => {this.setState({goHome: true, error: false})}}>回主页</Button>
-                    </div>
                 </div>
         }
         else if(this.state.goHome){
@@ -55,13 +55,31 @@ class Article extends Component{
             content = <div>
                 <div className={"article-content-title"}>{this.state.article.title}</div>
                 <div style={{"margin" :"10px 0"}}>
-                    <ReactMarkdown source = {this.state.article.content}/>
+                    <Markdown type={"mobile"} content = {this.state.article.content}/>
                 </div>
+
             </div>
         }
 
-        return <div className={"article-panel-view"}>
-            {content}
+        return <div style={{"minHeight":"100%"}}>
+            <div className={"article-panel-view"}>
+                {content}
+            </div>
+            {
+                this.state.showFollow?<div className={"follow-view"}>
+                        <img alt={""} width={120} src={"http://java-code.net/img/toutiao.jpeg"} />
+                        <img alt={""} width={120} src={"http://java-code.net/img/weixin.jpg"} />
+                    </div>
+                    :null
+            }
+            <div className={"back-btn"} onClick={() => {this.setState({goHome: true, error: false})}}>
+                <Icon type="rollback"/>
+            </div>
+            <div className={"follow-btn"} onClick={() => {this.setState({showFollow: !this.state.showFollow})}}>
+                {
+                    this.state.showFollow?<Icon type="minus-square" />:<Icon type="plus-square" />
+                }
+            </div>
         </div>
     }
 }

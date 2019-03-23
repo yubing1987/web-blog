@@ -6,21 +6,22 @@ import {Modal, Button, Spin,Select,message,List} from "antd";
 import ArticleApi from "../../../../server/ArticleApi"
 
 const Option = Select.Option;
+const confirm = Modal.confirm;
 
 class ArticleItem extends Component{
-    state = {
-        goEdit: false,
-        relationVisible: false,
-        loading: false,
-        relationArticle: null,
-        data: [],
-        selectValue: [],
-        fetching: false
-    };
 
     constructor(props){
         super(props);
         this.lastFetchId = 0;
+        this.state = {
+            goEdit: false,
+            relationVisible: false,
+            loading: false,
+            relationArticle: null,
+            data: [],
+            selectValue: [],
+            fetching: false
+        };
         this.fetchArticle = debounce(this.fetchArticle, 800);
     }
 
@@ -53,7 +54,7 @@ class ArticleItem extends Component{
                         <Button onClick={() => {this.showRelationDialog()}} style={{"width": "70px"}} size={"small"} icon={"link"}>关 联</Button>
                     </div>
                     <div>
-                        <Button style={{"width": "70px"}} size={"small"} type="danger" icon={"delete"}>删 除</Button>
+                        <Button style={{"width": "70px"}} size={"small"} type="danger" icon={"delete"} onClick={() =>{this.deleteArticle()}}>删 除</Button>
                     </div>
                 </div>
                 <Modal
@@ -143,6 +144,25 @@ class ArticleItem extends Component{
             fetching: false,
         });
     };
+
+    deleteArticle(){
+        confirm({
+            title: '确认?',
+            content: '是否删除这篇文章',
+            okText: '确认',
+            okType: 'danger',
+            cancelText: '取消',
+            onOk: () =>{
+                ArticleApi.deleteArticle(this.props.article.id)
+                    .then(() => {
+                        message.success("删除成功！");
+                        this.props.onDeleted();
+                    });
+            },
+            onCancel() {
+            },
+        });
+    }
 
     addRelatedArticle(){
         if(!this.state.selectValue.key){
