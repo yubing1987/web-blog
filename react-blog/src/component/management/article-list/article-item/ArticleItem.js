@@ -4,6 +4,7 @@ import debounce from 'lodash/debounce';
 import "./ArticleItem.css";
 import {Modal, Button, Spin,Select,message,List} from "antd";
 import ArticleApi from "../../../../server/ArticleApi"
+import ArticleTagView from "../../article-tag-view/ArticleTagView";
 
 const Option = Select.Option;
 const confirm = Modal.confirm;
@@ -41,10 +42,17 @@ class ArticleItem extends Component{
         }
         else {
             const { fetching, data, selectValue } = this.state;
+
+            let tags = (this.props.article.tags || []).map((t) => {
+                return t.tag;
+            });
             return <div className={"article-panel"}>
                 <div className={"article-content"}>
                     <a href={"/article/" + this.props.article.id} target={"_blank"}>{this.props.article.title}</a>
                     <div className={"article-abstract"}>{this.props.article.abstractContent}</div>
+                    <div className={"article-tag"}>
+                        <ArticleTagView editable={false} tags={tags} />
+                    </div>
                 </div>
                 <div className={"article-button"}>
                     <div style={{"marginBottom": "4px"}}>

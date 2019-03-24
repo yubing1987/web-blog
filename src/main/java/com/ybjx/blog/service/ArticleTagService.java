@@ -54,15 +54,16 @@ public class ArticleTagService {
 
     /**
      * 添加标签信息
+     * @param articleId 文章ID
      * @param tag 标签信息
      */
     @Transactional(rollbackFor = Exception.class)
     @ParameterCheck({CreateCheck.class})
-    public void addArticleTag(ArticleTagDTO tag){
+    public Integer addArticleTag(Integer articleId, String tag){
         ArticleTagDO tagDO = new ArticleTagDO();
 
-        tagDO.setArticleId(tag.getArticleId());
-        tagDO.setTag(tag.getTag());
+        tagDO.setArticleId(articleId);
+        tagDO.setTag(tag);
         tagDO.setIsDeleted(false);
 
         if(tagMapper.selectCount(tagDO) > 0){
@@ -72,6 +73,7 @@ public class ArticleTagService {
         tagDO.setModifyDate(new Date());
         try{
             tagMapper.insert(tagDO);
+            return tagDO.getId();
         }
         catch (Exception e){
             throw new BlogException(ErrorCode.DATABASE_INSERT, "保存标签出错", e);

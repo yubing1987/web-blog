@@ -3,6 +3,8 @@ import ArticleApi from "../../../server/ArticleApi"
 import {Alert, Input, Upload, Icon, Modal, message, Button} from "antd";
 import "./ArticleEditor.css"
 
+import ArticleTagView from "../article-tag-view/ArticleTagView";
+
 const { TextArea } = Input;
 
 class ArticleEditor  extends Component{
@@ -14,8 +16,8 @@ class ArticleEditor  extends Component{
             hasError: false,
             id: ArticleEditor.getArticleId(this.props.location.search.trim()),
             article: {},
-            change: false,
-            fileList : []
+            fileList : [],
+            tags: []
         };
         if(this.state.id){
             ArticleApi.getArticleById(this.state.id)
@@ -32,7 +34,11 @@ class ArticleEditor  extends Component{
                             }
                         });
                     }
-                    this.setState({article: data, fileList : pic});
+                    let tags = [];
+                    (data.tags || []).forEach((t) => {
+                       tags.push(t.tag);
+                    });
+                    this.setState({article: data, fileList : pic, tags: tags});
                 })
                 .catch(() => {
                     this.setState({hasError: true});
@@ -64,11 +70,11 @@ class ArticleEditor  extends Component{
         });
     };
 
+    updateTag(id){
+        return ArticleApi.updateArticleTag(id, this.state.tags);
+    }
+
     saveArticle = () => {
-        if(!this.state.change){
-            message.error("没有任何修改，无需保存");
-            return;
-        }
         if(this.state.article.title.length === 0){
             message.error("文章标题不能为空!");
             return;
@@ -90,65 +96,64 @@ class ArticleEditor  extends Component{
         if(article.id) {
             ArticleApi.articleEdited(article)
                 .then(() => {
+                    this.updateTag(article.id);
                     message.success("文章保存成功");
-                    this.setState({change: false});
                 });
         }
         else{
             ArticleApi.addArticle(article)
                 .then((data) => {
                     message.success("文章保存成功");
-                    article.id = data.id;
-                    window.location.hash = this.props.location.pathname+"?id=" + article.id;
-                    this.setState({article: article, change: false});
+                    this.updateTag(data.id)
+                        .then(() => {
+                            article.id = data.id;
+                            window.location.hash = this.props.location.pathname+"?id=" + article.id;
+                            this.setState({article: article});
+                        })
+                        .catch(() => {
+                            article.id = data.id;
+                            window.location.hash = this.props.location.pathname+"?id=" + article.id;
+                            this.setState({article: article});
+                        });
                 });
         }
     };
 
     articlePublish = () => {
-        if(this.state.article.draft || this.state.change) {
-            if (this.state.article.title.length === 0) {
-                message.error("文章标题不能为空!");
-                return;
-            }
-            if (this.state.article.content.length === 0) {
-                message.error("文章内容不能为空!");
-                return;
-            }
-            if (this.state.article.abstractContent.length === 0) {
-                message.error("文章内容不能为空!");
-                return;
-            }
-            if (this.state.fileList.length !== 1) {
-                message.error("必须要要有一张封面图片!");
-                return;
-            }
-            let article = this.state.article;
-            article.picture = this.state.fileList[0].response.content;
-            article.drag = true;
-            if (article.id) {
-                ArticleApi.articleEdited(article)
-                    .then(() => {
-                        this.setState({article: article, change: false});
-                        this.publish();
-                    });
-            }
-            else {
-                ArticleApi.addArticle(article)
-                    .then((data) => {
-                        article.id = data.id;
-                        window.location.hash = this.props.location.pathname + "?id=" + article.id;
-                        this.setState({article: article, change: false});
-                        this.publish();
-                    });
-            }
+        if (this.state.article.title.length === 0) {
+            message.error("文章标题不能为空!");
+            return;
         }
-        else{
-            if(!this.state.change){
-                message.error("没有任何修改，无需发布");
-                return;
-            }
-            this.publish();
+        if (this.state.article.content.length === 0) {
+            message.error("文章内容不能为空!");
+            return;
+        }
+        if (this.state.article.abstractContent.length === 0) {
+            message.error("文章内容不能为空!");
+            return;
+        }
+        if (this.state.fileList.length !== 1) {
+            message.error("必须要要有一张封面图片!");
+            return;
+        }
+        let article = this.state.article;
+        article.picture = this.state.fileList[0].response.content;
+        article.drag = true;
+        if (article.id) {
+            ArticleApi.articleEdited(article)
+                .then(() => {
+                    this.setState({article: article});
+                    this.publish();
+                });
+        }
+        else {
+            ArticleApi.addArticle(article)
+                .then((data) => {
+                    article.id = data.id;
+                    window.location.hash = this.props.location.pathname + "?id=" + article.id;
+                    this.setState({article: article});
+                    this.publish();
+                });
         }
     };
 
@@ -156,6 +161,7 @@ class ArticleEditor  extends Component{
         ArticleApi.articlePublished(this.state.article)
             .then(() => {
                 message.success("文章发布成功");
+                this.updateTag(this.state.article.id);
             });
     }
 
@@ -163,7 +169,7 @@ class ArticleEditor  extends Component{
         if(fileList.length > 1){
             return;
         }
-        this.setState({fileList:fileList, change: true});
+        this.setState({fileList:fileList});
     };
 
     beforeUpload = (file) => {
@@ -186,18 +192,18 @@ class ArticleEditor  extends Component{
     titleChange = (e) => {
         let article = this.state.article;
         article.title = e.target.value;
-        this.setState({article: article, change: true});
+        this.setState({article: article});
     };
     contentChange = (e) => {
         let article = this.state.article;
         article.content = e.target.value;
-        this.setState({article: article, change: true});
+        this.setState({article: article});
     };
 
     abstractChange = (e) => {
         let article = this.state.article;
         article.abstractContent = e.target.value;
-        this.setState({article: article, change: true});
+        this.setState({article: article});
     };
 
     render(){
@@ -231,6 +237,12 @@ class ArticleEditor  extends Component{
                 </div>
                 <div className = {"view-item"}>
                     <TextArea onChange={this.abstractChange} rows={4}  autosize={false} value={this.state.article.abstractContent}/>
+                </div>
+                <div className = {"view-item"}>
+                    <span>标签：</span>
+                    <ArticleTagView editable={true} tags={this.state.tags}
+                        handleTag = {(tags) => {this.setState({tags: tags})}}
+                    />
                 </div>
                 <div className = {"view-item"}>
                     <span>封面图片：</span>

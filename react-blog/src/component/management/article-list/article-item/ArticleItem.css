@@ -12,6 +12,10 @@
     font-size: 20px;
 }
 
+.article-tag{
+    padding: 4px 0;
+}
+
 .article-abstract{
     margin-top: 5px;
     font-size: 10px;

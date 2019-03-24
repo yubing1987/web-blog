@@ -45,6 +45,10 @@ class ArticleApi{
     static delRelatedArticle(id1, id2){
         return request.post("/api/relation/deleted/" + id1 + "/" + id2);
     }
+
+    static updateArticleTag(id, tag){
+        return request.post("/api/article/tag/" + id, tag);
+    }
 }
 
 export default ArticleApi;
