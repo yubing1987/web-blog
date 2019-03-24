@@ -12,6 +12,7 @@ import com.ybjx.blog.entity.ArticleDO;
 import com.ybjx.blog.entity.ArticleDraftDO;
 import com.ybjx.blog.query.ArticleQuery;
 import com.ybjx.blog.service.ArticleService;
+import com.ybjx.blog.service.ArticleTagService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -29,9 +30,16 @@ public class ArticleController {
      */
     private final ArticleService articleService;
 
+    /**
+     * 标签服务
+     */
+    private final ArticleTagService tagService;
+
     @Autowired
-    public ArticleController(ArticleService articleService) {
+    public ArticleController(ArticleService articleService,
+                             ArticleTagService tagService) {
         this.articleService = articleService;
+        this.tagService = tagService;
     }
 
     /**
@@ -63,6 +71,7 @@ public class ArticleController {
         }
         ArticleDTO articleDTO = new ArticleDTO();
         BeanUtils.copyProperties(articleDO, articleDTO);
+        articleDTO.setTags(tagService.getArticleTagList(id));
         return new PojoResult<>(articleDTO);
     }
 
@@ -92,6 +101,7 @@ public class ArticleController {
         if (draftDO != null) {
             articleDTO.setDraft(true);
         }
+        articleDTO.setTags(tagService.getArticleTagList(id));
         return new PojoResult<>(articleDTO);
     }
 
@@ -142,7 +152,12 @@ public class ArticleController {
     @ResponseBody
     @ParameterCheck({QueryCheck.class, PagingCheck.class})
     public PageResult<ArticleDTO> queryArticle(ArticleQuery query) {
-        return articleService.queryArticle(query.getPage(), query.getSize(), query.getKey(), false);
+        PageResult<ArticleDTO> result = articleService.queryArticle(query.getPage(),
+                query.getSize(), query.getKey(), false);
+        for(ArticleDTO article: result.getContent().getItems()){
+            article.setTags(tagService.getArticleTagList(article.getId()));
+        }
+        return result;
     }
 
     /**

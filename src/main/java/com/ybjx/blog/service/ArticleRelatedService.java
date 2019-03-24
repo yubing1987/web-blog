@@ -37,7 +37,7 @@ public class ArticleRelatedService {
      * @param articleId1 文章ID
      * @param articleId2 文章ID
      */
-    public void createReleation(int articleId1, int articleId2) {
+    public void createRelated(int articleId1, int articleId2) {
         int id1 = articleId1 > articleId2 ? articleId1 : articleId2;
         int id2 = articleId1 > articleId2 ? articleId2 : articleId1;
         ArticleRelatedDO relateDO = new ArticleRelatedDO();
@@ -142,5 +142,18 @@ public class ArticleRelatedService {
         }
         set.add(articleId);
         return articleService.queryArticleNotIn(set, key);
+    }
+
+    /**
+     * 删除关联文章
+     * @param articleId 文章ID
+     */
+    void deleteArticleRelated(Integer articleId){
+        try{
+            relateMapper.deleteArticleRelated(articleId);
+        }
+        catch (Exception e){
+            throw new BlogException(ErrorCode.OBJECT_UPDATE_ERROR, "删除关联文章出错", e);
+        }
     }
 }

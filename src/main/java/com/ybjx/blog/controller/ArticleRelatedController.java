@@ -34,7 +34,7 @@ public class ArticleRelatedController {
     @ResponseBody
     public PojoResult<Boolean> createRelation(@PathVariable("id1") Integer id1,
                                              @PathVariable("id2") Integer id2) {
-        relatedService.createReleation(id1, id2);
+        relatedService.createRelated(id1, id2);
         return new PojoResult<>(true);
     }
 
@@ -64,6 +64,12 @@ public class ArticleRelatedController {
         return new ListResult<>(list);
     }
 
+    /**
+     * 通过文章ID查询未关联的文章列表
+     * @param id 文章ID
+     * @param query 查询信息
+     * @return 文章列表
+     */
     @RequestMapping(value = "/unrelated/{id}")
     @ResponseBody
     public ListResult<ArticleDTO> getUnRelatedArticle(@PathVariable("id") Integer id,

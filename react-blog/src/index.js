@@ -9,7 +9,7 @@ import Article from "./component/mobile/article/Article";
 
 
 import * as serviceWorker from './serviceWorker';
-import {HashRouter, Route, Switch} from 'react-router-dom'
+import {BrowserRouter, Route, Switch} from 'react-router-dom'
 
 const SliderComponent = () => (
     <Switch>
@@ -23,9 +23,9 @@ const SliderComponent = () => (
 )
 
 ReactDOM.render((
-    <HashRouter >
+    <BrowserRouter>
         <SliderComponent />
-    </HashRouter>
+    </BrowserRouter>
 
 ), document.getElementById('root'));
 

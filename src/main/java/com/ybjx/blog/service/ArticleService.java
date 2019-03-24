@@ -26,7 +26,8 @@ import java.util.List;
 
 /**
  * 文章服务
- * Created by YuBing on 2018/11/20.
+ * @author ybjx
+ * @date 2018/11/20.
  */
 @Service
 public class ArticleService {
@@ -36,7 +37,20 @@ public class ArticleService {
      */
     private final ArticleMapper articleMapper;
 
+    /**
+     * 文章草稿数据库操作
+     */
     private final ArticleDraftMapper articleDraftMapper;
+
+    /**
+     * 文章标签服务
+     */
+    private final ArticleTagService tagService;
+
+    /**
+     * 关联文章服务
+     */
+    private final ArticleRelatedService relatedService;
 
     /**
      * 构造函数
@@ -44,9 +58,13 @@ public class ArticleService {
      */
     @Autowired
     public ArticleService(ArticleMapper articleMapper,
-                          ArticleDraftMapper articleDraftMapper) {
+                          ArticleDraftMapper articleDraftMapper,
+                          ArticleTagService tagService,
+                          ArticleRelatedService relatedService) {
         this.articleMapper = articleMapper;
         this.articleDraftMapper = articleDraftMapper;
+        this.tagService = tagService;
+        this.relatedService = relatedService;
     }
 
     /**
@@ -92,8 +110,13 @@ public class ArticleService {
         ArticleDO articleDO = new ArticleDO();
         articleDO.setId(id);
         articleDO.setIsDeleted(false);
-        articleDO = articleMapper.selectOne(articleDO);
-        return articleDO;
+        try {
+            articleDO = articleMapper.selectOne(articleDO);
+            return articleDO;
+        }
+        catch (Exception e){
+            throw new BlogException(ErrorCode.SYSTEM_ERROR, "获取文章出错", e);
+        }
     }
 
     /**
@@ -208,6 +231,10 @@ public class ArticleService {
             draftDO.setArticleId(articleDO.getId());
             draftDO.setIsDeleted(true);
             articleDraftMapper.updateByPrimaryKeySelective(draftDO);
+            // 删除标签
+            tagService.deleteArticleAllTag(articleId);
+            // 删除关联文章ID
+            relatedService.deleteArticleRelated(articleId);
         } catch (Exception e) {
             throw new BlogException(ErrorCode.OBJECT_UPDATE_ERROR, e);
         }
@@ -249,7 +276,7 @@ public class ArticleService {
      * @param ids ID列表
      * @return 文章信息
      */
-    public List<ArticleDTO> queryArticle(Collection<Integer> ids) {
+    List<ArticleDTO> queryArticle(Collection<Integer> ids) {
         List<ArticleDO> list = articleMapper.queryArticleByIds(ids);
         return copyArticle(list);
     }
@@ -260,7 +287,7 @@ public class ArticleService {
      * @param key 检索关键字
      * @return 文章列表
      */
-    public List<ArticleDTO> queryArticleNotIn(Collection<Integer> ids, String key){
+    List<ArticleDTO> queryArticleNotIn(Collection<Integer> ids, String key){
         List<ArticleDO> list = articleMapper.queryArticleNotInIds(ids, key);
         return copyArticle(list);
     }
@@ -279,7 +306,6 @@ public class ArticleService {
             article.setContent(null);
             BeanUtils.copyProperties(article, articleDTO);
         }
-
         return items;
     }
 }

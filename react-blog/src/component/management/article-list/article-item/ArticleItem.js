@@ -43,7 +43,7 @@ class ArticleItem extends Component{
             const { fetching, data, selectValue } = this.state;
             return <div className={"article-panel"}>
                 <div className={"article-content"}>
-                    <a href={"/#/article/" + this.props.article.id} target={"_blank"}>{this.props.article.title}</a>
+                    <a href={"/article/" + this.props.article.id} target={"_blank"}>{this.props.article.title}</a>
                     <div className={"article-abstract"}>{this.props.article.abstractContent}</div>
                 </div>
                 <div className={"article-button"}>

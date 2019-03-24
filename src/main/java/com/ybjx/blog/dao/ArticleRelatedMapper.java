@@ -15,5 +15,11 @@ public interface ArticleRelatedMapper extends Mapper<ArticleRelatedDO> {
      * @param articleId 文章ID
      * @return 关联文章信息
      */
-    List<ArticleRelatedDO> getRelatedArticle(@Param("articleId") int articleId);
+    List<ArticleRelatedDO> getRelatedArticle(@Param("articleId") Integer articleId);
+
+    /**
+     * 删除文件全部的关联文章
+     * @param articleId 文章ID
+     */
+    void deleteArticleRelated(@Param("articleId") Integer articleId);
 }

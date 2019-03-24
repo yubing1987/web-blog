@@ -11,7 +11,7 @@ class ArticleApi{
     }
 
     static getArticleById(id){
-        return request.get("/api/article/draft/" + id);
+        return request.get("/api/article/" + id);
     }
 
     static deleteArticle(id){

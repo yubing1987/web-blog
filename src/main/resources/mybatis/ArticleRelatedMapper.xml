@@ -16,6 +16,11 @@
   
   <select id="getRelatedArticle" resultMap="BaseResultMap">
     select * from article_related
-    where is_deleted = false and article_id = #{articleId} or other_article_id = #{articleId} order by order_value desc
+    where is_deleted = false and (article_id = #{articleId} or other_article_id = #{articleId}) order by order_value desc
   </select>
+
+  <update id="deleteArticleRelated">
+    update article_related set is_deleted = true
+    where is_deleted = false and (article_id = #{articleId} or other_article_id = #{articleId})
+  </update>
 </mapper>

@@ -5,7 +5,9 @@ import com.ybjx.blog.checker.group.UpdateCheck;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 文章传输结构
@@ -72,6 +74,11 @@ public class ArticleDTO {
      * 是不是草稿
      */
     private Boolean draft;
+
+    /**
+     * 文章标签
+     */
+    private List<ArticleTagDTO> tags;
 
     /**
      * 获取主键
@@ -269,6 +276,14 @@ public class ArticleDTO {
         this.draft = draft;
     }
 
+    public List<ArticleTagDTO> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<ArticleTagDTO> tags) {
+        this.tags = tags;
+    }
+
     @Override
     public String toString() {
         return "ArticleDTO{" +
@@ -283,6 +298,7 @@ public class ArticleDTO {
                 ", viewCount=" + viewCount +
                 ", content='" + content + '\'' +
                 ", draft=" + draft +
+                ", tags=" + tags +
                 '}';
     }
 }

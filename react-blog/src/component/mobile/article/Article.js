@@ -3,17 +3,15 @@ import ArticleApi from "../../../server/ArticleApi";
 import {
     Alert, Icon
 } from 'antd';
-import { Redirect} from 'react-router-dom'
 
 import "./Article.css"
-import Markdown from "../../markdown/Markdown"
+const ReactMarkdown = require('react-markdown')
 
 class Article extends Component{
     constructor(props){
         super(props);
         this.state = {
             error: !this.props.match.params.id,
-            goHome: false,
             loaded: false,
             showFollow: false
         };
@@ -48,38 +46,36 @@ class Article extends Component{
                     />
                 </div>
         }
-        else if(this.state.goHome){
-            content = <Redirect to={"/mobile/"}/>;
-        }
         else if(this.state.loaded){
             content = <div>
                 <div className={"article-content-title"}>{this.state.article.title}</div>
                 <div style={{"margin" :"10px 0"}}>
-                    <Markdown type={"mobile"} content = {this.state.article.content}/>
+                    <ReactMarkdown source = {this.state.article.content}/>
                 </div>
 
             </div>
         }
 
-        return <div style={{"minHeight":"100%"}}>
+        return <div style={{"minHeight":"100%", background: "#eee"}}>
             <div className={"article-panel-view"}>
                 {content}
             </div>
-            {
-                this.state.showFollow?<div className={"follow-view"}>
-                        <img alt={""} width={120} src={"http://java-code.net/img/toutiao.jpeg"} />
-                        <img alt={""} width={120} src={"http://java-code.net/img/weixin.jpg"} />
-                    </div>
-                    :null
-            }
-            <div className={"back-btn"} onClick={() => {this.setState({goHome: true, error: false})}}>
-                <Icon type="rollback"/>
+
+            <div className={"back-btn"} onClick={() => {window.location.href="/mobile/"}}>
+                首页
             </div>
             <div className={"follow-btn"} onClick={() => {this.setState({showFollow: !this.state.showFollow})}}>
                 {
                     this.state.showFollow?<Icon type="minus-square" />:<Icon type="plus-square" />
-                }
+                }关注
             </div>
+            {
+            this.state.showFollow?<div className={"follow-view"}>
+                    <img alt={""} width={120} src={"http://java-code.net/img/toutiao.jpeg"} />
+                    <img alt={""} width={120} src={"http://java-code.net/img/weixin.jpg"} />
+                </div>
+                :null
+            }
         </div>
     }
 }
