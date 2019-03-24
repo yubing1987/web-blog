@@ -11,6 +11,7 @@ import com.ybjx.blog.common.result.Page;
 import com.ybjx.blog.common.result.PageResult;
 import com.ybjx.blog.dao.ArticleDraftMapper;
 import com.ybjx.blog.dao.ArticleMapper;
+import com.ybjx.blog.dao.ArticleRelatedMapper;
 import com.ybjx.blog.dto.ArticleDTO;
 import com.ybjx.blog.entity.ArticleDO;
 import com.ybjx.blog.entity.ArticleDraftDO;
@@ -50,7 +51,7 @@ public class ArticleService {
     /**
      * 关联文章服务
      */
-    private final ArticleRelatedService relatedService;
+    private final ArticleRelatedMapper relatedMapper;
 
     /**
      * 构造函数
@@ -60,11 +61,11 @@ public class ArticleService {
     public ArticleService(ArticleMapper articleMapper,
                           ArticleDraftMapper articleDraftMapper,
                           ArticleTagService tagService,
-                          ArticleRelatedService relatedService) {
+                          ArticleRelatedMapper relatedMapper) {
         this.articleMapper = articleMapper;
         this.articleDraftMapper = articleDraftMapper;
         this.tagService = tagService;
-        this.relatedService = relatedService;
+        this.relatedMapper = relatedMapper;
     }
 
     /**
@@ -234,7 +235,7 @@ public class ArticleService {
             // 删除标签
             tagService.deleteArticleAllTag(articleId);
             // 删除关联文章ID
-            relatedService.deleteArticleRelated(articleId);
+            relatedMapper.deleteArticleRelated(articleId);
         } catch (Exception e) {
             throw new BlogException(ErrorCode.OBJECT_UPDATE_ERROR, e);
         }

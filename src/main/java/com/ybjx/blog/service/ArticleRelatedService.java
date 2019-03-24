@@ -11,7 +11,8 @@ import java.util.*;
 
 /**
  * 关联文章相关的服务
- * create by YuBing at 2019/2/19
+ * @author ybjx
+ * @date 2019/2/19
  */
 @Service
 public class ArticleRelatedService {
@@ -142,18 +143,5 @@ public class ArticleRelatedService {
         }
         set.add(articleId);
         return articleService.queryArticleNotIn(set, key);
-    }
-
-    /**
-     * 删除关联文章
-     * @param articleId 文章ID
-     */
-    void deleteArticleRelated(Integer articleId){
-        try{
-            relateMapper.deleteArticleRelated(articleId);
-        }
-        catch (Exception e){
-            throw new BlogException(ErrorCode.OBJECT_UPDATE_ERROR, "删除关联文章出错", e);
-        }
     }
 }
