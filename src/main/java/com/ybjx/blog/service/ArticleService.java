@@ -246,11 +246,17 @@ public class ArticleService {
      * @param page 页码
      * @param size 每一页大小
      * @param key 搜索关键字
+     * @param tag 文章标签
+     * @param onlyPublish 是否至查询已发布的文章
      * @return 查找的结果
      */
-    public PageResult<ArticleDTO> queryArticle(int page, int size, String key, Boolean onlyPublish) {
+    public PageResult<ArticleDTO> queryArticle(int page,
+                                               int size,
+                                               String key,
+                                               String tag,
+                                               Boolean onlyPublish) {
         PageHelper.startPage(page, size, "modify_date desc");
-        List<ArticleDO> list = articleMapper.queryArticle(key, onlyPublish);
+        List<ArticleDO> list = articleMapper.queryArticle(key, tag, onlyPublish);
         PageInfo<ArticleDO> pageInfo = new PageInfo<>(list);
         List<ArticleDTO> items = new ArrayList<>();
         // 拷贝数据

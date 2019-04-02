@@ -16,9 +16,13 @@ public interface ArticleMapper extends Mapper<ArticleDO> {
     /**
      * 查找文章列表
      * @param key 搜索关键字
+     * @param tag 文章标签
+     * @param onlyPublish 是否至查询已发布的文章
      * @return 查找到的文章列表
      */
-    List<ArticleDO> queryArticle(@Param("key") String key, @Param("onlyPublish") Boolean onlyPublish);
+    List<ArticleDO> queryArticle(@Param("key") String key,
+                                 @Param("tag") String tag,
+                                 @Param("onlyPublish") Boolean onlyPublish);
 
     /**
      * 通过文章ID数组查询文章列表

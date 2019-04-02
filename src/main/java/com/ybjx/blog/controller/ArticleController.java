@@ -153,7 +153,7 @@ public class ArticleController {
     @ParameterCheck({QueryCheck.class, PagingCheck.class})
     public PageResult<ArticleDTO> queryArticle(ArticleQuery query) {
         PageResult<ArticleDTO> result = articleService.queryArticle(query.getPage(),
-                query.getSize(), query.getKey(), false);
+                query.getSize(), query.getKey(), query.getTag(),false);
         for(ArticleDTO article: result.getContent().getItems()){
             article.setTags(tagService.getArticleTagList(article.getId()));
         }
@@ -169,6 +169,6 @@ public class ArticleController {
     @ResponseBody
     @ParameterCheck({QueryCheck.class, PagingCheck.class})
     public PageResult<ArticleDTO> queryPublishArticle(ArticleQuery query){
-        return articleService.queryArticle(query.getPage(), query.getSize(), query.getKey(), true);
+        return articleService.queryArticle(query.getPage(), query.getSize(), query.getKey(), query.getTag(), true);
     }
 }

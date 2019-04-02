@@ -20,6 +20,11 @@
   <select id="queryArticle" resultMap="BaseResultMap">
     select * from article
     where is_deleted = false
+    <if test = "tag != null and tag != ''">
+      and id in (
+        select article_id from article_tag where tag = #{tag} and is_deleted = 0
+      )
+    </if>
     <if test="onlyPublish == true">
       and published = true
     </if>
