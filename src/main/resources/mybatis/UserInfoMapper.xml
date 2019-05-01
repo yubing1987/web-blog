@@ -13,5 +13,7 @@
     <result column="ref_id" jdbcType="VARCHAR" property="refId" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="icon" jdbcType="VARCHAR" property="icon" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="login_name" jdbcType="VARCHAR" property="loginName" />
   </resultMap>
 </mapper>

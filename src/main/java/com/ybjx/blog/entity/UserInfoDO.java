@@ -56,6 +56,17 @@ public class UserInfoDO {
     private String icon;
 
     /**
+     * 账号密码
+     */
+    private String password;
+
+    /**
+     * 登录名称
+     */
+    @Column(name = "login_name")
+    private String loginName;
+
+    /**
      * 获取主键
      *
      * @return id - 主键
@@ -199,6 +210,42 @@ public class UserInfoDO {
         this.icon = icon;
     }
 
+    /**
+     * 获取账号密码
+     *
+     * @return password - 账号密码
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * 设置账号密码
+     *
+     * @param password 账号密码
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    /**
+     * 获取登录名称
+     *
+     * @return loginName - 登录名称
+     */
+    public String getLoginName() {
+        return loginName;
+    }
+
+    /**
+     * 设置登录名称
+     *
+     * @param loginName 登录名称
+     */
+    public void setLoginName(String loginName) {
+        this.loginName = loginName;
+    }
+
     @Override
     public String toString() {
         return "UserInfoDO{" +
@@ -210,6 +257,8 @@ public class UserInfoDO {
                 ", refId='" + refId + '\'' +
                 ", name='" + name + '\'' +
                 ", icon='" + icon + '\'' +
+                ", password='" + password + '\'' +
+                ", loginName='" + loginName + '\'' +
                 '}';
     }
 }
