@@ -8,7 +8,8 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 /**
  * 文件配置
- * create by YuBing at 2019/2/17
+ * @author ybjx
+ * @date 2019/5/1 23:12
  */
 @Configuration
 @ConfigurationProperties(prefix = "blog.file")

@@ -4,3 +4,5 @@ mybatis:
 blog:
   file:
     location: /root/file/
+  login:
+    ignore-url: /login,/logout

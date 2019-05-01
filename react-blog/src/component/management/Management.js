@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
-import {  Route , Redirect, NavLink } from 'react-router-dom'
-import {
-    Layout, Menu, Icon,
-} from 'antd';
+import React, {Component} from 'react';
+import {NavLink, Redirect, Route} from 'react-router-dom'
+import {Icon, Layout, Menu,} from 'antd';
 import ArticleList from "./article-list/ArticleList";
 import ArticleEditor from "./article-editor/ArticleEditor";
+
 const {
     Content, Sider,
 } = Layout;

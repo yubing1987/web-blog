@@ -5,3 +5,5 @@ logging:
 blog:
   file:
     location: g:/blog/file
+  login:
+    ignore-url: /login,/logout
