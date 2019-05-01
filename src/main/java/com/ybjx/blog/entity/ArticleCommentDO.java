@@ -4,11 +4,11 @@ import java.util.Date;
 import javax.persistence.*;
 
 /**
- * 文章标签
+ * 文章回复信息
  * @author ybjx
  */
-@Table(name = "article_tag")
-public class ArticleTagDO {
+@Table(name = "article_comment")
+public class ArticleCommentDO {
     /**
      * 主键
      */
@@ -29,11 +29,6 @@ public class ArticleTagDO {
     private Date modifyDate;
 
     /**
-     * 文章标签
-     */
-    private String tag;
-
-    /**
      * 是否被删除
      */
     @Column(name = "is_deleted")
@@ -43,6 +38,23 @@ public class ArticleTagDO {
      * 所有者ID
      */
     private Integer owner;
+
+    /**
+     * 回复内容
+     */
+    private String content;
+
+    /**
+     * 关联回复的ID
+     */
+    @Column(name = "parent_id")
+    private Integer parentId;
+
+    /**
+     * 文章ID
+     */
+    @Column(name = "article_id")
+    private Integer articleId;
 
     /**
      * 获取主键
@@ -99,24 +111,6 @@ public class ArticleTagDO {
     }
 
     /**
-     * 获取文章标签
-     *
-     * @return tag - 文章标签
-     */
-    public String getTag() {
-        return tag;
-    }
-
-    /**
-     * 设置文章标签
-     *
-     * @param tag 文章标签
-     */
-    public void setTag(String tag) {
-        this.tag = tag;
-    }
-
-    /**
      * 获取是否被删除
      *
      * @return is_deleted - 是否被删除
@@ -152,15 +146,71 @@ public class ArticleTagDO {
         this.owner = owner;
     }
 
+    /**
+     * 获取回复内容
+     *
+     * @return content - 回复内容
+     */
+    public String getContent() {
+        return content;
+    }
+
+    /**
+     * 设置回复内容
+     *
+     * @param content 回复内容
+     */
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    /**
+     * 获取关联回复的ID
+     *
+     * @return parent_id - 关联回复的ID
+     */
+    public Integer getParentId() {
+        return parentId;
+    }
+
+    /**
+     * 设置关联回复的ID
+     *
+     * @param parentId 关联回复的ID
+     */
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
+    }
+
+    /**
+     * 获取文章ID
+     *
+     * @return article_id - 文章ID
+     */
+    public Integer getArticleId() {
+        return articleId;
+    }
+
+    /**
+     * 设置文章ID
+     *
+     * @param articleId 文章ID
+     */
+    public void setArticleId(Integer articleId) {
+        this.articleId = articleId;
+    }
+
     @Override
     public String toString() {
-        return "ArticleTagDO{" +
+        return "ArticleCommentDO{" +
                 "id=" + id +
                 ", createDate=" + createDate +
                 ", modifyDate=" + modifyDate +
-                ", tag='" + tag + '\'' +
                 ", isDeleted=" + isDeleted +
                 ", owner=" + owner +
+                ", content='" + content + '\'' +
+                ", parentId=" + parentId +
+                ", articleId=" + articleId +
                 '}';
     }
 }

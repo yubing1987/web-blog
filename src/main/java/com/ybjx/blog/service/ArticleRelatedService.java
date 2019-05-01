@@ -2,9 +2,7 @@ package com.ybjx.blog.service;
 
 import com.ybjx.blog.common.BlogException;
 import com.ybjx.blog.common.ErrorCode;
-import com.ybjx.blog.dao.ArticleRelatedMapper;
 import com.ybjx.blog.dto.ArticleDTO;
-import com.ybjx.blog.entity.ArticleRelatedDO;
 import org.springframework.stereotype.Service;
 
 import java.util.*;

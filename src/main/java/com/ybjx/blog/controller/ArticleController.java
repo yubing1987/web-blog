@@ -9,7 +9,6 @@ import com.ybjx.blog.common.result.PageResult;
 import com.ybjx.blog.common.result.PojoResult;
 import com.ybjx.blog.dto.ArticleDTO;
 import com.ybjx.blog.entity.ArticleDO;
-import com.ybjx.blog.entity.ArticleDraftDO;
 import com.ybjx.blog.query.ArticleQuery;
 import com.ybjx.blog.service.ArticleService;
 import com.ybjx.blog.service.ArticleTagService;
@@ -71,36 +70,6 @@ public class ArticleController {
         }
         ArticleDTO articleDTO = new ArticleDTO();
         BeanUtils.copyProperties(articleDO, articleDTO);
-        articleDTO.setTags(tagService.getArticleTagList(id));
-        return new PojoResult<>(articleDTO);
-    }
-
-    /**
-     * 通过文章ID获取文章草稿信息
-     * @param id 文章ID
-     * @return 文章信息
-     */
-    @RequestMapping(value = "/draft/{id}", method = RequestMethod.GET)
-    @ResponseBody
-    public PojoResult<ArticleDTO> getArticleDraft(@PathVariable("id") Integer id) {
-        ArticleDraftDO draftDO = articleService.getArticleDraft(id);
-        ArticleDO articleDO = articleService.getArticleById(id);
-        if (articleDO == null) {
-            throw new BlogException(ErrorCode.OBJECT_NOT_FOUND, "文章没有找到");
-        }
-
-        if (draftDO != null) {
-            articleDO.setTitle(draftDO.getTitle());
-            articleDO.setContent(draftDO.getContent());
-            articleDO.setAbstractContent(draftDO.getAbstractContent());
-            articleDO.setPicture(draftDO.getPicture());
-        }
-
-        ArticleDTO articleDTO = new ArticleDTO();
-        BeanUtils.copyProperties(articleDO, articleDTO);
-        if (draftDO != null) {
-            articleDTO.setDraft(true);
-        }
         articleDTO.setTags(tagService.getArticleTagList(id));
         return new PojoResult<>(articleDTO);
     }

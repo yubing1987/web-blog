@@ -4,11 +4,11 @@ import java.util.Date;
 import javax.persistence.*;
 
 /**
- * 文章标签
+ * 文章标签信息
  * @author ybjx
  */
-@Table(name = "article_tag")
-public class ArticleTagDO {
+@Table(name = "article_tag_ref")
+public class ArticleTagRefDO {
     /**
      * 主键
      */
@@ -29,20 +29,22 @@ public class ArticleTagDO {
     private Date modifyDate;
 
     /**
-     * 文章标签
+     * 文章ID
      */
-    private String tag;
+    @Column(name = "article_id")
+    private Integer articleId;
+
+    /**
+     * 标签ID
+     */
+    @Column(name = "tag_id")
+    private Integer tagId;
 
     /**
      * 是否被删除
      */
     @Column(name = "is_deleted")
     private Boolean isDeleted;
-
-    /**
-     * 所有者ID
-     */
-    private Integer owner;
 
     /**
      * 获取主键
@@ -99,21 +101,39 @@ public class ArticleTagDO {
     }
 
     /**
-     * 获取文章标签
+     * 获取文章ID
      *
-     * @return tag - 文章标签
+     * @return article_id - 文章ID
      */
-    public String getTag() {
-        return tag;
+    public Integer getArticleId() {
+        return articleId;
     }
 
     /**
-     * 设置文章标签
+     * 设置文章ID
      *
-     * @param tag 文章标签
+     * @param articleId 文章ID
      */
-    public void setTag(String tag) {
-        this.tag = tag;
+    public void setArticleId(Integer articleId) {
+        this.articleId = articleId;
+    }
+
+    /**
+     * 获取标签ID
+     *
+     * @return tag_id - 标签ID
+     */
+    public Integer getTagId() {
+        return tagId;
+    }
+
+    /**
+     * 设置标签ID
+     *
+     * @param tagId 标签ID
+     */
+    public void setTagId(Integer tagId) {
+        this.tagId = tagId;
     }
 
     /**
@@ -134,33 +154,15 @@ public class ArticleTagDO {
         this.isDeleted = isDeleted;
     }
 
-    /**
-     * 获取所有者ID
-     *
-     * @return owner - 所有者ID
-     */
-    public Integer getOwner() {
-        return owner;
-    }
-
-    /**
-     * 设置所有者ID
-     *
-     * @param owner 所有者ID
-     */
-    public void setOwner(Integer owner) {
-        this.owner = owner;
-    }
-
     @Override
     public String toString() {
-        return "ArticleTagDO{" +
+        return "ArticleTagRefDO{" +
                 "id=" + id +
                 ", createDate=" + createDate +
                 ", modifyDate=" + modifyDate +
-                ", tag='" + tag + '\'' +
+                ", articleId=" + articleId +
+                ", tagId=" + tagId +
                 ", isDeleted=" + isDeleted +
-                ", owner=" + owner +
                 '}';
     }
 }

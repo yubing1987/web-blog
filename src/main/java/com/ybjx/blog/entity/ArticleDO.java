@@ -1,11 +1,11 @@
 package com.ybjx.blog.entity;
 
-import javax.persistence.*;
 import java.util.Date;
+import javax.persistence.*;
 
 /**
  * 文章信息
- * Created by YuBing on 2018/11/19.
+ * @author ybjx
  */
 @Table(name = "article")
 public class ArticleDO {
@@ -45,11 +45,6 @@ public class ArticleDO {
     private Date modifyDate;
 
     /**
-     * 文章状态
-     */
-    private Boolean published;
-
-    /**
      * 是否被删除
      */
     @Column(name = "is_deleted")
@@ -60,6 +55,11 @@ public class ArticleDO {
      */
     @Column(name = "view_count")
     private Integer viewCount;
+
+    /**
+     * 所有者ID
+     */
+    private Integer owner;
 
     /**
      * 文章内容
@@ -175,24 +175,6 @@ public class ArticleDO {
     }
 
     /**
-     * 获取文章状态
-     *
-     * @return published - 文章状态
-     */
-    public Boolean getPublished() {
-        return published;
-    }
-
-    /**
-     * 设置文章状态
-     *
-     * @param published 文章状态
-     */
-    public void setPublished(Boolean published) {
-        this.published = published;
-    }
-
-    /**
      * 获取是否被删除
      *
      * @return is_deleted - 是否被删除
@@ -229,6 +211,24 @@ public class ArticleDO {
     }
 
     /**
+     * 获取所有者ID
+     *
+     * @return owner - 所有者ID
+     */
+    public Integer getOwner() {
+        return owner;
+    }
+
+    /**
+     * 设置所有者ID
+     *
+     * @param owner 所有者ID
+     */
+    public void setOwner(Integer owner) {
+        this.owner = owner;
+    }
+
+    /**
      * 获取文章内容
      *
      * @return content - 文章内容
@@ -255,9 +255,9 @@ public class ArticleDO {
                 ", abstractContent='" + abstractContent + '\'' +
                 ", createDate=" + createDate +
                 ", modifyDate=" + modifyDate +
-                ", published=" + published +
                 ", isDeleted=" + isDeleted +
                 ", viewCount=" + viewCount +
+                ", owner=" + owner +
                 ", content='" + content + '\'' +
                 '}';
     }

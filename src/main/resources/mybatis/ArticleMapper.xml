@@ -11,50 +11,10 @@
     <result column="abstract_content" jdbcType="VARCHAR" property="abstractContent" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
-    <result column="published" jdbcType="BIT" property="published" />
     <result column="is_deleted" jdbcType="BIT" property="isDeleted" />
     <result column="view_count" jdbcType="INTEGER" property="viewCount" />
+    <result column="owner" jdbcType="INTEGER" property="owner" />
     <result column="content" jdbcType="LONGVARCHAR" property="content" />
   </resultMap>
 
-  <select id="queryArticle" resultMap="BaseResultMap">
-    select * from article
-    where is_deleted = false
-    <if test = "tag != null and tag != ''">
-      and id in (
-        select article_id from article_tag where tag = #{tag} and is_deleted = 0
-      )
-    </if>
-    <if test="onlyPublish == true">
-      and published = true
-    </if>
-    <if test="key != null and key != ''">
-      and title like concat('%', #{key}, '%')
-    </if>
-  </select>
-
-  <select id="queryArticleByIds" resultMap="BaseResultMap">
-    select * from article
-    where is_deleted = false and published = true
-    <if test="ids.size() > 0">
-      and id in
-      <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
-        #{id}
-      </foreach>
-    </if>
-  </select>
-
-  <select id="queryArticleNotInIds" resultMap="BaseResultMap">
-    select * from article
-    where is_deleted = false and published = true
-    <if test="ids.size() > 0">
-      and id not in
-      <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
-        #{id}
-      </foreach>
-    </if>
-    <if test="key != null and key != ''">
-      and title like concat('%', #{key}, '%')
-    </if>
-  </select>
 </mapper>

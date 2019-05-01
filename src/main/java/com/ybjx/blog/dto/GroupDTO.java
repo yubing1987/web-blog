@@ -4,19 +4,20 @@ import com.ybjx.blog.checker.group.CreateCheck;
 import com.ybjx.blog.checker.group.DeleteCheck;
 import com.ybjx.blog.checker.group.UpdateCheck;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 
 /**
+ * 分组信息
  * @author ybjx
- * @date 2019/3/24 9:38
+ * @date 2019/5/1 22:07
  */
-public class ArticleTagDTO {
+public class GroupDTO {
     /**
      * 主键
      */
-    @NotNull(message = "标签ID不能为空", groups = {DeleteCheck.class, UpdateCheck.class})
+    @NotNull(message = "分组ID不能为空", groups = {DeleteCheck.class, UpdateCheck.class})
     private Integer id;
 
     /**
@@ -30,10 +31,16 @@ public class ArticleTagDTO {
     private Date modifyDate;
 
     /**
-     * 文章标签
+     * 父group的id
      */
-    @NotEmpty(message = "标签内容不能为空", groups = {CreateCheck.class})
-    private String tag;
+    @NotNull(message = "父分组的ID不能为空", groups = {CreateCheck.class})
+    private Integer parentId;
+
+    /**
+     * 组名
+     */
+    @NotNull(message = "组名不能为空", groups = {CreateCheck.class})
+    private String name;
 
     /**
      * 是否被删除
@@ -44,6 +51,26 @@ public class ArticleTagDTO {
      * 所有者ID
      */
     private Integer owner;
+
+    /**
+     * 文章分组图片
+     */
+    private String icon;
+
+    /**
+     * 分组类型
+     */
+    private String type;
+
+    /**
+     * 子分组信息
+     */
+    private List<GroupDTO> children;
+
+    /**
+     * 分组中的文章列表
+     */
+    private List<ArticleDTO> articles;
 
     /**
      * 获取主键
@@ -100,21 +127,39 @@ public class ArticleTagDTO {
     }
 
     /**
-     * 获取文章标签
+     * 获取父group的id
      *
-     * @return tag - 文章标签
+     * @return parent_id - 父group的id
      */
-    public String getTag() {
-        return tag;
+    public Integer getParentId() {
+        return parentId;
     }
 
     /**
-     * 设置文章标签
+     * 设置父group的id
      *
-     * @param tag 文章标签
+     * @param parentId 父group的id
      */
-    public void setTag(String tag) {
-        this.tag = tag;
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
+    }
+
+    /**
+     * 获取组名
+     *
+     * @return name - 组名
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * 设置组名
+     *
+     * @param name 组名
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
@@ -153,15 +198,72 @@ public class ArticleTagDTO {
         this.owner = owner;
     }
 
+    /**
+     * 获取文章分组图片
+     *
+     * @return icon - 文章分组图片
+     */
+    public String getIcon() {
+        return icon;
+    }
+
+    /**
+     * 设置文章分组图片
+     *
+     * @param icon 文章分组图片
+     */
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    /**
+     * 获取分组类型
+     *
+     * @return type - 分组类型
+     */
+    public String getType() {
+        return type;
+    }
+
+    /**
+     * 设置分组类型
+     *
+     * @param type 分组类型
+     */
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public List<GroupDTO> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<GroupDTO> children) {
+        this.children = children;
+    }
+
+    public List<ArticleDTO> getArticles() {
+        return articles;
+    }
+
+    public void setArticles(List<ArticleDTO> articles) {
+        this.articles = articles;
+    }
+
     @Override
     public String toString() {
-        return "ArticleTagDO{" +
+        return "GroupDTO{" +
                 "id=" + id +
                 ", createDate=" + createDate +
                 ", modifyDate=" + modifyDate +
-                ", tag='" + tag + '\'' +
+                ", parentId=" + parentId +
+                ", name='" + name + '\'' +
                 ", isDeleted=" + isDeleted +
                 ", owner=" + owner +
+                ", icon='" + icon + '\'' +
+                ", type='" + type + '\'' +
+                ", children=" + children +
+                ", articles=" + articles +
                 '}';
     }
 }

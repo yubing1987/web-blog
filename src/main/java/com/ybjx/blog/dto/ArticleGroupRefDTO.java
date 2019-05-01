@@ -4,19 +4,18 @@ import com.ybjx.blog.checker.group.CreateCheck;
 import com.ybjx.blog.checker.group.DeleteCheck;
 import com.ybjx.blog.checker.group.UpdateCheck;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
+ * 文章分组信息
  * @author ybjx
- * @date 2019/3/24 9:38
  */
-public class ArticleTagDTO {
+public class ArticleGroupRefDTO {
     /**
      * 主键
      */
-    @NotNull(message = "标签ID不能为空", groups = {DeleteCheck.class, UpdateCheck.class})
+    @NotNull(message = "分组信息ID不能为空", groups = {DeleteCheck.class, UpdateCheck.class})
     private Integer id;
 
     /**
@@ -30,20 +29,26 @@ public class ArticleTagDTO {
     private Date modifyDate;
 
     /**
-     * 文章标签
-     */
-    @NotEmpty(message = "标签内容不能为空", groups = {CreateCheck.class})
-    private String tag;
-
-    /**
      * 是否被删除
      */
     private Boolean isDeleted;
 
     /**
-     * 所有者ID
+     * 文章ID
      */
-    private Integer owner;
+    @NotNull(message = "文章ID不能为空", groups = {CreateCheck.class})
+    private Integer articleId;
+
+    /**
+     * 文章分组ID
+     */
+    @NotNull(message = "文章分组ID不能为空", groups = {CreateCheck.class})
+    private Integer groupId;
+
+    /**
+     * 文章排序
+     */
+    private Integer level;
 
     /**
      * 获取主键
@@ -100,24 +105,6 @@ public class ArticleTagDTO {
     }
 
     /**
-     * 获取文章标签
-     *
-     * @return tag - 文章标签
-     */
-    public String getTag() {
-        return tag;
-    }
-
-    /**
-     * 设置文章标签
-     *
-     * @param tag 文章标签
-     */
-    public void setTag(String tag) {
-        this.tag = tag;
-    }
-
-    /**
      * 获取是否被删除
      *
      * @return is_deleted - 是否被删除
@@ -136,32 +123,69 @@ public class ArticleTagDTO {
     }
 
     /**
-     * 获取所有者ID
+     * 获取文章ID
      *
-     * @return owner - 所有者ID
+     * @return article_id - 文章ID
      */
-    public Integer getOwner() {
-        return owner;
+    public Integer getArticleId() {
+        return articleId;
     }
 
     /**
-     * 设置所有者ID
+     * 设置文章ID
      *
-     * @param owner 所有者ID
+     * @param articleId 文章ID
      */
-    public void setOwner(Integer owner) {
-        this.owner = owner;
+    public void setArticleId(Integer articleId) {
+        this.articleId = articleId;
+    }
+
+    /**
+     * 获取文章分组ID
+     *
+     * @return group_id - 文章分组ID
+     */
+    public Integer getGroupId() {
+        return groupId;
+    }
+
+    /**
+     * 设置文章分组ID
+     *
+     * @param groupId 文章分组ID
+     */
+    public void setGroupId(Integer groupId) {
+        this.groupId = groupId;
+    }
+
+    /**
+     * 获取文章排序
+     *
+     * @return level - 文章排序
+     */
+    public Integer getLevel() {
+        return level;
+    }
+
+    /**
+     * 设置文章排序
+     *
+     * @param level 文章排序
+     */
+    public void setLevel(Integer level) {
+        this.level = level;
     }
 
     @Override
     public String toString() {
-        return "ArticleTagDO{" +
+        return "ArticleGroupRefDO{" +
                 "id=" + id +
                 ", createDate=" + createDate +
                 ", modifyDate=" + modifyDate +
-                ", tag='" + tag + '\'' +
                 ", isDeleted=" + isDeleted +
-                ", owner=" + owner +
+                ", articleId=" + articleId +
+                ", groupId=" + groupId +
+                ", level=" + level +
                 '}';
     }
 }

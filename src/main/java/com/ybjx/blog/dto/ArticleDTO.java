@@ -1,42 +1,42 @@
 package com.ybjx.blog.dto;
 
 import com.ybjx.blog.checker.group.CreateCheck;
+import com.ybjx.blog.checker.group.DeleteCheck;
 import com.ybjx.blog.checker.group.UpdateCheck;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 /**
  * 文章传输结构
- * Created by YuBing on 2018/11/19.
+ * @author ybjx
+ * @date on 2018/11/19.
  */
 public class ArticleDTO {
-
     /**
      * 主键
      */
-    @NotNull(message = "文章ID不能为空", groups = {UpdateCheck.class})
+    @NotNull(message = "文章ID不能为空", groups = {DeleteCheck.class, UpdateCheck.class})
     private Integer id;
 
     /**
      * 文章名称
      */
-    @NotEmpty(message = "文章名称不能为空", groups = {CreateCheck.class, UpdateCheck.class})
+    @NotEmpty(message = "文章标题不能为空", groups = {CreateCheck.class})
     private String title;
 
     /**
      * 文章图片
      */
-    @NotEmpty(message = "文章图片不能为空", groups = {CreateCheck.class, UpdateCheck.class})
+    @NotEmpty(message = "文章图片不能为空", groups = {CreateCheck.class})
     private String picture;
 
     /**
      * 文章摘要
      */
-    @NotEmpty(message = "文章摘要不能为空", groups = {CreateCheck.class, UpdateCheck.class})
+    @NotEmpty(message = "文章摘要不能为空", groups = {CreateCheck.class})
     private String abstractContent;
 
     /**
@@ -50,11 +50,6 @@ public class ArticleDTO {
     private Date modifyDate;
 
     /**
-     * 文章状态
-     */
-    private Boolean published;
-
-    /**
      * 是否被删除
      */
     private Boolean isDeleted;
@@ -65,18 +60,18 @@ public class ArticleDTO {
     private Integer viewCount;
 
     /**
+     * 所有者ID
+     */
+    private Integer owner;
+
+    /**
      * 文章内容
      */
-    @NotEmpty(message = "文章内容不能为空", groups = {CreateCheck.class, UpdateCheck.class})
+    @NotEmpty(message = "文章内容不能为空", groups = {CreateCheck.class})
     private String content;
 
     /**
-     * 是不是草稿
-     */
-    private Boolean draft;
-
-    /**
-     * 文章标签
+     * 文章标签列表
      */
     private List<ArticleTagDTO> tags;
 
@@ -189,24 +184,6 @@ public class ArticleDTO {
     }
 
     /**
-     * 获取文章状态
-     *
-     * @return published - 文章状态
-     */
-    public Boolean getPublished() {
-        return published;
-    }
-
-    /**
-     * 设置文章状态
-     *
-     * @param published 文章状态
-     */
-    public void setPublished(Boolean published) {
-        this.published = published;
-    }
-
-    /**
      * 获取是否被删除
      *
      * @return is_deleted - 是否被删除
@@ -243,6 +220,24 @@ public class ArticleDTO {
     }
 
     /**
+     * 获取所有者ID
+     *
+     * @return owner - 所有者ID
+     */
+    public Integer getOwner() {
+        return owner;
+    }
+
+    /**
+     * 设置所有者ID
+     *
+     * @param owner 所有者ID
+     */
+    public void setOwner(Integer owner) {
+        this.owner = owner;
+    }
+
+    /**
      * 获取文章内容
      *
      * @return content - 文章内容
@@ -258,22 +253,6 @@ public class ArticleDTO {
      */
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public Boolean getDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted(Boolean deleted) {
-        isDeleted = deleted;
-    }
-
-    public Boolean getDraft() {
-        return draft;
-    }
-
-    public void setDraft(Boolean draft) {
-        this.draft = draft;
     }
 
     public List<ArticleTagDTO> getTags() {
@@ -293,11 +272,10 @@ public class ArticleDTO {
                 ", abstractContent='" + abstractContent + '\'' +
                 ", createDate=" + createDate +
                 ", modifyDate=" + modifyDate +
-                ", published=" + published +
                 ", isDeleted=" + isDeleted +
                 ", viewCount=" + viewCount +
+                ", owner=" + owner +
                 ", content='" + content + '\'' +
-                ", draft=" + draft +
                 ", tags=" + tags +
                 '}';
     }

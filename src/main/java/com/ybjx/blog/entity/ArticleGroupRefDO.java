@@ -4,11 +4,11 @@ import java.util.Date;
 import javax.persistence.*;
 
 /**
- * 文章标签
+ * 文章分组信息
  * @author ybjx
  */
-@Table(name = "article_tag")
-public class ArticleTagDO {
+@Table(name = "article_group_ref")
+public class ArticleGroupRefDO {
     /**
      * 主键
      */
@@ -29,20 +29,27 @@ public class ArticleTagDO {
     private Date modifyDate;
 
     /**
-     * 文章标签
-     */
-    private String tag;
-
-    /**
      * 是否被删除
      */
     @Column(name = "is_deleted")
     private Boolean isDeleted;
 
     /**
-     * 所有者ID
+     * 文章ID
      */
-    private Integer owner;
+    @Column(name = "article_id")
+    private Integer articleId;
+
+    /**
+     * 文章分组ID
+     */
+    @Column(name = "group_id")
+    private Integer groupId;
+
+    /**
+     * 文章排序
+     */
+    private Integer level;
 
     /**
      * 获取主键
@@ -99,24 +106,6 @@ public class ArticleTagDO {
     }
 
     /**
-     * 获取文章标签
-     *
-     * @return tag - 文章标签
-     */
-    public String getTag() {
-        return tag;
-    }
-
-    /**
-     * 设置文章标签
-     *
-     * @param tag 文章标签
-     */
-    public void setTag(String tag) {
-        this.tag = tag;
-    }
-
-    /**
      * 获取是否被删除
      *
      * @return is_deleted - 是否被删除
@@ -135,32 +124,69 @@ public class ArticleTagDO {
     }
 
     /**
-     * 获取所有者ID
+     * 获取文章ID
      *
-     * @return owner - 所有者ID
+     * @return article_id - 文章ID
      */
-    public Integer getOwner() {
-        return owner;
+    public Integer getArticleId() {
+        return articleId;
     }
 
     /**
-     * 设置所有者ID
+     * 设置文章ID
      *
-     * @param owner 所有者ID
+     * @param articleId 文章ID
      */
-    public void setOwner(Integer owner) {
-        this.owner = owner;
+    public void setArticleId(Integer articleId) {
+        this.articleId = articleId;
+    }
+
+    /**
+     * 获取文章分组ID
+     *
+     * @return group_id - 文章分组ID
+     */
+    public Integer getGroupId() {
+        return groupId;
+    }
+
+    /**
+     * 设置文章分组ID
+     *
+     * @param groupId 文章分组ID
+     */
+    public void setGroupId(Integer groupId) {
+        this.groupId = groupId;
+    }
+
+    /**
+     * 获取文章排序
+     *
+     * @return level - 文章排序
+     */
+    public Integer getLevel() {
+        return level;
+    }
+
+    /**
+     * 设置文章排序
+     *
+     * @param level 文章排序
+     */
+    public void setLevel(Integer level) {
+        this.level = level;
     }
 
     @Override
     public String toString() {
-        return "ArticleTagDO{" +
+        return "ArticleGroupRefDO{" +
                 "id=" + id +
                 ", createDate=" + createDate +
                 ", modifyDate=" + modifyDate +
-                ", tag='" + tag + '\'' +
                 ", isDeleted=" + isDeleted +
-                ", owner=" + owner +
+                ", articleId=" + articleId +
+                ", groupId=" + groupId +
+                ", level=" + level +
                 '}';
     }
 }

@@ -1,48 +1,48 @@
-package com.ybjx.blog.entity;
+package com.ybjx.blog.dto;
 
+import com.ybjx.blog.checker.group.CreateCheck;
+import com.ybjx.blog.checker.group.DeleteCheck;
+
+import javax.validation.constraints.NotNull;
 import java.util.Date;
-import javax.persistence.*;
 
 /**
- * 文章标签
+ * 文章标签信息
  * @author ybjx
  */
-@Table(name = "article_tag")
-public class ArticleTagDO {
+public class ArticleTagRefDTO {
     /**
      * 主键
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NotNull(message = "标签信息ID不能为空", groups = {DeleteCheck.class})
     private Integer id;
 
     /**
      * 创建时间
      */
-    @Column(name = "create_date")
     private Date createDate;
 
     /**
      * 最后修改时间
      */
-    @Column(name = "modify_date")
     private Date modifyDate;
 
     /**
-     * 文章标签
+     * 文章ID
      */
-    private String tag;
+    @NotNull(message = "文章ID不能为空", groups = {CreateCheck.class})
+    private Integer articleId;
+
+    /**
+     * 标签ID
+     */
+    @NotNull(message = "标签ID不能为空", groups = {CreateCheck.class})
+    private Integer tagId;
 
     /**
      * 是否被删除
      */
-    @Column(name = "is_deleted")
     private Boolean isDeleted;
-
-    /**
-     * 所有者ID
-     */
-    private Integer owner;
 
     /**
      * 获取主键
@@ -99,21 +99,39 @@ public class ArticleTagDO {
     }
 
     /**
-     * 获取文章标签
+     * 获取文章ID
      *
-     * @return tag - 文章标签
+     * @return article_id - 文章ID
      */
-    public String getTag() {
-        return tag;
+    public Integer getArticleId() {
+        return articleId;
     }
 
     /**
-     * 设置文章标签
+     * 设置文章ID
      *
-     * @param tag 文章标签
+     * @param articleId 文章ID
      */
-    public void setTag(String tag) {
-        this.tag = tag;
+    public void setArticleId(Integer articleId) {
+        this.articleId = articleId;
+    }
+
+    /**
+     * 获取标签ID
+     *
+     * @return tag_id - 标签ID
+     */
+    public Integer getTagId() {
+        return tagId;
+    }
+
+    /**
+     * 设置标签ID
+     *
+     * @param tagId 标签ID
+     */
+    public void setTagId(Integer tagId) {
+        this.tagId = tagId;
     }
 
     /**
@@ -134,33 +152,15 @@ public class ArticleTagDO {
         this.isDeleted = isDeleted;
     }
 
-    /**
-     * 获取所有者ID
-     *
-     * @return owner - 所有者ID
-     */
-    public Integer getOwner() {
-        return owner;
-    }
-
-    /**
-     * 设置所有者ID
-     *
-     * @param owner 所有者ID
-     */
-    public void setOwner(Integer owner) {
-        this.owner = owner;
-    }
-
     @Override
     public String toString() {
-        return "ArticleTagDO{" +
+        return "ArticleTagRefDO{" +
                 "id=" + id +
                 ", createDate=" + createDate +
                 ", modifyDate=" + modifyDate +
-                ", tag='" + tag + '\'' +
+                ", articleId=" + articleId +
+                ", tagId=" + tagId +
                 ", isDeleted=" + isDeleted +
-                ", owner=" + owner +
                 '}';
     }
 }

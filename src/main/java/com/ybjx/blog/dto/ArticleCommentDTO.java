@@ -1,48 +1,64 @@
-package com.ybjx.blog.entity;
+package com.ybjx.blog.dto;
 
+import com.ybjx.blog.checker.group.CreateCheck;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
-import javax.persistence.*;
+import java.util.List;
 
 /**
- * 文章标签
+ * 文章回复信息
  * @author ybjx
+ * @date 2019/5/1 21:48
  */
-@Table(name = "article_tag")
-public class ArticleTagDO {
+public class ArticleCommentDTO {
     /**
      * 主键
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     /**
      * 创建时间
      */
-    @Column(name = "create_date")
     private Date createDate;
 
     /**
      * 最后修改时间
      */
-    @Column(name = "modify_date")
     private Date modifyDate;
-
-    /**
-     * 文章标签
-     */
-    private String tag;
 
     /**
      * 是否被删除
      */
-    @Column(name = "is_deleted")
     private Boolean isDeleted;
 
     /**
      * 所有者ID
      */
     private Integer owner;
+
+    /**
+     * 回复内容
+     */
+    @NotEmpty(message = "回复内容不能为空", groups = {CreateCheck.class})
+    private String content;
+
+    /**
+     * 关联回复的ID
+     */
+    @NotEmpty(message = "关联回复不能为空", groups = {CreateCheck.class})
+    private Integer parentId;
+
+    /**
+     * 文章ID
+     */
+    private Integer articleId;
+
+    /**
+     * 关联回复
+     */
+    private List<ArticleCommentDTO> children;
 
     /**
      * 获取主键
@@ -99,24 +115,6 @@ public class ArticleTagDO {
     }
 
     /**
-     * 获取文章标签
-     *
-     * @return tag - 文章标签
-     */
-    public String getTag() {
-        return tag;
-    }
-
-    /**
-     * 设置文章标签
-     *
-     * @param tag 文章标签
-     */
-    public void setTag(String tag) {
-        this.tag = tag;
-    }
-
-    /**
      * 获取是否被删除
      *
      * @return is_deleted - 是否被删除
@@ -152,15 +150,80 @@ public class ArticleTagDO {
         this.owner = owner;
     }
 
+    /**
+     * 获取回复内容
+     *
+     * @return content - 回复内容
+     */
+    public String getContent() {
+        return content;
+    }
+
+    /**
+     * 设置回复内容
+     *
+     * @param content 回复内容
+     */
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    /**
+     * 获取关联回复的ID
+     *
+     * @return parent_id - 关联回复的ID
+     */
+    public Integer getParentId() {
+        return parentId;
+    }
+
+    /**
+     * 设置关联回复的ID
+     *
+     * @param parentId 关联回复的ID
+     */
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
+    }
+
+    /**
+     * 获取文章ID
+     *
+     * @return article_id - 文章ID
+     */
+    public Integer getArticleId() {
+        return articleId;
+    }
+
+    /**
+     * 设置文章ID
+     *
+     * @param articleId 文章ID
+     */
+    public void setArticleId(Integer articleId) {
+        this.articleId = articleId;
+    }
+
+    public List<ArticleCommentDTO> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<ArticleCommentDTO> children) {
+        this.children = children;
+    }
+
     @Override
     public String toString() {
-        return "ArticleTagDO{" +
+        return "ArticleCommentDTO{" +
                 "id=" + id +
                 ", createDate=" + createDate +
                 ", modifyDate=" + modifyDate +
-                ", tag='" + tag + '\'' +
                 ", isDeleted=" + isDeleted +
                 ", owner=" + owner +
+                ", content='" + content + '\'' +
+                ", parentId=" + parentId +
+                ", articleId=" + articleId +
+                ", children=" + children +
                 '}';
     }
 }

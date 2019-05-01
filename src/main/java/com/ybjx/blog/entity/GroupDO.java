@@ -4,11 +4,11 @@ import java.util.Date;
 import javax.persistence.*;
 
 /**
- * 文章标签
+ * 分组信息
  * @author ybjx
  */
-@Table(name = "article_tag")
-public class ArticleTagDO {
+@Table(name = "group")
+public class GroupDO {
     /**
      * 主键
      */
@@ -29,9 +29,15 @@ public class ArticleTagDO {
     private Date modifyDate;
 
     /**
-     * 文章标签
+     * 父group的id
      */
-    private String tag;
+    @Column(name = "parent_id")
+    private Integer parentId;
+
+    /**
+     * 组名
+     */
+    private String name;
 
     /**
      * 是否被删除
@@ -43,6 +49,16 @@ public class ArticleTagDO {
      * 所有者ID
      */
     private Integer owner;
+
+    /**
+     * 文章分组图片
+     */
+    private String icon;
+
+    /**
+     * 分组类型
+     */
+    private String type;
 
     /**
      * 获取主键
@@ -99,21 +115,39 @@ public class ArticleTagDO {
     }
 
     /**
-     * 获取文章标签
+     * 获取父group的id
      *
-     * @return tag - 文章标签
+     * @return parent_id - 父group的id
      */
-    public String getTag() {
-        return tag;
+    public Integer getParentId() {
+        return parentId;
     }
 
     /**
-     * 设置文章标签
+     * 设置父group的id
      *
-     * @param tag 文章标签
+     * @param parentId 父group的id
      */
-    public void setTag(String tag) {
-        this.tag = tag;
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
+    }
+
+    /**
+     * 获取组名
+     *
+     * @return name - 组名
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * 设置组名
+     *
+     * @param name 组名
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
@@ -152,15 +186,54 @@ public class ArticleTagDO {
         this.owner = owner;
     }
 
+    /**
+     * 获取文章分组图片
+     *
+     * @return icon - 文章分组图片
+     */
+    public String getIcon() {
+        return icon;
+    }
+
+    /**
+     * 设置文章分组图片
+     *
+     * @param icon 文章分组图片
+     */
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    /**
+     * 获取分组类型
+     *
+     * @return type - 分组类型
+     */
+    public String getType() {
+        return type;
+    }
+
+    /**
+     * 设置分组类型
+     *
+     * @param type 分组类型
+     */
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
-        return "ArticleTagDO{" +
+        return "GroupDO{" +
                 "id=" + id +
                 ", createDate=" + createDate +
                 ", modifyDate=" + modifyDate +
-                ", tag='" + tag + '\'' +
+                ", parentId=" + parentId +
+                ", name='" + name + '\'' +
                 ", isDeleted=" + isDeleted +
                 ", owner=" + owner +
+                ", icon='" + icon + '\'' +
+                ", type='" + type + '\'' +
                 '}';
     }
 }
