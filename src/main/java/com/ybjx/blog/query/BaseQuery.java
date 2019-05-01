@@ -7,7 +7,8 @@ import java.io.Serializable;
 
 /**
  * 基础查询信息
- * create by YuBing at 2019/2/15
+ * @author ybjx
+ * @date 2019/2/15
  */
 public class BaseQuery implements Serializable {
     /**

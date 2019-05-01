@@ -2,7 +2,8 @@ package com.ybjx.blog.common;
 
 /**
  * 应用自定义异常信息
- * create by YuBing at 2018/11/20
+ * @author ybjx
+ * @date 2019/5/1 21:48
  */
 public class BlogException extends RuntimeException {
     /**

@@ -1,6 +1,8 @@
 package com.ybjx.blog.common;
 
 import com.ybjx.blog.common.result.PojoResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -8,10 +10,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * 接口异常统一处理
- * create by YuBing at 2018/11/21
+ * @author ybjx
+ * @date 2019/5/1 21:48
  */
 @ControllerAdvice
 public class BlogExceptionHandler {
+    /**
+     * 日志
+     */
+    private static Logger LOGGER = LoggerFactory.getLogger(BlogExceptionHandler.class);
+
     /**
      * 异常处理类
      * @param e 异常信息
@@ -32,7 +40,7 @@ public class BlogExceptionHandler {
             result.setCode(ErrorCode.SYSTEM_ERROR.getCode());
             result.setMessage(ErrorCode.SYSTEM_ERROR.getMsg());
         }
-
+        LOGGER.error(result.getMessage(), e);
         return result;
     }
 }

@@ -1,7 +1,7 @@
 package com.ybjx.blog.entity;
 
-import java.util.Date;
 import javax.persistence.*;
+import java.util.Date;
 
 /**
  * 用户信息

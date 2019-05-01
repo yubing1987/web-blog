@@ -1,7 +1,5 @@
 package com.ybjx.blog.controller;
 
-import com.ybjx.blog.common.BlogException;
-import com.ybjx.blog.common.ErrorCode;
 import com.ybjx.blog.common.result.PojoResult;
 import com.ybjx.blog.service.FileService;
 import org.springframework.util.StringUtils;
@@ -14,7 +12,8 @@ import java.util.UUID;
 
 /**
  * 文件上传下载的接口
- * create by YuBing at 2019/2/17
+ * @author ybjx
+ * @date 2018/11/19.
  */
 @RequestMapping(value = "/api/")
 @RestController
@@ -34,11 +33,8 @@ public class FileController {
             fileId = UUID.randomUUID().toString();
             fileId = fileId.replaceAll("-", "");
         }
-        if (fileService.saveFile("image", fileId, file.getInputStream())) {
-            return new PojoResult<>(fileId);
-        } else {
-            throw new BlogException(ErrorCode.FILE_SAVE_ERROR);
-        }
+        fileService.saveFile("image", fileId, file.getInputStream());
+        return new PojoResult<>(fileId);
     }
 
     @RequestMapping(value = "/image/{fileId}", method = RequestMethod.GET)

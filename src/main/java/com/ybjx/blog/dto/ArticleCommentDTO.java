@@ -3,7 +3,6 @@ package com.ybjx.blog.dto;
 import com.ybjx.blog.checker.group.CreateCheck;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
 

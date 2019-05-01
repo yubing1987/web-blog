@@ -9,7 +9,8 @@ import tk.mybatis.spring.annotation.MapperScan;
 
 /**
  * spring boot程序启动类
- * Created by YuBing on 2018/11/19.
+ * @author ybjx
+ * @date 2018/11/19.
  */
 @SpringBootApplication(exclude = {MultipartAutoConfiguration.class})
 @MapperScan("com.ybjx.blog.dao")
