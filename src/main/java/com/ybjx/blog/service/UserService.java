@@ -1,11 +1,15 @@
 package com.ybjx.blog.service;
 
+import com.ybjx.blog.common.BlogException;
+import com.ybjx.blog.common.ErrorCode;
 import com.ybjx.blog.dao.UserInfoMapper;
 import com.ybjx.blog.entity.UserInfoDO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 用户相关的服务
@@ -47,7 +51,23 @@ public class UserService {
             LOGGER.error("通过用户ID查询用户信息出错", e);
             return null;
         }
-
     }
 
+    /**
+     * 登录
+     * @param name 登录名称
+     * @param password 登录密码
+     */
+    public void login(String name, String password){
+        UserInfoDO user = new UserInfoDO();
+        user.setIsDeleted(false);
+        user.setLoginName(name);
+
+        List<UserInfoDO> list = userMapper.select(user);
+        if(list.size() != 1){
+            throw new BlogException(ErrorCode.OBJECT_NOT_FOUND, "登录名称或者密码错误！", new Exception(user.toString()));
+        }
+        user = list.get(0);
+
+    }
 }

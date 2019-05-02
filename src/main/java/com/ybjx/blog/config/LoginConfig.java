@@ -17,6 +17,11 @@ public class LoginConfig {
      */
     private String ignoreUrl = "";
 
+    /**
+     * 密码加密KEY
+     */
+    private String key = "";
+
     public String getIgnoreUrl() {
         return ignoreUrl;
     }
@@ -25,10 +30,19 @@ public class LoginConfig {
         this.ignoreUrl = ignoreUrl;
     }
 
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
     @Override
     public String toString() {
         return "LoginConfig{" +
                 "ignoreUrl='" + ignoreUrl + '\'' +
+                ", key='" + key + '\'' +
                 '}';
     }
 }

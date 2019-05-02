@@ -6,3 +6,4 @@ blog:
     location: /root/file/
   login:
     ignore-url: /login,/logout
+    key: 073791cc21cdc845738b345992feacf1
