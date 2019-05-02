@@ -17,10 +17,12 @@ public class CookieUtil {
      * @param name cookie名称
      * @param value cookie值
      */
-    public static void addCookie(HttpServletResponse response, String name, String value){
+    public static void addCookie( HttpServletResponse response, String name, String value){
         Cookie cookie = new Cookie(name, value);
         cookie.setMaxAge(-1);
         cookie.setSecure(true);
+        cookie.setPath("/");
+        cookie.setVersion(0);
         response.addCookie(cookie);
     }
 
@@ -31,6 +33,13 @@ public class CookieUtil {
      * @return cookie值
      */
     public static String getCookieValue(HttpServletRequest request, String name){
+        if(request == null){
+            return null;
+        }
+        Cookie[] cookies = request.getCookies();
+        if(cookies == null){
+            return null;
+        }
         for(Cookie cookie: request.getCookies()){
             if(cookie.getName().equals(name)){
                 return cookie.getValue();

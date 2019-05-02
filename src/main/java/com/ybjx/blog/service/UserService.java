@@ -1,15 +1,17 @@
 package com.ybjx.blog.service;
 
-import com.ybjx.blog.common.BlogException;
-import com.ybjx.blog.common.ErrorCode;
+import com.ybjx.blog.common.*;
+import com.ybjx.blog.config.LoginConfig;
 import com.ybjx.blog.dao.UserInfoMapper;
 import com.ybjx.blog.entity.UserInfoDO;
+import org.checkerframework.checker.units.qual.A;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * 用户相关的服务
@@ -30,12 +32,20 @@ public class UserService {
     private final UserInfoMapper userMapper;
 
     /**
+     * 用户登录相关的配置
+     */
+    private final LoginConfig loginConfig;
+
+    /**
      * 构造方法
      * @param userMapper -
+     * @param loginConfig -
      */
     @Autowired
-    public UserService(UserInfoMapper userMapper) {
+    public UserService(UserInfoMapper userMapper,
+                       LoginConfig loginConfig) {
         this.userMapper = userMapper;
+        this.loginConfig = loginConfig;
     }
 
     /**
@@ -58,7 +68,7 @@ public class UserService {
      * @param name 登录名称
      * @param password 登录密码
      */
-    public void login(String name, String password){
+    public String login(String name, String password){
         UserInfoDO user = new UserInfoDO();
         user.setIsDeleted(false);
         user.setLoginName(name);
@@ -69,5 +79,16 @@ public class UserService {
         }
         user = list.get(0);
 
+        if(!user.getType().equals(UserType.PWD.name())){
+            throw new BlogException(ErrorCode.OBJECT_NOT_FOUND, "登录名称或者密码错误！", new Exception(user.toString()));
+        }
+
+        String pwd = Md5.md5(name + password + loginConfig.getKey());
+        if(!user.getPassword().equals(pwd)){
+            throw new BlogException(ErrorCode.OBJECT_NOT_FOUND, "登录名称或者密码错误！", new Exception(user.toString()));
+        }
+        String token = UUID.randomUUID().toString().replaceAll("-", "");
+        UserTokenManager.addUserToken(token, user.getId());
+        return token;
     }
 }

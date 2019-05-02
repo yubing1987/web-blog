@@ -5,5 +5,5 @@ blog:
   file:
     location: /root/file/
   login:
-    ignore-url: /login,/logout
+    ignore-url: /login,/api/login
     key: 073791cc21cdc845738b345992feacf1

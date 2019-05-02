@@ -1,6 +1,6 @@
 package com.ybjx.blog.filter;
 
-import com.ybjx.blog.common.ApplicationContextUtil;
+import com.ybjx.blog.common.Constant;
 import com.ybjx.blog.common.CookieUtil;
 import com.ybjx.blog.common.UserHolder;
 import com.ybjx.blog.common.UserTokenManager;
@@ -21,11 +21,6 @@ import java.io.IOException;
 public class UserFilter extends MatchFilter {
 
     /**
-     * 用户Token在cookie中的名称
-     */
-    private final static String USER_TOKEN_COOKIE_NAME = "USER_TOKEN";
-
-    /**
      * 登录页面URL
      */
     private final static String LOGIN_URL = "/login";
@@ -35,9 +30,12 @@ public class UserFilter extends MatchFilter {
      */
     private UserService userService;
 
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        userService = ApplicationContextUtil.getBean(UserService.class);
         super.init(filterConfig);
     }
 
@@ -57,7 +55,7 @@ public class UserFilter extends MatchFilter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         UserHolder.cleanUser();
 
-        String userToken = CookieUtil.getCookieValue(request, USER_TOKEN_COOKIE_NAME);
+        String userToken = CookieUtil.getCookieValue(request, Constant.USER_TOKEN_COOKIE_NAME);
 
         if(StringUtils.isEmpty(userToken)){
             response.sendRedirect(LOGIN_URL);
@@ -65,14 +63,14 @@ public class UserFilter extends MatchFilter {
         }
         Integer userId = UserTokenManager.getUserId(userToken);
         if(userId == null){
-            CookieUtil.addCookie(response, USER_TOKEN_COOKIE_NAME, null);
+            CookieUtil.addCookie(response, Constant.USER_TOKEN_COOKIE_NAME, null);
             response.sendRedirect(LOGIN_URL);
             return;
         }
 
         UserInfoDO user = userService.getUser(userId);
         if(user == null){
-            CookieUtil.addCookie(response, USER_TOKEN_COOKIE_NAME, null);
+            CookieUtil.addCookie(response, Constant.USER_TOKEN_COOKIE_NAME, null);
             response.sendRedirect(LOGIN_URL);
             return;
         }

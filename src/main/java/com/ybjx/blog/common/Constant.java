@@ -11,4 +11,9 @@ public class Constant {
      * 逗号
      */
     public static final String COMMA = ",";
+
+    /**
+     * 用户Token在cookie中的名称
+     */
+    public final static String USER_TOKEN_COOKIE_NAME = "USER_TOKEN";
 }
