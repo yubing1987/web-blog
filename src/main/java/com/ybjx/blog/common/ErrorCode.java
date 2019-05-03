@@ -18,7 +18,9 @@ public enum ErrorCode {
     OBJECT_UPDATE_ERROR("10005", "数据更新出错"),
     OBJECT_STATUS_ERROR("10006", "状态错误"),
     FILE_SAVE_ERROR("10007", "保存文件出错"),
-    FILE_READ_ERROR("10008", "读取文件出错");
+    FILE_READ_ERROR("10008", "读取文件出错"),
+    OBJECT_DELETE_ERROR("10009", "删除数据出错"),
+    PERMISSION_DENIED("10010", "无权限");
 
     ErrorCode(String code, String msg) {
         this.code = code;

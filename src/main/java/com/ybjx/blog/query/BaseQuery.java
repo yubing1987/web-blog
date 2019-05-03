@@ -1,6 +1,7 @@
 package com.ybjx.blog.query;
 
 import com.ybjx.blog.checker.group.PagingCheck;
+import com.ybjx.blog.common.Constant;
 import org.hibernate.validator.constraints.Range;
 
 import java.io.Serializable;
@@ -29,6 +30,9 @@ public class BaseQuery implements Serializable {
     private String key;
 
     public int getPage() {
+        if(page < 1){
+            return 1;
+        }
         return page;
     }
 
@@ -37,6 +41,12 @@ public class BaseQuery implements Serializable {
     }
 
     public int getSize() {
+        if(size < 1){
+            return 1;
+        }
+        if(size > Constant.MAX_PAGE_SIZE){
+            return Constant.MAX_PAGE_SIZE;
+        }
         return size;
     }
 

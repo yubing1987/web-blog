@@ -17,4 +17,16 @@
     <result column="content" jdbcType="LONGVARCHAR" property="content" />
   </resultMap>
 
+  <select id="getArticleList" resultMap="BaseResultMap">
+    select * from article a where a.is_deleted = 0
+    <if test="userId != null">
+      and a.owner = #{userId}
+    </if>
+    <if test="tagId != null">
+      and a.id in (select article_id from article_tag_ref atg where atg.is_deleted = 0 and atg.tag_id = #{tagId})
+    </if>
+    <if test="key != null and key !=''">
+      and a.title like concat('%', #{key}, '%')
+    </if>
+  </select>
 </mapper>

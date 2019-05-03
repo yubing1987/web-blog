@@ -6,23 +6,38 @@ package com.ybjx.blog.query;
  * @date 2019/2/15
  */
 public class ArticleQuery extends BaseQuery {
-    /**
-     * 文章标签
-     */
-    private String tag;
 
-    public String getTag() {
-        return tag;
+    /**
+     * 作者ID
+     */
+    private Integer userId;
+
+    /**
+     * 标签ID
+     */
+    private Integer tagId;
+
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setTag(String tag) {
-        this.tag = tag;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public Integer getTagId() {
+        return tagId;
+    }
+
+    public void setTagId(Integer tagId) {
+        this.tagId = tagId;
     }
 
     @Override
     public String toString() {
         return "ArticleQuery{" +
-                "tag='" + tag + '\'' +
+                "userId=" + userId +
+                ", tagId=" + tagId +
                 "} " + super.toString();
     }
 }

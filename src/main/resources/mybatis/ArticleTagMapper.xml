@@ -12,4 +12,15 @@
     <result column="is_deleted" jdbcType="BIT" property="isDeleted" />
     <result column="owner" jdbcType="INTEGER" property="owner" />
   </resultMap>
+
+  <select id="getTagByArticleIds" resultMap="BaseResultMap">
+    select * from article_tag t where t.is_deleted = 0
+    and t.id in (
+      select tag_id from article_tag_ref tr where tr.is_deleted = 0
+      and tr.article_id in
+        <foreach collection="articleIds" index="index" item="articleId" open="(" separator="," close=")">
+          #{articleId}
+        </foreach>
+    )
+  </select>
 </mapper>

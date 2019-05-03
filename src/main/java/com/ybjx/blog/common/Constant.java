@@ -16,4 +16,9 @@ public class Constant {
      * 用户Token在cookie中的名称
      */
     public final static String USER_TOKEN_COOKIE_NAME = "USER_TOKEN";
+
+    /**
+     * 分页查询时单页最大数量
+     */
+    public final static Integer MAX_PAGE_SIZE = 1000;
 }

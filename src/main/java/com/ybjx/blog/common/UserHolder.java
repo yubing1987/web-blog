@@ -26,7 +26,11 @@ public class UserHolder {
      * @return 用户信息
      */
     public static UserInfoDO getUser(){
-        return user.get();
+        UserInfoDO u =  user.get();
+        if(u == null){
+            throw new BlogException(ErrorCode.SYSTEM_ERROR, "用户没有登录！");
+        }
+        return u;
     }
 
     /**

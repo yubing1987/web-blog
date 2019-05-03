@@ -18,7 +18,7 @@ public class ArticleDTO {
     /**
      * 主键
      */
-    @NotNull(message = "文章ID不能为空", groups = {DeleteCheck.class, UpdateCheck.class})
+    @NotNull(message = "文章ID不能为空", groups = {UpdateCheck.class})
     private Integer id;
 
     /**
