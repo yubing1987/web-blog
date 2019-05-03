@@ -1,7 +1,6 @@
 package com.ybjx.blog.dao;
 
 import com.ybjx.blog.entity.ArticleTagDO;
-import com.ybjx.blog.entity.ArticleTagRefDO;
 import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
 

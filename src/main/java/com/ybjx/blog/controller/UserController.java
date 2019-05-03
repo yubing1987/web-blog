@@ -2,13 +2,10 @@ package com.ybjx.blog.controller;
 
 import com.ybjx.blog.common.*;
 import com.ybjx.blog.common.result.PojoResult;
-import com.ybjx.blog.entity.UserInfoDO;
 import com.ybjx.blog.service.UserService;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 

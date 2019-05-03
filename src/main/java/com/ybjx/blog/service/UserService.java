@@ -4,7 +4,6 @@ import com.ybjx.blog.common.*;
 import com.ybjx.blog.config.LoginConfig;
 import com.ybjx.blog.dao.UserInfoMapper;
 import com.ybjx.blog.entity.UserInfoDO;
-import org.checkerframework.checker.units.qual.A;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

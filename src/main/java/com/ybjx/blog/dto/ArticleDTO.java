@@ -1,7 +1,6 @@
 package com.ybjx.blog.dto;
 
 import com.ybjx.blog.checker.group.CreateCheck;
-import com.ybjx.blog.checker.group.DeleteCheck;
 import com.ybjx.blog.checker.group.UpdateCheck;
 
 import javax.validation.constraints.NotEmpty;
