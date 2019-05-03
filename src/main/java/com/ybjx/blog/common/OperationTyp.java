@@ -8,5 +8,9 @@ public enum OperationTyp {
     /**
      * 操作文章
      */
-    ARTICLE
+    ARTICLE,
+    /**
+     * 文章标签
+     */
+    ARTICLE_TAG
 }

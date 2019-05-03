@@ -23,4 +23,17 @@
         </foreach>
     )
   </select>
+
+  <select id="getTagList" resultMap="BaseResultMap">
+    select * from article_tag t where t.is_deleted = 0 and t.owner = #{userId}
+    <if test="key != null and key != ''">
+      and t.tag like concat('%', #{key}, '%')
+    </if>
+    <if test="ids != null">
+      and t.id in
+        <foreach collection="ids" index="index" item="id" open="(" separator="," close=")">
+          #{id}
+        </foreach>
+    </if>
+  </select>
 </mapper>

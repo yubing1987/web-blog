@@ -28,7 +28,7 @@ public class UserHolder {
     public static UserInfoDO getUser(){
         UserInfoDO u =  user.get();
         if(u == null){
-            throw new BlogException(ErrorCode.SYSTEM_ERROR, "用户没有登录！");
+            throw new BlogException(ErrorCode.SYSTEM_ERROR, "用户没有登录");
         }
         return u;
     }

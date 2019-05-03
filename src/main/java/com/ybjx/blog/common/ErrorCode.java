@@ -20,7 +20,8 @@ public enum ErrorCode {
     FILE_SAVE_ERROR("10007", "保存文件出错"),
     FILE_READ_ERROR("10008", "读取文件出错"),
     OBJECT_DELETE_ERROR("10009", "删除数据出错"),
-    PERMISSION_DENIED("10010", "无权限");
+    PERMISSION_DENIED("10010", "无权限"),
+    STATUS_ERROR("100011", "状态错误");
 
     ErrorCode(String code, String msg) {
         this.code = code;

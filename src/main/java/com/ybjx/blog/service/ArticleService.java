@@ -118,10 +118,14 @@ public class ArticleService {
             logService.addLog("删除文章", articleDO.getId(), OperationTyp.ARTICLE, user.getId());
         }
         catch (Exception e){
-            throw new BlogException(ErrorCode.OBJECT_DELETE_ERROR, "删除文章出粗！", e);
+            throw new BlogException(ErrorCode.OBJECT_DELETE_ERROR, "删除文章出粗", e);
         }
     }
 
+    /**
+     * 编辑文章
+     * @param articleDTO 新的文章信息
+     */
     @ParameterCheck(UpdateCheck.class)
     @Transactional(rollbackFor = Exception.class)
     public void editArticle(ArticleDTO articleDTO){
@@ -167,7 +171,7 @@ public class ArticleService {
                 logService.addLog("编辑文章", articleDO.getId(), OperationTyp.ARTICLE, user.getId());
             }
             catch (Exception e){
-                throw new BlogException(ErrorCode.OBJECT_UPDATE_ERROR, "保存文章出错！", e);
+                throw new BlogException(ErrorCode.OBJECT_UPDATE_ERROR, "保存文章出错", e);
             }
         }
     }

@@ -74,17 +74,17 @@ public class UserService {
 
         List<UserInfoDO> list = userMapper.select(user);
         if(list.size() != 1){
-            throw new BlogException(ErrorCode.OBJECT_NOT_FOUND, "登录名称或者密码错误！", new Exception(user.toString()));
+            throw new BlogException(ErrorCode.OBJECT_NOT_FOUND, "登录名称或者密码错误", new Exception(user.toString()));
         }
         user = list.get(0);
 
         if(!user.getType().equals(UserType.PWD.name())){
-            throw new BlogException(ErrorCode.OBJECT_NOT_FOUND, "登录名称或者密码错误！", new Exception(user.toString()));
+            throw new BlogException(ErrorCode.OBJECT_NOT_FOUND, "登录名称或者密码错误", new Exception(user.toString()));
         }
 
         String pwd = Md5.md5(name + password + loginConfig.getKey());
         if(!user.getPassword().equals(pwd)){
-            throw new BlogException(ErrorCode.OBJECT_NOT_FOUND, "登录名称或者密码错误！", new Exception(user.toString()));
+            throw new BlogException(ErrorCode.OBJECT_NOT_FOUND, "登录名称或者密码错误", new Exception(user.toString()));
         }
         String token = UUID.randomUUID().toString().replaceAll("-", "");
         UserTokenManager.addUserToken(token, user.getId());

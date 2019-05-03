@@ -17,4 +17,15 @@ public interface ArticleTagMapper extends Mapper<ArticleTagDO> {
      * @return 标签信息
      */
     List<ArticleTagDO> getTagByArticleIds(@Param("articleIds") List<Integer> articleIds);
+
+    /**
+     * 查询标签列表
+     * @param ids 标签ID列表
+     * @param userId 所有者ID
+     * @param key 搜索关键字
+     * @return 查找到的标签列表
+     */
+    List<ArticleTagDO> getTagList(@Param("ids") List<Integer> ids,
+                                  @Param("userId") Integer userId,
+                                  @Param("key") String key);
 }

@@ -32,7 +32,7 @@ public class ArticleTagDTO {
     /**
      * 文章标签
      */
-    @NotEmpty(message = "标签内容不能为空", groups = {CreateCheck.class})
+    @NotEmpty(message = "标签内容不能为空", groups = {CreateCheck.class, UpdateCheck.class})
     private String tag;
 
     /**
