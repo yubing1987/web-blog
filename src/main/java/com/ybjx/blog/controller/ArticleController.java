@@ -4,15 +4,23 @@ import com.ybjx.blog.common.UserHolder;
 import com.ybjx.blog.common.result.PageResult;
 import com.ybjx.blog.common.result.PojoResult;
 import com.ybjx.blog.dto.ArticleDTO;
+import com.ybjx.blog.dto.ArticleTagDTO;
 import com.ybjx.blog.entity.ArticleDO;
+import com.ybjx.blog.entity.ArticleTagDO;
+import com.ybjx.blog.entity.ArticleTagRefDO;
 import com.ybjx.blog.query.ArticleQuery;
 import com.ybjx.blog.service.ArticleService;
+import com.ybjx.blog.service.TagRefService;
+import com.ybjx.blog.service.TagService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 文章相关的接口
@@ -29,12 +37,26 @@ public class ArticleController {
     private final ArticleService articleService;
 
     /**
+     * 文章标签相关服务
+     */
+    private final TagRefService tagRefService;
+
+    /**
+     * 标签服务
+     */
+    private final TagService tagService;
+
+    /**
      * 构造方法
      * @param articleService -
      */
     @Autowired
-    public ArticleController(ArticleService articleService) {
+    public ArticleController(ArticleService articleService,
+                             TagRefService tagRefService,
+                             TagService tagService) {
         this.articleService = articleService;
+        this.tagRefService = tagRefService;
+        this.tagService = tagService;
     }
 
     /**
@@ -96,7 +118,20 @@ public class ArticleController {
         ArticleDO articleDO = articleService.getArticleById(articleId);
         ArticleDTO articleDTO = new ArticleDTO();
         BeanUtils.copyProperties(articleDO, articleDTO);
-        // todo 需要再查找文章的标签然后添加到DTO中去
+
+        List<ArticleTagRefDO> tagRefs = tagRefService.getArticleTag(articleId);
+        List<Integer> tagIds = new ArrayList<>();
+        for(ArticleTagRefDO tagRef: tagRefs){
+            tagIds.add(tagRef.getId());
+        }
+        List<ArticleTagDO> tags = tagService.getTagList(null, tagIds);
+
+        articleDTO.setTags(new ArrayList<>());
+        for(ArticleTagDO tag: tags){
+            ArticleTagDTO tagDTO = new ArticleTagDTO();
+            BeanUtils.copyProperties(tag, tagDTO);
+            articleDTO.getTags().add(tagDTO);
+        }
         return new PojoResult<>(articleDTO);
     }
 

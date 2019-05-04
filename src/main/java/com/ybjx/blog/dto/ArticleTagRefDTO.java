@@ -30,13 +30,13 @@ public class ArticleTagRefDTO {
     /**
      * 文章ID
      */
-    @NotNull(message = "文章ID不能为空", groups = {CreateCheck.class})
+    @NotNull(message = "文章ID不能为空", groups = {CreateCheck.class, DeleteCheck.class})
     private Integer articleId;
 
     /**
      * 标签ID
      */
-    @NotNull(message = "标签ID不能为空", groups = {CreateCheck.class})
+    @NotNull(message = "标签ID不能为空", groups = {CreateCheck.class, DeleteCheck.class})
     private Integer tagId;
 
     /**

@@ -163,4 +163,17 @@ public class TagService {
         }
         return tagMapper.getTagList(ids, UserHolder.getUser().getId(), key);
     }
+
+    /**
+     * 通过标签ID查询标签信息
+     * @param tagId 标签ID
+     * @return 标签信息
+     */
+    public ArticleTagDO getTagById(Integer tagId){
+        ArticleTagDO tagDO = tagMapper.selectByPrimaryKey(tagId);
+        if(tagDO == null){
+            throw new BlogException(ErrorCode.OBJECT_NOT_FOUND, "标签没有找到！");
+        }
+        return tagDO;
+    }
 }
