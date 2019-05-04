@@ -60,6 +60,7 @@ public class GroupDTO {
     /**
      * 分组类型
      */
+    @NotNull(message = "分组类型不能为空", groups = {CreateCheck.class})
     private String type;
 
     /**

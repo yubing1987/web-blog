@@ -16,5 +16,9 @@ public enum OperationTyp {
     /**
      * 文章标签关联信息
      */
-    ARTICLE_TAG_REF
+    ARTICLE_TAG_REF,
+    /**
+     * 文章分组
+     */
+    GROUP
 }
