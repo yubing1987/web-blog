@@ -141,7 +141,7 @@ public class ArticleService {
             ArticleDO temp = new ArticleDO();
             temp.setTitle(articleDTO.getTitle());
             temp.setIsDeleted(false);
-            if(articleMapper.selectCount(articleDO) > 0){
+            if(articleMapper.selectCount(temp) > 0){
                 throw new BlogException(ErrorCode.OBJECT_EXIST, "标题已经被使用过了");
             }
             articleDO.setTitle(articleDTO.getTitle());

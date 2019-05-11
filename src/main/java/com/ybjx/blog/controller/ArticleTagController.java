@@ -8,10 +8,7 @@ import com.ybjx.blog.query.ArticleTagQuery;
 import com.ybjx.blog.service.TagService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,12 +70,11 @@ public class ArticleTagController {
 
     /**
      * 查找标签列表
-     * @param query 标签查询条件
      * @return 查找到的标签信息
      */
     @RequestMapping(value = "/manage/tag/", method = RequestMethod.GET)
-    public ListResult<ArticleTagDTO> getTagList(ArticleTagQuery query){
-        List<ArticleTagDO> list = tagService.getTagList(query.getKey(), null);
+    public ListResult<ArticleTagDTO> getTagList(){
+        List<ArticleTagDO> list = tagService.getTagList(null, null);
         List<ArticleTagDTO> tagList = new ArrayList<>();
         for(ArticleTagDO tagDO: list){
             ArticleTagDTO tagDTO = new ArticleTagDTO();

@@ -84,7 +84,7 @@ public class ArticleController {
      * @return 是否编辑成功
      */
     @RequestMapping(value = "/manage/article/edit", method = RequestMethod.POST)
-    public PojoResult<Boolean> editArticle(ArticleDTO articleDTO){
+    public PojoResult<Boolean> editArticle(@RequestBody ArticleDTO articleDTO){
         articleService.editArticle(articleDTO);
         return new PojoResult<>(true);
     }
