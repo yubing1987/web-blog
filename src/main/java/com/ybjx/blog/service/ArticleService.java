@@ -219,27 +219,28 @@ public class ArticleService {
             cache.put(articleDTO.getId(), articleDTO);
         }
         page.setItems(listDto);
+        if(articleIds.size() > 0) {
+            List<ArticleTagDO> tags = articleTagMapper.getTagByArticleIds(articleIds);
 
-        List<ArticleTagDO> tags = articleTagMapper.getTagByArticleIds(articleIds);
-
-        List<ArticleTagRefDO> tagRefs = articleTagRefMapper.getTagByArticleIds(articleIds);
-        Map<Integer, ArticleTagDTO> tagCache = new HashMap<>(8);
-        for(ArticleTagDO tagDO: tags){
-            ArticleTagDTO tagDTO = new ArticleTagDTO();
-            BeanUtils.copyProperties(tagDO, tagDTO);
-            tagCache.put(tagDTO.getId(), tagDTO);
-        }
-
-        for(ArticleTagRefDO refDO: tagRefs){
-            ArticleDTO articleDTO = cache.get(refDO.getArticleId());
-            if(articleDTO == null){
-                continue;
+            List<ArticleTagRefDO> tagRefs = articleTagRefMapper.getTagByArticleIds(articleIds);
+            Map<Integer, ArticleTagDTO> tagCache = new HashMap<>(8);
+            for (ArticleTagDO tagDO : tags) {
+                ArticleTagDTO tagDTO = new ArticleTagDTO();
+                BeanUtils.copyProperties(tagDO, tagDTO);
+                tagCache.put(tagDTO.getId(), tagDTO);
             }
-            ArticleTagDTO tagDTO = tagCache.get(refDO.getTagId());
-            if(tagDTO == null){
-                continue;
+
+            for (ArticleTagRefDO refDO : tagRefs) {
+                ArticleDTO articleDTO = cache.get(refDO.getArticleId());
+                if (articleDTO == null) {
+                    continue;
+                }
+                ArticleTagDTO tagDTO = tagCache.get(refDO.getTagId());
+                if (tagDTO == null) {
+                    continue;
+                }
+                articleDTO.getTags().add(tagDTO);
             }
-            articleDTO.getTags().add(tagDTO);
         }
 
         return result;

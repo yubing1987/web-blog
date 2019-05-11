@@ -5,3 +5,6 @@ logging:
 blog:
   file:
     location: g:/blog/file
+  login:
+    mock: true
+    mock-user-id: 1

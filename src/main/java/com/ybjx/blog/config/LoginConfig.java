@@ -22,6 +22,16 @@ public class LoginConfig {
      */
     private String key = "";
 
+    /**
+     * 是否模拟登录
+     */
+    private Boolean mock = false;
+
+    /**
+     * 模拟登录的用户ID
+     */
+    private Integer mockUserId = 1;
+
     public String getIgnoreUrl() {
         return ignoreUrl;
     }
@@ -38,11 +48,29 @@ public class LoginConfig {
         this.key = key;
     }
 
+    public Boolean getMock() {
+        return mock;
+    }
+
+    public void setMock(Boolean mock) {
+        this.mock = mock;
+    }
+
+    public Integer getMockUserId() {
+        return mockUserId;
+    }
+
+    public void setMockUserId(Integer mockUserId) {
+        this.mockUserId = mockUserId;
+    }
+
     @Override
     public String toString() {
         return "LoginConfig{" +
                 "ignoreUrl='" + ignoreUrl + '\'' +
                 ", key='" + key + '\'' +
+                ", mock=" + mock +
+                ", mockUserId=" + mockUserId +
                 '}';
     }
 }

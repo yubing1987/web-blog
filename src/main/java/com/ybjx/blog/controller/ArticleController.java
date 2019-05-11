@@ -14,10 +14,7 @@ import com.ybjx.blog.service.TagRefService;
 import com.ybjx.blog.service.TagService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +62,7 @@ public class ArticleController {
      * @return 是否添加成功
      */
     @RequestMapping(value = "/manage/article", method = RequestMethod.POST)
-    public PojoResult<Boolean> addArticle(ArticleDTO articleDTO){
+    public PojoResult<Boolean> addArticle(@RequestBody  ArticleDTO articleDTO){
         articleService.addArticle(articleDTO);
         return new PojoResult<>(true);
     }

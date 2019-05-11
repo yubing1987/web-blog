@@ -1,9 +1,7 @@
 package com.ybjx.blog.filter;
 
-import com.ybjx.blog.common.Constant;
-import com.ybjx.blog.common.CookieUtil;
-import com.ybjx.blog.common.UserHolder;
-import com.ybjx.blog.common.UserTokenManager;
+import com.ybjx.blog.common.*;
+import com.ybjx.blog.config.LoginConfig;
 import com.ybjx.blog.entity.UserInfoDO;
 import com.ybjx.blog.service.UserService;
 import org.springframework.util.StringUtils;
@@ -23,7 +21,7 @@ public class UserFilter extends MatchFilter {
     /**
      * 登录页面URL
      */
-    private final static String LOGIN_URL = "/login";
+    private final static String LOGIN_URL = "/login?back_url=";
 
     /**
      * 用户相关的服务
@@ -54,25 +52,32 @@ public class UserFilter extends MatchFilter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         UserHolder.cleanUser();
-
-        String userToken = CookieUtil.getCookieValue(request, Constant.USER_TOKEN_COOKIE_NAME);
-
-        if(StringUtils.isEmpty(userToken)){
-            response.sendRedirect(LOGIN_URL);
-            return;
+        UserInfoDO user;
+        LoginConfig loginConfig = ApplicationContextUtil.getBean(LoginConfig.class);
+        if(loginConfig.getMock() && loginConfig.getMockUserId() != null){
+            user = userService.getUser(loginConfig.getMockUserId());
+            if(user == null){
+                gotoLogin(request, response);
+                return;
+            }
         }
-        Integer userId = UserTokenManager.getUserId(userToken);
-        if(userId == null){
-            CookieUtil.addCookie(response, Constant.USER_TOKEN_COOKIE_NAME, null);
-            response.sendRedirect(LOGIN_URL);
-            return;
-        }
+        else {
+            String userToken = CookieUtil.getCookieValue(request, Constant.USER_TOKEN_COOKIE_NAME);
+            if (StringUtils.isEmpty(userToken)) {
+                gotoLogin(request, response);
+                return;
+            }
+            Integer userId = UserTokenManager.getUserId(userToken);
+            if (userId == null) {
+                gotoLogin(request, response);
+                return;
+            }
 
-        UserInfoDO user = userService.getUser(userId);
-        if(user == null){
-            CookieUtil.addCookie(response, Constant.USER_TOKEN_COOKIE_NAME, null);
-            response.sendRedirect(LOGIN_URL);
-            return;
+            user = userService.getUser(userId);
+            if (user == null) {
+                gotoLogin(request, response);
+                return;
+            }
         }
 
         UserHolder.setUser(user);
@@ -82,6 +87,16 @@ public class UserFilter extends MatchFilter {
         finally {
             UserHolder.cleanUser();
         }
+    }
 
+    private void gotoLogin(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String uri = request.getRequestURI();
+        CookieUtil.addCookie(response, Constant.USER_TOKEN_COOKIE_NAME, null);
+        if(StringUtils.isEmpty(uri) || !uri.endsWith(".json")){
+            response.sendRedirect(LOGIN_URL + request.getRequestURL());
+        }
+        else{
+            response.setStatus(401);
+        }
     }
 }
