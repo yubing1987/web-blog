@@ -55,7 +55,6 @@ public class GroupService {
         GroupDO groupDO = new GroupDO();
         groupDO.setIsDeleted(false);
         groupDO.setName(groupDTO.getName());
-        groupDO.setParentId(groupDTO.getParentId());
         if(groupMapper.selectCount(groupDO) > 0){
             throw new BlogException(ErrorCode.OBJECT_EXIST, "名称已经被使用过了");
         }

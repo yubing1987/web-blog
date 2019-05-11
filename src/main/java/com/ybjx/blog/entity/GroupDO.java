@@ -1,10 +1,10 @@
 package com.ybjx.blog.entity;
 
-import javax.persistence.*;
 import java.util.Date;
+import javax.persistence.*;
 
 /**
- * 分组信息
+ * 文章分组
  * @author ybjx
  */
 @Table(name = "group")
@@ -29,12 +29,6 @@ public class GroupDO {
     private Date modifyDate;
 
     /**
-     * 父group的id
-     */
-    @Column(name = "parent_id")
-    private Integer parentId;
-
-    /**
      * 组名
      */
     private String name;
@@ -53,12 +47,12 @@ public class GroupDO {
     /**
      * 文章分组图片
      */
-    private String icon;
+    private String picture;
 
     /**
-     * 分组类型
+     * 分组描述
      */
-    private String type;
+    private String description;
 
     /**
      * 获取主键
@@ -112,24 +106,6 @@ public class GroupDO {
      */
     public void setModifyDate(Date modifyDate) {
         this.modifyDate = modifyDate;
-    }
-
-    /**
-     * 获取父group的id
-     *
-     * @return parent_id - 父group的id
-     */
-    public Integer getParentId() {
-        return parentId;
-    }
-
-    /**
-     * 设置父group的id
-     *
-     * @param parentId 父group的id
-     */
-    public void setParentId(Integer parentId) {
-        this.parentId = parentId;
     }
 
     /**
@@ -189,37 +165,37 @@ public class GroupDO {
     /**
      * 获取文章分组图片
      *
-     * @return icon - 文章分组图片
+     * @return picture - 文章分组图片
      */
-    public String getIcon() {
-        return icon;
+    public String getPicture() {
+        return picture;
     }
 
     /**
      * 设置文章分组图片
      *
-     * @param icon 文章分组图片
+     * @param picture 文章分组图片
      */
-    public void setIcon(String icon) {
-        this.icon = icon;
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 
     /**
-     * 获取分组类型
+     * 获取分组描述
      *
-     * @return type - 分组类型
+     * @return description - 分组描述
      */
-    public String getType() {
-        return type;
+    public String getDescription() {
+        return description;
     }
 
     /**
-     * 设置分组类型
+     * 设置分组描述
      *
-     * @param type 分组类型
+     * @param description 分组描述
      */
-    public void setType(String type) {
-        this.type = type;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override
@@ -228,12 +204,11 @@ public class GroupDO {
                 "id=" + id +
                 ", createDate=" + createDate +
                 ", modifyDate=" + modifyDate +
-                ", parentId=" + parentId +
                 ", name='" + name + '\'' +
                 ", isDeleted=" + isDeleted +
                 ", owner=" + owner +
-                ", icon='" + icon + '\'' +
-                ", type='" + type + '\'' +
+                ", picture='" + picture + '\'' +
+                ", description='" + description + '\'' +
                 '}';
     }
 }

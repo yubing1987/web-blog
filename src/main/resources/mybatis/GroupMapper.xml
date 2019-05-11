@@ -8,11 +8,10 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="modify_date" jdbcType="TIMESTAMP" property="modifyDate" />
-    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="is_deleted" jdbcType="BIT" property="isDeleted" />
     <result column="owner" jdbcType="INTEGER" property="owner" />
-    <result column="icon" jdbcType="VARCHAR" property="icon" />
-    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="picture" jdbcType="VARCHAR" property="picture" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
   </resultMap>
 </mapper>

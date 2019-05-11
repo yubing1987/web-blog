@@ -31,12 +31,6 @@ public class GroupDTO {
     private Date modifyDate;
 
     /**
-     * 父group的id
-     */
-    @NotNull(message = "父分组的ID不能为空", groups = {CreateCheck.class})
-    private Integer parentId;
-
-    /**
      * 组名
      */
     @NotNull(message = "组名不能为空", groups = {CreateCheck.class})
@@ -55,23 +49,18 @@ public class GroupDTO {
     /**
      * 文章分组图片
      */
-    private String icon;
-
-    /**
-     * 分组类型
-     */
-    @NotNull(message = "分组类型不能为空", groups = {CreateCheck.class})
-    private String type;
-
-    /**
-     * 子分组信息
-     */
-    private List<GroupDTO> children;
+    private String picture;
 
     /**
      * 分组中的文章列表
      */
     private List<ArticleDTO> articles;
+
+    /**
+     * 分组描述
+     */
+    @NotNull(message = "分组描述不能为空", groups = {CreateCheck.class})
+    private String description;
 
     /**
      * 获取主键
@@ -125,24 +114,6 @@ public class GroupDTO {
      */
     public void setModifyDate(Date modifyDate) {
         this.modifyDate = modifyDate;
-    }
-
-    /**
-     * 获取父group的id
-     *
-     * @return parent_id - 父group的id
-     */
-    public Integer getParentId() {
-        return parentId;
-    }
-
-    /**
-     * 设置父group的id
-     *
-     * @param parentId 父group的id
-     */
-    public void setParentId(Integer parentId) {
-        this.parentId = parentId;
     }
 
     /**
@@ -202,45 +173,19 @@ public class GroupDTO {
     /**
      * 获取文章分组图片
      *
-     * @return icon - 文章分组图片
+     * @return picture - 文章分组图片
      */
-    public String getIcon() {
-        return icon;
+    public String getPicture() {
+        return picture;
     }
 
     /**
      * 设置文章分组图片
      *
-     * @param icon 文章分组图片
+     * @param picture 文章分组图片
      */
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
-    /**
-     * 获取分组类型
-     *
-     * @return type - 分组类型
-     */
-    public String getType() {
-        return type;
-    }
-
-    /**
-     * 设置分组类型
-     *
-     * @param type 分组类型
-     */
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public List<GroupDTO> getChildren() {
-        return children;
-    }
-
-    public void setChildren(List<GroupDTO> children) {
-        this.children = children;
+    public void setPicture(String picture) {
+        this.picture = picture;
     }
 
     public List<ArticleDTO> getArticles() {
@@ -251,20 +196,36 @@ public class GroupDTO {
         this.articles = articles;
     }
 
+    /**
+     * 获取分组描述
+     *
+     * @return description - 分组描述
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * 设置分组描述
+     *
+     * @param description 分组描述
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String toString() {
         return "GroupDTO{" +
                 "id=" + id +
                 ", createDate=" + createDate +
                 ", modifyDate=" + modifyDate +
-                ", parentId=" + parentId +
                 ", name='" + name + '\'' +
                 ", isDeleted=" + isDeleted +
                 ", owner=" + owner +
-                ", icon='" + icon + '\'' +
-                ", type='" + type + '\'' +
-                ", children=" + children +
+                ", picture='" + picture + '\'' +
                 ", articles=" + articles +
+                ", description='" + description + '\'' +
                 '}';
     }
 }
