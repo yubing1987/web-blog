@@ -15,4 +15,17 @@
     <result column="description" jdbcType="VARCHAR" property="description" />
     <result column="type" jdbcType="VARCHAR" property="type" />
   </resultMap>
+
+  <select id="queryGroupList" resultMap="BaseResultMap">
+    select * from `group` where is_deleted = 0
+    <if test="userId != null">
+      and owner = #{userId}
+    </if>
+    <if test = "type != null">
+      and type = #{type}
+    </if>
+    <if test = "key != null and key != ''">
+      and name like concat('%', #{key}, '%')
+    </if>
+  </select>
 </mapper>

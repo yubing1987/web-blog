@@ -52,11 +52,6 @@ public class GroupDTO {
     private String picture;
 
     /**
-     * 分组中的文章列表
-     */
-    private List<ArticleDTO> articles;
-
-    /**
      * 分组类型
      */
     @NotNull(message = "分组类型不能为空", groups = {CreateCheck.class})
@@ -194,14 +189,6 @@ public class GroupDTO {
         this.picture = picture;
     }
 
-    public List<ArticleDTO> getArticles() {
-        return articles;
-    }
-
-    public void setArticles(List<ArticleDTO> articles) {
-        this.articles = articles;
-    }
-
     /**
      * 获取分组描述
      *
@@ -249,7 +236,6 @@ public class GroupDTO {
                 ", isDeleted=" + isDeleted +
                 ", owner=" + owner +
                 ", picture='" + picture + '\'' +
-                ", articles=" + articles +
                 ", type='" + type + '\'' +
                 ", description='" + description + '\'' +
                 '}';
