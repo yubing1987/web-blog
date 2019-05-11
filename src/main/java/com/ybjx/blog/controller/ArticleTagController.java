@@ -41,7 +41,7 @@ public class ArticleTagController {
      * @return 操作结果
      */
     @RequestMapping(value = "/manage/tag", method = RequestMethod.POST)
-    public PojoResult<Boolean> addTag(ArticleTagDTO tagDTO){
+    public PojoResult<Boolean> addTag(@RequestBody ArticleTagDTO tagDTO){
         tagService.addTag(tagDTO);
         return new PojoResult<>(true);
     }
