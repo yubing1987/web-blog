@@ -12,5 +12,6 @@
     <result column="article_id" jdbcType="INTEGER" property="articleId" />
     <result column="group_id" jdbcType="INTEGER" property="groupId" />
     <result column="level" jdbcType="INTEGER" property="level" />
+    <result column="parent_id" jdbcType="INTEGER" property="parentId" />
   </resultMap>
 </mapper>

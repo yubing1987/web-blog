@@ -51,6 +51,11 @@ public class ArticleGroupRefDTO {
     private Integer level;
 
     /**
+     * 父节点ID
+     */
+    private Integer parentId;
+
+    /**
      * 获取主键
      *
      * @return id - 主键
@@ -175,6 +180,23 @@ public class ArticleGroupRefDTO {
     public void setLevel(Integer level) {
         this.level = level;
     }
+    /**
+     * 获取父节点ID
+     *
+     * @return parent_id - 父节点ID
+     */
+    public Integer getParentId() {
+        return parentId;
+    }
+
+    /**
+     * 设置父节点ID
+     *
+     * @param parentId 父节点ID
+     */
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
+    }
 
     @Override
     public String toString() {
@@ -186,6 +208,7 @@ public class ArticleGroupRefDTO {
                 ", articleId=" + articleId +
                 ", groupId=" + groupId +
                 ", level=" + level +
+                ", parentId=" + parentId +
                 '}';
     }
 }

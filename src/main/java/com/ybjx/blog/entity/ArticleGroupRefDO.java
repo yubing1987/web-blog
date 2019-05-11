@@ -1,7 +1,7 @@
 package com.ybjx.blog.entity;
 
-import javax.persistence.*;
 import java.util.Date;
+import javax.persistence.*;
 
 /**
  * 文章分组信息
@@ -50,6 +50,12 @@ public class ArticleGroupRefDO {
      * 文章排序
      */
     private Integer level;
+
+    /**
+     * 父节点ID
+     */
+    @Column(name = "parent_id")
+    private Integer parentId;
 
     /**
      * 获取主键
@@ -177,6 +183,24 @@ public class ArticleGroupRefDO {
         this.level = level;
     }
 
+    /**
+     * 获取父节点ID
+     *
+     * @return parent_id - 父节点ID
+     */
+    public Integer getParentId() {
+        return parentId;
+    }
+
+    /**
+     * 设置父节点ID
+     *
+     * @param parentId 父节点ID
+     */
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
+    }
+
     @Override
     public String toString() {
         return "ArticleGroupRefDO{" +
@@ -187,6 +211,7 @@ public class ArticleGroupRefDO {
                 ", articleId=" + articleId +
                 ", groupId=" + groupId +
                 ", level=" + level +
+                ", parentId=" + parentId +
                 '}';
     }
 }

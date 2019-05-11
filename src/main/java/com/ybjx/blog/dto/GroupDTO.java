@@ -57,6 +57,12 @@ public class GroupDTO {
     private List<ArticleDTO> articles;
 
     /**
+     * 分组类型
+     */
+    @NotNull(message = "分组类型不能为空", groups = {CreateCheck.class})
+    private String type;
+
+    /**
      * 分组描述
      */
     @NotNull(message = "分组描述不能为空", groups = {CreateCheck.class})
@@ -214,6 +220,25 @@ public class GroupDTO {
         this.description = description;
     }
 
+
+    /**
+     * 获取分组类型
+     *
+     * @return type - 分组类型
+     */
+    public String getType() {
+        return type;
+    }
+
+    /**
+     * 设置分组类型
+     *
+     * @param type 分组类型
+     */
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return "GroupDTO{" +
@@ -225,6 +250,7 @@ public class GroupDTO {
                 ", owner=" + owner +
                 ", picture='" + picture + '\'' +
                 ", articles=" + articles +
+                ", type='" + type + '\'' +
                 ", description='" + description + '\'' +
                 '}';
     }

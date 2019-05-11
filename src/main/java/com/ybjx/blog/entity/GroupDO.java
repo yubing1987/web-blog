@@ -55,6 +55,11 @@ public class GroupDO {
     private String description;
 
     /**
+     * 分组类型
+     */
+    private String type;
+
+    /**
      * 获取主键
      *
      * @return id - 主键
@@ -198,6 +203,24 @@ public class GroupDO {
         this.description = description;
     }
 
+    /**
+     * 获取分组类型
+     *
+     * @return type - 分组类型
+     */
+    public String getType() {
+        return type;
+    }
+
+    /**
+     * 设置分组类型
+     *
+     * @param type 分组类型
+     */
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return "GroupDO{" +
@@ -209,6 +232,7 @@ public class GroupDO {
                 ", owner=" + owner +
                 ", picture='" + picture + '\'' +
                 ", description='" + description + '\'' +
+                ", type='" + type + '\'' +
                 '}';
     }
 }
