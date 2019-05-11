@@ -14,7 +14,6 @@
     <result column="is_deleted" jdbcType="BIT" property="isDeleted" />
     <result column="view_count" jdbcType="INTEGER" property="viewCount" />
     <result column="owner" jdbcType="INTEGER" property="owner" />
-    <result column="content" jdbcType="LONGVARCHAR" property="content" />
   </resultMap>
 
   <select id="getArticleList" resultMap="BaseResultMap">
@@ -28,5 +27,13 @@
     <if test="key != null and key !=''">
       and a.title like concat('%', #{key}, '%')
     </if>
+  </select>
+
+  <select id="getArticlesByIds" resultMap="BaseResultMap">
+    select * from article where a.is_deleted = 0
+    and id in
+    <foreach collection="articleIds" index="index" item="articleId" open="(" separator="," close=")">
+      #{articleId}
+    </foreach>
   </select>
 </mapper>

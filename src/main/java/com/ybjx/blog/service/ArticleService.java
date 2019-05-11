@@ -243,6 +243,14 @@ public class ArticleService {
         }
 
         return result;
+    }
 
+    /**
+     * 通过ID列表查询文章信息
+     * @param ids 文章ID列表
+     * @return 文章列表
+     */
+    public List<ArticleDO> getArticleList(List<Integer> ids){
+        return articleMapper.getArticlesByIds(ids);
     }
 }

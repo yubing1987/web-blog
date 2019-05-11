@@ -20,5 +20,9 @@ public enum OperationTyp {
     /**
      * 文章分组
      */
-    GROUP
+    GROUP,
+    /**
+     * 分组中的文章操作
+     */
+    ARTICLE_GROUP_REF
 }

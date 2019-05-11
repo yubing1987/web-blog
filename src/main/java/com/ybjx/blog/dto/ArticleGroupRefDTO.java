@@ -6,6 +6,7 @@ import com.ybjx.blog.checker.group.UpdateCheck;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 文章分组信息
@@ -48,12 +49,23 @@ public class ArticleGroupRefDTO {
     /**
      * 文章排序
      */
+    @NotNull(message = "文章分组ID不能为空", groups = {UpdateCheck.class})
     private Integer level;
 
     /**
      * 父节点ID
      */
     private Integer parentId;
+
+    /**
+     * 子节点
+     */
+    private List<ArticleGroupRefDTO> children;
+
+    /**
+     * 对应的文章信息
+     */
+    private ArticleDTO article;
 
     /**
      * 获取主键
@@ -198,9 +210,25 @@ public class ArticleGroupRefDTO {
         this.parentId = parentId;
     }
 
+    public List<ArticleGroupRefDTO> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<ArticleGroupRefDTO> children) {
+        this.children = children;
+    }
+
+    public ArticleDTO getArticle() {
+        return article;
+    }
+
+    public void setArticle(ArticleDTO article) {
+        this.article = article;
+    }
+
     @Override
     public String toString() {
-        return "ArticleGroupRefDO{" +
+        return "ArticleGroupRefDTO{" +
                 "id=" + id +
                 ", createDate=" + createDate +
                 ", modifyDate=" + modifyDate +
@@ -209,6 +237,8 @@ public class ArticleGroupRefDTO {
                 ", groupId=" + groupId +
                 ", level=" + level +
                 ", parentId=" + parentId +
+                ", children=" + children +
+                ", article=" + article +
                 '}';
     }
 }

@@ -22,4 +22,11 @@ public interface ArticleMapper extends Mapper<ArticleDO> {
     List<ArticleDO> getArticleList(@Param("userId") Integer userId,
                                           @Param("tagId") Integer tagId,
                                           @Param("key") String key);
+
+    /**
+     * 通过ID列表查询文章信息
+     * @param articleIds 文章ID列表
+     * @return 文章列表
+     */
+    List<ArticleDO> getArticlesByIds(@Param("articleIds") List<Integer> articleIds);
 }

@@ -35,7 +35,7 @@ public class ArticleTagRefController {
      * @param tagRefDTO 标签信息
      * @return 是否添加成功
      */
-    @RequestMapping(value = "/tag/ref", method = RequestMethod.POST)
+    @RequestMapping(value = "/manage/tag/ref", method = RequestMethod.POST)
     public PojoResult<Boolean> addTagRef(ArticleTagRefDTO tagRefDTO){
         tagRefService.addTagRef(tagRefDTO);
         return new PojoResult<>(true);
@@ -46,7 +46,7 @@ public class ArticleTagRefController {
      * @param tagRefDTO 文章标签信息
      * @return 是否删除成功
      */
-    @RequestMapping(value = "/tag/ref/del", method = RequestMethod.POST)
+    @RequestMapping(value = "/manage/tag/ref/del", method = RequestMethod.POST)
     public PojoResult<Boolean> delTagRef(ArticleTagRefDTO tagRefDTO){
         tagRefService.delTagRef(tagRefDTO);
         return new PojoResult<>(true);

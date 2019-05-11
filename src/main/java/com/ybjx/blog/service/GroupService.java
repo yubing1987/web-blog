@@ -136,4 +136,13 @@ public class GroupService {
 
         return result;
     }
+
+    /**
+     * 通过分组ID查询分组信息
+     * @param id 分组ID
+     * @return 分组信息
+     */
+    public GroupDO getGroupById(Integer id){
+        return groupMapper.selectByPrimaryKey(id);
+    }
 }
