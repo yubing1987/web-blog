@@ -7,8 +7,8 @@ import javax.persistence.*;
  * 文章分组
  * @author ybjx
  */
-@Table(name = "group")
-public class GroupDO {
+@Table(name = "article_group")
+public class ArticleGroupDO {
     /**
      * 主键
      */
@@ -223,7 +223,7 @@ public class GroupDO {
 
     @Override
     public String toString() {
-        return "GroupDO{" +
+        return "ArticleGroupDO{" +
                 "id=" + id +
                 ", createDate=" + createDate +
                 ", modifyDate=" + modifyDate +

@@ -11,9 +11,9 @@ import com.ybjx.blog.common.OperationTyp;
 import com.ybjx.blog.common.UserHolder;
 import com.ybjx.blog.common.result.Page;
 import com.ybjx.blog.common.result.PageResult;
-import com.ybjx.blog.dao.GroupMapper;
-import com.ybjx.blog.dto.GroupDTO;
-import com.ybjx.blog.entity.GroupDO;
+import com.ybjx.blog.dao.ArticleGroupMapper;
+import com.ybjx.blog.dto.ArticleGroupDTO;
+import com.ybjx.blog.entity.ArticleGroupDO;
 import com.ybjx.blog.entity.UserInfoDO;
 import com.ybjx.blog.query.GroupQuery;
 import org.springframework.beans.BeanUtils;
@@ -36,7 +36,7 @@ public class GroupService {
     /**
      * 分组数据库操作
      */
-    private final GroupMapper groupMapper;
+    private final ArticleGroupMapper articleGroupMapper;
 
     /**
      * 日志服务
@@ -47,34 +47,34 @@ public class GroupService {
      * 构造方法
      */
     @Autowired
-    public GroupService(GroupMapper groupMapper,
+    public GroupService(ArticleGroupMapper articleGroupMapper,
                         OperationLogService logService) {
-        this.groupMapper = groupMapper;
+        this.articleGroupMapper = articleGroupMapper;
         this.logService = logService;
     }
 
     /**
      * 添加文章分组
-     * @param groupDTO 分组信息
+     * @param articleGroupDTO 分组信息
      */
     @ParameterCheck(CreateCheck.class)
     @Transactional(rollbackFor = Exception.class)
-    public void addGroup(GroupDTO groupDTO){
-        GroupDO groupDO = new GroupDO();
-        groupDO.setIsDeleted(false);
-        groupDO.setName(groupDTO.getName());
-        if(groupMapper.selectCount(groupDO) > 0){
+    public void addGroup(ArticleGroupDTO articleGroupDTO){
+        ArticleGroupDO articleGroupDO = new ArticleGroupDO();
+        articleGroupDO.setIsDeleted(false);
+        articleGroupDO.setName(articleGroupDTO.getName());
+        if(articleGroupMapper.selectCount(articleGroupDO) > 0){
             throw new BlogException(ErrorCode.OBJECT_EXIST, "名称已经被使用过了");
         }
-        BeanUtils.copyProperties(groupDTO, groupDO);
-        groupDO.setId(null);
-        groupDO.setIsDeleted(false);
-        groupDO.setModifyDate(new Date());
-        groupDO.setCreateDate(new Date());
-        groupDO.setOwner(UserHolder.getUser().getId());
+        BeanUtils.copyProperties(articleGroupDTO, articleGroupDO);
+        articleGroupDO.setId(null);
+        articleGroupDO.setIsDeleted(false);
+        articleGroupDO.setModifyDate(new Date());
+        articleGroupDO.setCreateDate(new Date());
+        articleGroupDO.setOwner(UserHolder.getUser().getId());
         try{
-            groupMapper.insert(groupDO);
-            logService.addLog("添加文章分组", groupDO.getId(), OperationTyp.GROUP, UserHolder.getUser().getId());
+            articleGroupMapper.insert(articleGroupDO);
+            logService.addLog("添加文章分组", articleGroupDO.getId(), OperationTyp.GROUP, UserHolder.getUser().getId());
         }
         catch (Exception e){
             throw new BlogException(ErrorCode.DATABASE_INSERT, "保存分组信息出错", e);
@@ -87,20 +87,20 @@ public class GroupService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void delGroup(int groupId){
-        GroupDO groupDO = groupMapper.selectByPrimaryKey(groupId);
-        if(groupDO == null || groupDO.getIsDeleted()){
+        ArticleGroupDO articleGroupDO = articleGroupMapper.selectByPrimaryKey(groupId);
+        if(articleGroupDO == null || articleGroupDO.getIsDeleted()){
             throw new BlogException(ErrorCode.OBJECT_NOT_FOUND, "文章分组没有找到");
         }
         UserInfoDO user = UserHolder.getUser();
-        if(!user.getId().equals(groupDO.getOwner())){
+        if(!user.getId().equals(articleGroupDO.getOwner())){
             throw new BlogException(ErrorCode.PERMISSION_DENIED,
                     new Exception(user.getId() + "无权限删除文章分组【" + groupId + "】"));
         }
         try{
-            groupDO.setIsDeleted(true);
-            groupDO.setModifyDate(new Date());
-            groupMapper.updateByPrimaryKey(groupDO);
-            logService.addLog("删除文章分组", groupDO.getId(), OperationTyp.GROUP, user.getId());
+            articleGroupDO.setIsDeleted(true);
+            articleGroupDO.setModifyDate(new Date());
+            articleGroupMapper.updateByPrimaryKey(articleGroupDO);
+            logService.addLog("删除文章分组", articleGroupDO.getId(), OperationTyp.GROUP, user.getId());
         }
         catch (Exception e){
             throw new BlogException(ErrorCode.OBJECT_DELETE_ERROR, "删除文章分组出错", e);
@@ -114,21 +114,21 @@ public class GroupService {
      * @return 查询到的文章列表
      */
     @ParameterCheck(PagingCheck.class)
-    public PageResult<GroupDTO> getGroupList(GroupQuery query, Integer userId){
+    public PageResult<ArticleGroupDTO> getGroupList(GroupQuery query, Integer userId){
         PageHelper.startPage(query.getPage(), query.getSize(), "modify_date desc");
-        List<GroupDO> list = groupMapper.queryGroupList(userId, query.getType(), query.getKey());
-        PageResult<GroupDTO> result = new PageResult<>();
-        Page<GroupDTO> p = new Page<>();
+        List<ArticleGroupDO> list = articleGroupMapper.queryGroupList(userId, query.getType(), query.getKey());
+        PageResult<ArticleGroupDTO> result = new PageResult<>();
+        Page<ArticleGroupDTO> p = new Page<>();
         result.setContent(p);
 
-        PageInfo<GroupDO> page = new PageInfo<>(list);
+        PageInfo<ArticleGroupDO> page = new PageInfo<>(list);
         p.setTotal(page.getTotal());
         p.setLimit(query.getSize());
         p.setCurrent(query.getPage());
 
-        List<GroupDTO> groups = new ArrayList<>();
-        for(GroupDO g: list){
-            GroupDTO group = new GroupDTO();
+        List<ArticleGroupDTO> groups = new ArrayList<>();
+        for(ArticleGroupDO g: list){
+            ArticleGroupDTO group = new ArticleGroupDTO();
             BeanUtils.copyProperties(g, group);
             groups.add(group);
         }
@@ -142,7 +142,7 @@ public class GroupService {
      * @param id 分组ID
      * @return 分组信息
      */
-    public GroupDO getGroupById(Integer id){
-        return groupMapper.selectByPrimaryKey(id);
+    public ArticleGroupDO getGroupById(Integer id){
+        return articleGroupMapper.selectByPrimaryKey(id);
     }
 }

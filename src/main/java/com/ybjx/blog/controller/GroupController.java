@@ -3,14 +3,11 @@ package com.ybjx.blog.controller;
 import com.ybjx.blog.common.UserHolder;
 import com.ybjx.blog.common.result.PageResult;
 import com.ybjx.blog.common.result.PojoResult;
-import com.ybjx.blog.dto.GroupDTO;
+import com.ybjx.blog.dto.ArticleGroupDTO;
 import com.ybjx.blog.query.GroupQuery;
 import com.ybjx.blog.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 文章分组相关的接口
@@ -40,7 +37,7 @@ public class GroupController {
      * @return 是否添加成功
      */
     @RequestMapping(value = "/manage/group", method = RequestMethod.POST)
-    PojoResult<Boolean> addGroup(GroupDTO group){
+    PojoResult<Boolean> addGroup(@RequestBody ArticleGroupDTO group){
         groupService.addGroup(group);
         return new PojoResult<>(true);
     }
@@ -62,7 +59,7 @@ public class GroupController {
      * @return 查询到的分组列表
      */
     @RequestMapping(value = "/manage/group/list", method = RequestMethod.GET)
-    PageResult<GroupDTO> managerQueryGroup(GroupQuery query){
+    PageResult<ArticleGroupDTO> managerQueryGroup(GroupQuery query){
         return groupService.getGroupList(query, UserHolder.getUser().getId());
     }
 
@@ -77,7 +74,7 @@ public class GroupController {
      * @return 查询到的文章列表
      */
     @RequestMapping(value = "/group/list", method = RequestMethod.GET)
-    PageResult<GroupDTO> queryGroup(GroupQuery query){
+    PageResult<ArticleGroupDTO> queryGroup(GroupQuery query){
         return groupService.getGroupList(query, null);
     }
 }

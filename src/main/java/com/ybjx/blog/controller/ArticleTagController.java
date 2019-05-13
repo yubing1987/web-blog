@@ -4,7 +4,6 @@ import com.ybjx.blog.common.result.ListResult;
 import com.ybjx.blog.common.result.PojoResult;
 import com.ybjx.blog.dto.ArticleTagDTO;
 import com.ybjx.blog.entity.ArticleTagDO;
-import com.ybjx.blog.query.ArticleTagQuery;
 import com.ybjx.blog.service.TagService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +62,7 @@ public class ArticleTagController {
      * @return 编辑结果
      */
     @RequestMapping(value = "/manage/tag/edit", method = RequestMethod.POST)
-    public PojoResult<Boolean> editTag(ArticleTagDTO tagDTO){
+    public PojoResult<Boolean> editTag(@RequestBody ArticleTagDTO tagDTO){
         tagService.updateTag(tagDTO);
         return new PojoResult<>(true);
     }
@@ -72,7 +71,7 @@ public class ArticleTagController {
      * 查找标签列表
      * @return 查找到的标签信息
      */
-    @RequestMapping(value = "/manage/tag/", method = RequestMethod.GET)
+    @RequestMapping(value = "/manage/tag", method = RequestMethod.GET)
     public ListResult<ArticleTagDTO> getTagList(){
         List<ArticleTagDO> list = tagService.getTagList(null, null);
         List<ArticleTagDTO> tagList = new ArrayList<>();

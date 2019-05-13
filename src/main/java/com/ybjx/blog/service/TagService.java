@@ -120,7 +120,7 @@ public class TagService {
     @ParameterCheck(UpdateCheck.class)
     @Transactional(rollbackFor = Exception.class)
     public void updateTag(ArticleTagDTO tagDTO){
-        ArticleTagDO tagDO = tagMapper.selectByPrimaryKey(tagDTO.getTag());
+        ArticleTagDO tagDO = tagMapper.selectByPrimaryKey(tagDTO.getId());
         if(tagDO == null || tagDO.getIsDeleted()){
             throw new BlogException(ErrorCode.OBJECT_NOT_FOUND, "标签没有找到");
         }

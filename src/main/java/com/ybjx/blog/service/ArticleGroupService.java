@@ -12,7 +12,7 @@ import com.ybjx.blog.dto.ArticleDTO;
 import com.ybjx.blog.dto.ArticleGroupRefDTO;
 import com.ybjx.blog.entity.ArticleDO;
 import com.ybjx.blog.entity.ArticleGroupRefDO;
-import com.ybjx.blog.entity.GroupDO;
+import com.ybjx.blog.entity.ArticleGroupDO;
 import com.ybjx.blog.entity.UserInfoDO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,7 +103,7 @@ public class ArticleGroupService {
             throw new BlogException(ErrorCode.OBJECT_NOT_FOUND, "关联信息没有找到");
         }
 
-        GroupDO group = groupService.getGroupById(refDO.getGroupId());
+        ArticleGroupDO group = groupService.getGroupById(refDO.getGroupId());
         if(group != null && group.getIsDeleted()){
             if(!group.getOwner().equals(user.getId())){
                 throw new BlogException(ErrorCode.PERMISSION_DENIED);
@@ -148,8 +148,8 @@ public class ArticleGroupService {
      * @return 树状分组详情
      */
     public List<ArticleGroupRefDTO> getGroupRefTree(int groupId){
-        GroupDO groupDO = groupService.getGroupById(groupId);
-        if(groupDO == null || groupDO.getIsDeleted()){
+        ArticleGroupDO articleGroupDO = groupService.getGroupById(groupId);
+        if(articleGroupDO == null || articleGroupDO.getIsDeleted()){
             throw new BlogException(ErrorCode.OBJECT_NOT_FOUND, "分组信息没有找到");
         }
         ArticleGroupRefDO groupRefDO = new ArticleGroupRefDO();
@@ -219,8 +219,8 @@ public class ArticleGroupService {
      */
     private void checkPermission(ArticleGroupRefDTO groupRefDTO){
         UserInfoDO user = UserHolder.getUser();
-        GroupDO groupDO = groupService.getGroupById(groupRefDTO.getGroupId());
-        if(groupDO == null || groupDO.getIsDeleted()){
+        ArticleGroupDO articleGroupDO = groupService.getGroupById(groupRefDTO.getGroupId());
+        if(articleGroupDO == null || articleGroupDO.getIsDeleted()){
             throw new BlogException(ErrorCode.OBJECT_NOT_FOUND, "分组信息没有找到");
         }
         ArticleDO articleDO = articleService.getArticleById(groupRefDTO.getArticleId());
@@ -233,7 +233,7 @@ public class ArticleGroupService {
                 throw new BlogException(ErrorCode.OBJECT_NOT_FOUND, "父节点没有找到");
             }
         }
-        if(!articleDO.getOwner().equals(user.getId()) || !groupDO.getOwner().equals(user.getId())){
+        if(!articleDO.getOwner().equals(user.getId()) || !articleGroupDO.getOwner().equals(user.getId())){
             throw new BlogException(ErrorCode.PERMISSION_DENIED);
         }
     }

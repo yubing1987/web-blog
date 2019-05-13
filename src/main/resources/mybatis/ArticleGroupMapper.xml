@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ybjx.blog.dao.GroupMapper">
-  <resultMap id="BaseResultMap" type="com.ybjx.blog.entity.GroupDO">
+<mapper namespace="com.ybjx.blog.dao.ArticleGroupMapper">
+  <resultMap id="BaseResultMap" type="com.ybjx.blog.entity.ArticleGroupDO">
     <!--
       WARNING - @mbg.generated
     -->
@@ -17,7 +17,7 @@
   </resultMap>
 
   <select id="queryGroupList" resultMap="BaseResultMap">
-    select * from `group` where is_deleted = 0
+    select * from article_group where is_deleted = 0
     <if test="userId != null">
       and owner = #{userId}
     </if>

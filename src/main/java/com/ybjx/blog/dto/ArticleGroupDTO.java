@@ -13,7 +13,7 @@ import java.util.List;
  * @author ybjx
  * @date 2019/5/1 22:07
  */
-public class GroupDTO {
+public class ArticleGroupDTO {
     /**
      * 主键
      */
@@ -49,6 +49,7 @@ public class GroupDTO {
     /**
      * 文章分组图片
      */
+    @NotNull(message = "封面不能为空", groups = {CreateCheck.class})
     private String picture;
 
     /**
@@ -228,7 +229,7 @@ public class GroupDTO {
 
     @Override
     public String toString() {
-        return "GroupDTO{" +
+        return "ArticleGroupDTO{" +
                 "id=" + id +
                 ", createDate=" + createDate +
                 ", modifyDate=" + modifyDate +
