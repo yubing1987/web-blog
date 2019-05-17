@@ -30,8 +30,8 @@
   </select>
 
   <select id="getArticlesByIds" resultMap="BaseResultMap">
-    select * from article where a.is_deleted = 0
-    and id in
+    select * from article a where a.is_deleted = 0
+    and a.id in
     <foreach collection="articleIds" index="index" item="articleId" open="(" separator="," close=")">
       #{articleId}
     </foreach>

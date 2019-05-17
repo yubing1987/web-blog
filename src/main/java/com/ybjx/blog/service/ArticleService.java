@@ -80,6 +80,7 @@ public class ArticleService {
         ArticleDO articleDO = new ArticleDO();
         articleDO.setTitle(articleDTO.getTitle());
         articleDO.setIsDeleted(false);
+        articleDO.setOwner(UserHolder.getUser().getId());
         if(articleMapper.selectCount(articleDO) > 0){
             throw new BlogException(ErrorCode.OBJECT_EXIST, "标题已经被使用过了");
         }
@@ -252,6 +253,9 @@ public class ArticleService {
      * @return 文章列表
      */
     public List<ArticleDO> getArticleList(List<Integer> ids){
+        if(ids.size() == 0){
+            return new ArrayList<>();
+        }
         return articleMapper.getArticlesByIds(ids);
     }
 }

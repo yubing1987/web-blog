@@ -49,7 +49,7 @@ public class ArticleGroupRefDTO {
     /**
      * 文章排序
      */
-    @NotNull(message = "文章分组ID不能为空", groups = {UpdateCheck.class})
+    @NotNull(message = "文章排序不能为空", groups = {UpdateCheck.class})
     private Integer level;
 
     /**

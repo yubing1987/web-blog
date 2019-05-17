@@ -5,10 +5,7 @@ import com.ybjx.blog.common.result.PojoResult;
 import com.ybjx.blog.dto.ArticleGroupRefDTO;
 import com.ybjx.blog.service.ArticleGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 /**
@@ -39,7 +36,7 @@ public class ArticleGroupRefController {
      * @return 是否添加成功
      */
     @RequestMapping(value = "/manage/group/ref", method = RequestMethod.POST)
-    public PojoResult<Boolean> addGroupRef(ArticleGroupRefDTO refDTO){
+    public PojoResult<Boolean> addGroupRef(@RequestBody ArticleGroupRefDTO refDTO){
         articleGroupService.addArticleGroupRef(refDTO);
         return new PojoResult<>(true);
     }
@@ -61,7 +58,7 @@ public class ArticleGroupRefController {
      * @return 是否更新成功
      */
     @RequestMapping(value = "/manage/group/ref/edit", method = RequestMethod.POST)
-    public PojoResult<Boolean> updateGroupRef(ArticleGroupRefDTO refDTO){
+    public PojoResult<Boolean> updateGroupRef(@RequestBody ArticleGroupRefDTO refDTO){
         articleGroupService.updateArticleGroupRef(refDTO);
         return new PojoResult<>(true);
     }

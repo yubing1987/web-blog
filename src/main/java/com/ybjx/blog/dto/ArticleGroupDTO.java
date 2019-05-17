@@ -33,7 +33,7 @@ public class ArticleGroupDTO {
     /**
      * 组名
      */
-    @NotNull(message = "组名不能为空", groups = {CreateCheck.class})
+    @NotNull(message = "组名不能为空", groups = {CreateCheck.class, UpdateCheck.class})
     private String name;
 
     /**
@@ -49,7 +49,7 @@ public class ArticleGroupDTO {
     /**
      * 文章分组图片
      */
-    @NotNull(message = "封面不能为空", groups = {CreateCheck.class})
+    @NotNull(message = "封面不能为空", groups = {CreateCheck.class, UpdateCheck.class})
     private String picture;
 
     /**
@@ -61,7 +61,7 @@ public class ArticleGroupDTO {
     /**
      * 分组描述
      */
-    @NotNull(message = "分组描述不能为空", groups = {CreateCheck.class})
+    @NotNull(message = "分组描述不能为空", groups = {CreateCheck.class, UpdateCheck.class})
     private String description;
 
     /**

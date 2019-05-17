@@ -109,6 +109,15 @@ public class ArticleGroupService {
                 throw new BlogException(ErrorCode.PERMISSION_DENIED);
             }
         }
+
+        ArticleGroupRefDO groupRefDO = new ArticleGroupRefDO();
+        groupRefDO.setGroupId(refDO.getGroupId());
+        groupRefDO.setParentId(refDO.getId());
+        groupRefDO.setIsDeleted(false);
+        if(groupRefMapper.selectCount(groupRefDO) > 0){
+            throw new BlogException(ErrorCode.OBJECT_DELETE_ERROR, "还存在子节点，无法直接删除");
+        }
+
         refDO.setIsDeleted(true);
         refDO.setModifyDate(new Date());
         try{
@@ -128,11 +137,17 @@ public class ArticleGroupService {
     @Transactional(rollbackFor = Exception.class)
     public void updateArticleGroupRef(ArticleGroupRefDTO groupRefDTO){
         UserInfoDO user = UserHolder.getUser();
-        checkPermission(groupRefDTO);
-        ArticleGroupRefDO groupRefDO = new ArticleGroupRefDO();
+        ArticleGroupRefDO groupRefDO = groupRefMapper.selectByPrimaryKey(groupRefDTO.getId());
+        if(groupRefDO == null || groupRefDO.getIsDeleted()){
+            throw new BlogException(ErrorCode.OBJECT_NOT_FOUND, "分组信息没有找到");
+        }
+        ArticleGroupRefDTO refDTO = new ArticleGroupRefDTO();
+        refDTO.setGroupId(groupRefDO.getGroupId());
+        refDTO.setArticleId(groupRefDO.getArticleId());
+        refDTO.setParentId(0);
+        checkPermission(refDTO);
         groupRefDO.setLevel(groupRefDTO.getLevel());
         groupRefDO.setModifyDate(new Date());
-        groupRefDO.setId(groupRefDTO.getId());
         try{
             groupRefMapper.updateByPrimaryKeySelective(groupRefDO);
             logService.addLog("编辑分组中文章信息", groupRefDO.getId(), OperationTyp.ARTICLE_GROUP_REF, user.getId());
@@ -165,7 +180,7 @@ public class ArticleGroupService {
             BeanUtils.copyProperties(g, groupRefDTO);
             List<ArticleGroupRefDTO> children = map.computeIfAbsent(g.getId(), k -> new ArrayList<>());
             groupRefDTO.setChildren(children);
-            if(g.getParentId() == null){
+            if(g.getParentId() == 0){
                 result.add(groupRefDTO);
             }
             else{
@@ -200,11 +215,11 @@ public class ArticleGroupService {
     private void updateResult(List<ArticleGroupRefDTO> list, Map<Integer, ArticleDTO> cache){
         list.sort((o1, o2) -> {
             if (o1.getLevel() < o2.getLevel()) {
-                return 1;
+                return -1;
             } else if (o1.getLevel().equals(o2.getLevel())) {
                 return 0;
             } else {
-                return -1;
+                return 1;
             }
         });
         for(ArticleGroupRefDTO refDTO: list){
@@ -227,10 +242,13 @@ public class ArticleGroupService {
         if(articleDO == null || articleDO.getIsDeleted()){
             throw new BlogException(ErrorCode.OBJECT_NOT_FOUND, "文章信息没有找到");
         }
-        if(groupRefDTO.getParentId() != null){
+        if(groupRefDTO.getParentId() != 0){
             ArticleGroupRefDO temp = groupRefMapper.selectByPrimaryKey(groupRefDTO.getParentId());
             if( temp == null || temp.getIsDeleted()){
                 throw new BlogException(ErrorCode.OBJECT_NOT_FOUND, "父节点没有找到");
+            }
+            if(!temp.getGroupId().equals(groupRefDTO.getGroupId())){
+                throw new BlogException(ErrorCode.OBJECT_NOT_FOUND, "父节点不正确");
             }
         }
         if(!articleDO.getOwner().equals(user.getId()) || !articleGroupDO.getOwner().equals(user.getId())){

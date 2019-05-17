@@ -53,6 +53,12 @@ public class GroupController {
         return new PojoResult<>(true);
     }
 
+    @RequestMapping(value = "/manage/group/edit", method = RequestMethod.POST)
+    PojoResult<Boolean> editGroup(@RequestBody ArticleGroupDTO group){
+        groupService.editGroup(group);
+        return new PojoResult<>(true);
+    }
+
     /**
      * 管理端查询文章
      * @param query 查询条件

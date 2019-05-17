@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.ybjx.blog.checker.ParameterCheck;
 import com.ybjx.blog.checker.group.CreateCheck;
 import com.ybjx.blog.checker.group.PagingCheck;
+import com.ybjx.blog.checker.group.UpdateCheck;
 import com.ybjx.blog.common.BlogException;
 import com.ybjx.blog.common.ErrorCode;
 import com.ybjx.blog.common.OperationTyp;
@@ -20,6 +21,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -104,6 +106,48 @@ public class GroupService {
         }
         catch (Exception e){
             throw new BlogException(ErrorCode.OBJECT_DELETE_ERROR, "删除文章分组出错", e);
+        }
+    }
+
+    /**
+     * 编辑文章分组信息
+     * @param group 文章分组信息
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @ParameterCheck({UpdateCheck.class})
+    public void editGroup(ArticleGroupDTO group){
+        ArticleGroupDO groupDO = articleGroupMapper.selectByPrimaryKey(group.getId());
+        if(groupDO == null || groupDO.getIsDeleted()){
+            throw new BlogException(ErrorCode.OBJECT_NOT_FOUND, "文章分组没有找到");
+        }
+        UserInfoDO user = UserHolder.getUser();
+        if(!user.getId().equals(groupDO.getOwner())){
+            throw new BlogException(ErrorCode.PERMISSION_DENIED,
+                    new Exception(user.getId() + "无权限删除文章分组【" + groupDO.getId() + "】"));
+        }
+        if(!StringUtils.isEmpty(group.getDescription())){
+            groupDO.setDescription(group.getDescription());
+        }
+        if(!StringUtils.isEmpty(group.getPicture())){
+            groupDO.setPicture(group.getPicture());
+        }
+        if(!StringUtils.isEmpty(group.getName()) && !group.getName().equals(groupDO.getName())){
+            ArticleGroupDO temp = new ArticleGroupDO();
+            temp.setIsDeleted(false);
+            temp.setName(group.getName());
+            if(articleGroupMapper.selectCount(temp) > 0){
+                throw new BlogException(ErrorCode.OBJECT_EXIST, "名称已经被使用过了");
+            }
+            groupDO.setName(group.getName());
+        }
+        groupDO.setModifyDate(new Date());
+
+        try{
+            articleGroupMapper.updateByPrimaryKey(groupDO);
+            logService.addLog("修改文章分组", groupDO.getId(), OperationTyp.GROUP, user.getId());
+        }
+        catch (Exception e){
+            throw new BlogException(ErrorCode.OBJECT_UPDATE_ERROR, "保存分组信息出错", e);
         }
     }
 
