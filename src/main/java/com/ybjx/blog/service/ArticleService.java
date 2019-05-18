@@ -213,6 +213,7 @@ public class ArticleService {
         Map<Integer, ArticleDTO> cache = new HashMap<>(8);
         for(ArticleDO articleDO: list){
             ArticleDTO articleDTO = new ArticleDTO();
+            articleDO.setContent("");
             BeanUtils.copyProperties(articleDO, articleDTO);
             listDto.add(articleDTO);
             articleDTO.setTags(new ArrayList<>());

@@ -4,8 +4,10 @@ import com.ybjx.blog.common.UserHolder;
 import com.ybjx.blog.common.result.PageResult;
 import com.ybjx.blog.common.result.PojoResult;
 import com.ybjx.blog.dto.ArticleGroupDTO;
+import com.ybjx.blog.entity.ArticleGroupDO;
 import com.ybjx.blog.query.GroupQuery;
 import com.ybjx.blog.service.GroupService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -82,5 +84,18 @@ public class GroupController {
     @RequestMapping(value = "/group/list", method = RequestMethod.GET)
     PageResult<ArticleGroupDTO> queryGroup(GroupQuery query){
         return groupService.getGroupList(query, null);
+    }
+
+    /**
+     * 通过分组ID查找分组信息
+     * @param id 分组ID
+     * @return 分组信息
+     */
+    @RequestMapping(value = "/group/{id}", method = RequestMethod.GET)
+    PojoResult<ArticleGroupDTO> getGroupById(@PathVariable("id") Integer id){
+        ArticleGroupDO groupDO = groupService.getGroupById(id);
+        ArticleGroupDTO groupDTO = new ArticleGroupDTO();
+        BeanUtils.copyProperties(groupDO, groupDTO);
+        return new PojoResult<>(groupDTO);
     }
 }

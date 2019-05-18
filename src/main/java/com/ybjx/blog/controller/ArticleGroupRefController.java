@@ -1,8 +1,11 @@
 package com.ybjx.blog.controller;
 
 import com.ybjx.blog.common.result.ListResult;
+import com.ybjx.blog.common.result.PageResult;
 import com.ybjx.blog.common.result.PojoResult;
+import com.ybjx.blog.dto.ArticleDTO;
 import com.ybjx.blog.dto.ArticleGroupRefDTO;
+import com.ybjx.blog.query.GroupRefQuery;
 import com.ybjx.blog.service.ArticleGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -71,5 +74,15 @@ public class ArticleGroupRefController {
     @RequestMapping(value = "/group/ref/{groupId}/tree", method = RequestMethod.GET)
     public ListResult<ArticleGroupRefDTO> getArticleGroupTree(@PathVariable("groupId") Integer groupId){
         return new ListResult<>(articleGroupService.getGroupRefTree(groupId));
+    }
+
+    /**
+     * 获取分组信息列表
+     * @param query
+     * @return 分组信息
+     */
+    @RequestMapping(value = "/group/ref/list", method = RequestMethod.GET)
+    public PageResult<ArticleDTO> getArticleGroupList(GroupRefQuery query){
+        return articleGroupService.getGroupArticle(query);
     }
 }

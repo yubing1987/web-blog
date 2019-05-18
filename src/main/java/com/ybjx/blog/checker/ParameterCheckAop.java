@@ -43,6 +43,9 @@ public class ParameterCheckAop {
 
         if (args != null && args.length > 0) {
             for (Object obj: args) {
+                if(obj == null){
+                    continue;
+                }
                 // 校验参数
                 Set<ConstraintViolation<Object>> set = validator.validate(obj, pc.value());
                 // 判断校验结果

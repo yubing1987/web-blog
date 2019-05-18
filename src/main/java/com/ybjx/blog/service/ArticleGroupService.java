@@ -1,19 +1,27 @@
 package com.ybjx.blog.service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.ybjx.blog.checker.ParameterCheck;
 import com.ybjx.blog.checker.group.CreateCheck;
+import com.ybjx.blog.checker.group.PagingCheck;
+import com.ybjx.blog.checker.group.QueryCheck;
 import com.ybjx.blog.checker.group.UpdateCheck;
 import com.ybjx.blog.common.BlogException;
 import com.ybjx.blog.common.ErrorCode;
 import com.ybjx.blog.common.OperationTyp;
 import com.ybjx.blog.common.UserHolder;
+import com.ybjx.blog.common.result.Page;
+import com.ybjx.blog.common.result.PageResult;
 import com.ybjx.blog.dao.ArticleGroupRefMapper;
 import com.ybjx.blog.dto.ArticleDTO;
+import com.ybjx.blog.dto.ArticleGroupDTO;
 import com.ybjx.blog.dto.ArticleGroupRefDTO;
 import com.ybjx.blog.entity.ArticleDO;
 import com.ybjx.blog.entity.ArticleGroupRefDO;
 import com.ybjx.blog.entity.ArticleGroupDO;
 import com.ybjx.blog.entity.UserInfoDO;
+import com.ybjx.blog.query.GroupRefQuery;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -200,6 +208,7 @@ public class ArticleGroupService {
         Map<Integer, ArticleDTO> cache = new HashMap<>(8);
         for(ArticleDO a: articles){
             ArticleDTO ad = new ArticleDTO();
+            a.setContent("");
             BeanUtils.copyProperties(a, ad);
             cache.put(a.getId(), ad);
         }
@@ -254,5 +263,52 @@ public class ArticleGroupService {
         if(!articleDO.getOwner().equals(user.getId()) || !articleGroupDO.getOwner().equals(user.getId())){
             throw new BlogException(ErrorCode.PERMISSION_DENIED);
         }
+    }
+
+    /**
+     * 分页查找分组的文章列表
+     * @param query 查询条件
+     * @return 文章列表
+     */
+    @ParameterCheck({QueryCheck.class, PagingCheck.class})
+    public PageResult<ArticleDTO> getGroupArticle(GroupRefQuery query){
+        PageHelper.startPage(query.getPage(), query.getSize(), "level, modify_date");
+        ArticleGroupRefDO refDO = new ArticleGroupRefDO();
+        refDO.setIsDeleted(false);
+        refDO.setGroupId(query.getGroupId());
+        List<ArticleGroupRefDO> list = groupRefMapper.select(refDO);
+        if(list.size() == 0){
+            return new PageResult<>();
+        }
+        PageInfo<ArticleGroupRefDO> p = new PageInfo<>(list);
+        List<Integer> ids = new ArrayList<>();
+        for(ArticleGroupRefDO ref: list){
+            ids.add(ref.getArticleId());
+        }
+        List<ArticleDO> articles = articleService.getArticleList(ids);
+
+        Map<Integer, ArticleDO> cache = new HashMap<>();
+        for(ArticleDO a: articles){
+            cache.put(a.getId(), a);
+        }
+
+        List<ArticleDTO> rlist = new ArrayList<>();
+
+        for(ArticleGroupRefDO ref: list){
+            ArticleDO a = cache.get(ref.getArticleId());
+            if(a != null){
+                ArticleDTO ad = new ArticleDTO();
+                BeanUtils.copyProperties(a, ad);
+                rlist.add(ad);
+            }
+        }
+
+
+        PageResult<ArticleDTO> result = new PageResult<>();
+        Page<ArticleDTO> page = new Page<>();
+        page.setItems(rlist);
+        page.setTotal(p.getTotal());
+        result.setContent(page);
+        return result;
     }
 }
