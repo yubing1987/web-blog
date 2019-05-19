@@ -157,11 +157,11 @@ public class TagService {
      * @param key 搜索关键字
      * @return 标签雷彪
      */
-    public List<ArticleTagDO> getTagList(String key, List<Integer> ids){
+    public List<ArticleTagDO> getTagList(String key, List<Integer> ids, Integer userId){
         if(ids != null && ids.size() == 0){
             ids = null;
         }
-        return tagMapper.getTagList(ids, UserHolder.getUser().getId(), key);
+        return tagMapper.getTagList(ids, userId, key);
     }
 
     /**

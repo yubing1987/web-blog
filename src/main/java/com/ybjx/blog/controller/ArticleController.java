@@ -121,7 +121,7 @@ public class ArticleController {
         for(ArticleTagRefDO tagRef: tagRefs){
             tagIds.add(tagRef.getId());
         }
-        List<ArticleTagDO> tags = tagService.getTagList(null, tagIds);
+        List<ArticleTagDO> tags = tagService.getTagList(null, tagIds, null);
 
         articleDTO.setTags(new ArrayList<>());
         for(ArticleTagDO tag: tags){

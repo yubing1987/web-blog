@@ -1,5 +1,6 @@
 package com.ybjx.blog.config;
 
+import com.ybjx.blog.filter.PageFilter;
 import com.ybjx.blog.filter.UserFilter;
 import com.ybjx.blog.service.UserService;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -33,11 +34,32 @@ public class FilterConfig {
         bean.setFilter(filter);
         bean.setOrder(1);
         List<String> list = new ArrayList<>();
-        list.add("/*");
+        list.add("/api/manage/*");
+        list.add("/management/*");
         bean.setUrlPatterns(list);
 
         Map<String, String> map = new HashMap<>(4);
         map.put("ignore-url", loginConfig.getIgnoreUrl());
+        bean.setInitParameters(map);
+        return bean;
+    }
+
+    /**
+     * 配置管理端的首页的html跳转filter
+     * @return filter
+     */
+    @Bean
+    public FilterRegistrationBean getPageFilter(FileConfig fileConfig){
+        FilterRegistrationBean<PageFilter> bean = new FilterRegistrationBean<>();
+        PageFilter filter = new PageFilter();
+        bean.setFilter(filter);
+        bean.setOrder(2);
+        List<String> list = new ArrayList<>();
+        list.add("/management/*");
+        list.add("/login");
+        bean.setUrlPatterns(list);
+        Map<String, String> map = new HashMap<>(4);
+        map.put("management-index-path", fileConfig.getIndex());
         bean.setInitParameters(map);
         return bean;
     }

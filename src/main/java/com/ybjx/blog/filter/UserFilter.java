@@ -4,6 +4,8 @@ import com.ybjx.blog.common.*;
 import com.ybjx.blog.config.LoginConfig;
 import com.ybjx.blog.entity.UserInfoDO;
 import com.ybjx.blog.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.*;
@@ -22,6 +24,8 @@ public class UserFilter extends MatchFilter {
      * 登录页面URL
      */
     private final static String LOGIN_URL = "/login?back_url=";
+
+    private static Logger LOGGER = LoggerFactory.getLogger(UserFilter.class);
 
     /**
      * 用户相关的服务
@@ -65,17 +69,20 @@ public class UserFilter extends MatchFilter {
             String userToken = CookieUtil.getCookieValue(request, Constant.USER_TOKEN_COOKIE_NAME);
             if (StringUtils.isEmpty(userToken)) {
                 gotoLogin(request, response);
+                LOGGER.info("user token 没有找到");
                 return;
             }
             Integer userId = UserTokenManager.getUserId(userToken);
             if (userId == null) {
                 gotoLogin(request, response);
+                LOGGER.info("user id 没有找到");
                 return;
             }
 
             user = userService.getUser(userId);
             if (user == null) {
                 gotoLogin(request, response);
+                LOGGER.info("user 信息没有找到");
                 return;
             }
         }

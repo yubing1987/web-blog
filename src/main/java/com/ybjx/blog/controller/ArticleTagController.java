@@ -1,5 +1,6 @@
 package com.ybjx.blog.controller;
 
+import com.ybjx.blog.common.UserHolder;
 import com.ybjx.blog.common.result.ListResult;
 import com.ybjx.blog.common.result.PojoResult;
 import com.ybjx.blog.dto.ArticleTagDTO;
@@ -73,7 +74,7 @@ public class ArticleTagController {
      */
     @RequestMapping(value = "/manage/tag", method = RequestMethod.GET)
     public ListResult<ArticleTagDTO> getTagList(){
-        List<ArticleTagDO> list = tagService.getTagList(null, null);
+        List<ArticleTagDO> list = tagService.getTagList(null, null, UserHolder.getUser().getId());
         List<ArticleTagDTO> tagList = new ArrayList<>();
         for(ArticleTagDO tagDO: list){
             ArticleTagDTO tagDTO = new ArticleTagDTO();

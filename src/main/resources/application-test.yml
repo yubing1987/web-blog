@@ -5,6 +5,4 @@ logging:
 blog:
   file:
     location: g:/blog/file
-  login:
-    mock: true
-    mock-user-id: 1
+    index: G:/code/web-blog-pc/build/index.html

@@ -25,7 +25,10 @@
   </select>
 
   <select id="getTagList" resultMap="BaseResultMap">
-    select * from article_tag t where t.is_deleted = 0 and t.owner = #{userId}
+    select * from article_tag t where t.is_deleted = 0
+    <if test="userId != null">
+      and t.owner = #{userId}
+    </if>
     <if test="key != null and key != ''">
       and t.tag like concat('%', #{key}, '%')
     </if>

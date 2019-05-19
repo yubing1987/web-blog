@@ -19,6 +19,11 @@ public class FileConfig {
      */
     private String location;
 
+    /**
+     * 首页地址
+     */
+    private String index;
+
     @Bean(name = "multipartResolver")
     public MultipartResolver multipartResolver() {
         CommonsMultipartResolver resolver = new CommonsMultipartResolver();
@@ -37,10 +42,19 @@ public class FileConfig {
         this.location = location;
     }
 
+    public String getIndex() {
+        return index;
+    }
+
+    public void setIndex(String index) {
+        this.index = index;
+    }
+
     @Override
     public String toString() {
         return "FileConfig{" +
                 "location='" + location + '\'' +
+                ", index='" + index + '\'' +
                 '}';
     }
 }
